@@ -1,25 +1,26 @@
-import { authenticate } from 'api/authApi';
+import { createUser } from "api/authApi";
 import Footer from "components/footer";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { useRouter } from 'next/router'
 
-const Login: NextPage = () => {
+const Signup: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const router = useRouter()
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    authenticate({ email, password }).then(async (res) => {
-      if(res === "VALID") {
-        console.log("User authenticated successfully");
+    createUser({ email, password, name }).then(async (res) => {
+      if(res.status === 200) {
+        console.log("User created successfully");
         router.push('/dashboard')
       } else {
-        console.log("Error authenticating user");
+        console.log("Error creating user");
       }
     });
-  }
+  };
 
   return (
     <>
@@ -31,13 +32,38 @@ const Login: NextPage = () => {
             alt="Your Company"
           />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Log in to your account
+            Create new account
           </h2>
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form onSubmit={handleSubmit} className="space-y-6" action="#" method="POST">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-6"
+              action="#"
+              method="POST"
+            >
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Name
+                </label>
+                <div className="mt-1">
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    id="name"
+                    name="name"
+                    type="name"
+                    autoComplete="current-name"
+                    required
+                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
+                  />
+                </div>
+              </div>
               <div>
                 <label
                   htmlFor="email"
@@ -79,7 +105,7 @@ const Login: NextPage = () => {
                   />
                 </div>
               </div>
-{/* 
+              {/* 
               <div className="flex items-center justify-between">
                 <div className="text-sm">
                   <a
@@ -96,7 +122,7 @@ const Login: NextPage = () => {
                   type="submit"
                   className="flex w-full justify-center rounded-md border border-transparent bg-rose-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
                 >
-                  Sign in
+                  Sign up
                 </button>
               </div>
             </form>
@@ -119,7 +145,7 @@ const Login: NextPage = () => {
                     href="#"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
-                    <span className="sr-only">Sign in with Facebook</span>
+                    <span className="sr-only">Sign up with Facebook</span>
                     <svg
                       className="h-5 w-5"
                       aria-hidden="true"
@@ -140,7 +166,7 @@ const Login: NextPage = () => {
                     href="#"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
-                    <span className="sr-only">Sign in with Twitter</span>
+                    <span className="sr-only">Sign up with Twitter</span>
                     <svg
                       className="h-5 w-5"
                       aria-hidden="true"
@@ -157,7 +183,7 @@ const Login: NextPage = () => {
                     href="#"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
-                    <span className="sr-only">Sign in with GitHub</span>
+                    <span className="sr-only">Sign up with GitHub</span>
                     <svg
                       className="h-5 w-5"
                       aria-hidden="true"
@@ -182,4 +208,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default Signup;

@@ -21,7 +21,7 @@ const Home: NextPage = () => {
               <div className="mt-10">
                 <div className="mt-6 sm:max-w-xl">
                   <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-                    Solar Energy Sync
+                    Solenersync
                   </h1>
                   <p className="mt-6 text-xl text-gray-500">
                     Synchronise your energy consumption with our solar irradiance forecasting service
@@ -40,12 +40,14 @@ const Home: NextPage = () => {
                     />
                   </div>
                   <div className="mt-4 sm:mt-0 sm:ml-3">
-                    <button
-                      type="submit"
-                      className="block w-full rounded-md border border-transparent bg-rose-500 px-5 py-3 text-base font-medium text-white shadow hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:px-10"
-                    >
-                      Sign up
-                    </button>
+                    <Link href='/signup'>
+                      <button
+                        type="submit"
+                        className="block w-full rounded-md border border-transparent bg-rose-500 px-5 py-3 text-base font-medium text-white shadow hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:px-10"
+                      >
+                        Sign up
+                      </button>
+                    </Link>
                   </div>
                 </form>
                 <div className="mt-4">Already have an account? <Link className="text-rose-600 hover:text-rose-700" href="/login" >Log in</Link></div>
