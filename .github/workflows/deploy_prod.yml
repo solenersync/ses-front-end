@@ -41,4 +41,3 @@ jobs:
         aws ecr describe-repositories --repository-names ${REPOSITORY} || aws ecr create-repository --repository-name ${REPOSITORY}
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
         docker push -a $REGISTRY/$REPOSITORY
-
