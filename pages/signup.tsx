@@ -3,8 +3,9 @@ import Footer from "components/footer";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { useRouter } from 'next/router'
+import Link from 'next/link';
 
-const Signup: NextPage = () => {
+const Signup: NextPage = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -14,10 +15,8 @@ const Signup: NextPage = () => {
     e.preventDefault();
     createUser({ email, password, name }).then(async (res) => {
       if(res.status === 200) {
-        console.log("User created successfully");
         router.push('/dashboard')
       } else {
-        console.log("Error creating user");
       }
     });
   };
@@ -46,6 +45,28 @@ const Signup: NextPage = () => {
             >
               <div>
                 <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email address
+                </label>
+                <div className="mt-1">
+                  <input
+                    value={router.query.email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm cursor-not-allowed focus:outline-none sm:text-sm"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700"
                 >
@@ -59,26 +80,6 @@ const Signup: NextPage = () => {
                     name="name"
                     type="name"
                     autoComplete="current-name"
-                    required
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email address
-                </label>
-                <div className="mt-1">
-                  <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
                   />
@@ -105,17 +106,17 @@ const Signup: NextPage = () => {
                   />
                 </div>
               </div>
-              {/* 
+              
               <div className="flex items-center justify-between">
                 <div className="text-sm">
-                  <a
-                    href="#"
+                  <Link
+                    href="/"
                     className="font-medium text-rose-600 hover:text-rose-500"
                   >
-                    Forgot your password?
-                  </a>
+                    Go back?
+                  </Link>
                 </div>
-              </div> */}
+              </div>
 
               <div>
                 <button

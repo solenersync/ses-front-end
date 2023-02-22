@@ -9,15 +9,16 @@ import {
   XMarkIcon,
   UserIcon,
 } from '@heroicons/react/24/outline'
-import { User } from 'models/User'
+
 import Footer from 'components/footer'
+import { signOut, useSession } from 'next-auth/react'
 
 const navigation = [
   { name: 'Dashboard', href: 'dashboard', icon: HomeIcon, current: true },
   { name: 'Profile', href: 'profile', icon: UsersIcon, current: false },
   { name: 'Solar Array', href: 'solar-array', icon: BoltIcon, current: false },
   { name: 'Solar Forecast', href: '#', icon: ChartBarIcon, current: false },
-  { name: 'Logout', href: '#', icon: UserIcon, current: false },
+  { name: 'Logout', href: '', icon: UserIcon, current: false },
 ]
 
 function classNames(...classes: any) {
@@ -26,12 +27,15 @@ function classNames(...classes: any) {
 interface AppLayoutProps {
   children: React.ReactElement,
   pageTitle: string,
-  user: User;
 }
 
 
-export function AppLayout({ children, pageTitle, user }: AppLayoutProps) {
+export function AppLayout({ children, pageTitle}: AppLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false })
+  }
 
   return (
     <>
@@ -100,6 +104,11 @@ export function AppLayout({ children, pageTitle, user }: AppLayoutProps) {
                               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
                             'group flex items-center px-2 py-2 text-base font-medium rounded-md'
                           )}
+                          onClick={() => {
+                            if (item.name === "Logout") {
+                              handleLogout();
+                            }
+                          }}
                         >
                           <item.icon
                             className={classNames(
@@ -141,6 +150,11 @@ export function AppLayout({ children, pageTitle, user }: AppLayoutProps) {
                       item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
                       'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
                     )}
+                    onClick={() => {
+                      if (item.name === "Logout") {
+                        handleLogout();
+                      }
+                    }}
                   >
                     <item.icon
                       className={classNames(

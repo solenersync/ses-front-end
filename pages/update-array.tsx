@@ -1,8 +1,23 @@
 import { AppLayout } from 'components/Layouts/AppLayout';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import Router from "next/router";
 import { NextPageWithLayout } from '../types';
 
 const UpdateArray: NextPageWithLayout = () => {
+  
+  const { status, data: sessionData } = useSession();
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!sessionData) {
+    Router.replace("/login");
+    return null;
+  }
+  const { user } = sessionData;
+  
   return (
     <>
       
@@ -151,7 +166,7 @@ let user = {email: "test@test.com", password: "password1", name: "Frank", phone:
 let solarArrays = [{name: "array1", mounting: "Free Standing", latitude: 51.5, longitude: 0.1, peakPower: 4, systemLoss: 10, slope: 20, aspect: 0}, {name: "array2", mounting: "Roof Mounted", latitude: 51.5, longitude: 0.1, peakPower: 4, systemLoss: 10, slope: 20, aspect: 0}]
 
 UpdateArray.getLayout = ( page ) => {
-  return <AppLayout pageTitle="Update array details" user={user}>{page}</AppLayout>
+  return <AppLayout pageTitle="Update array details">{page}</AppLayout>
 }
 
 
