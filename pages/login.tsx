@@ -1,25 +1,26 @@
-import { authenticate } from 'api/authApi';
 import Footer from "components/footer";
 import { NextPage } from "next";
 import React, { useState } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter()
+  const router = useRouter();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    authenticate({ email, password }).then(async (res) => {
-      if(res === "VALID") {
-        console.log("User authenticated successfully");
-        router.push('/dashboard')
-      } else {
-        console.log("Error authenticating user");
-      }
+    const res = await signIn("credentials", {
+      email: email,
+      password: password,
+      redirect: false,
     });
-  }
+    if (res?.status == 200) {
+      router.push("/dashboard");
+    }
+  };
 
   return (
     <>
@@ -37,7 +38,12 @@ const Login: NextPage = () => {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form onSubmit={handleSubmit} className="space-y-6" action="#" method="POST">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-6"
+              action="#"
+              method="POST"
+            >
               <div>
                 <label
                   htmlFor="email"
@@ -79,17 +85,16 @@ const Login: NextPage = () => {
                   />
                 </div>
               </div>
-{/* 
               <div className="flex items-center justify-between">
                 <div className="text-sm">
-                  <a
-                    href="#"
+                  <Link
+                    href="/"
                     className="font-medium text-rose-600 hover:text-rose-500"
                   >
-                    Forgot your password?
-                  </a>
+                    Go back?
+                  </Link>
                 </div>
-              </div> */}
+              </div>
 
               <div>
                 <button

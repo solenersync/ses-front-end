@@ -2,8 +2,20 @@ import { ChevronRightIcon, StarIcon } from '@heroicons/react/20/solid'
 import Footer from 'components/footer'
 import { NextPage } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
-const Home: NextPage = () => {
+
+const Home: NextPage = (props) => {
+
+  const router = useRouter()
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    router.push({pathname: '/signup', query: {email: email}})
+  }
+  
   return (
     <div className="bg-white">
       <main>
@@ -24,15 +36,16 @@ const Home: NextPage = () => {
                     Solenersync
                   </h1>
                   <p className="mt-6 text-xl text-gray-500">
-                    Synchronise your energy consumption with our solar irradiance forecasting service
+                    Synchronise your home energy with our solar irradiance forecasting service
                   </p>
                 </div>
-                <form action="#" className="mt-12 sm:flex sm:w-full sm:max-w-lg">
+                <form onSubmit={handleSubmit} className="mt-12 sm:flex sm:w-full sm:max-w-lg">
                   <div className="min-w-0 flex-1">
                     <label htmlFor="hero-email" className="sr-only">
                       Email address
                     </label>
                     <input
+                      onChange={(e) => setEmail(e.target.value)}
                       id="hero-email"
                       type="email"
                       className="block w-full rounded-md border border-gray-300 px-5 py-3 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-rose-500 focus:ring-rose-500"
@@ -40,14 +53,12 @@ const Home: NextPage = () => {
                     />
                   </div>
                   <div className="mt-4 sm:mt-0 sm:ml-3">
-                    <Link href='/signup'>
-                      <button
-                        type="submit"
-                        className="block w-full rounded-md border border-transparent bg-rose-500 px-5 py-3 text-base font-medium text-white shadow hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:px-10"
-                      >
-                        Sign up
-                      </button>
-                    </Link>
+                    <button
+                      type="submit"
+                      className="block w-full rounded-md border border-transparent bg-rose-500 px-5 py-3 text-base font-medium text-white shadow hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:px-10"
+                    >
+                      Sign up
+                    </button>
                   </div>
                 </form>
                 <div className="mt-4">Already have an account? <Link className="text-rose-600 hover:text-rose-700" href="/login" >Log in</Link></div>

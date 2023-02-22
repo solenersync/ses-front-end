@@ -1,8 +1,23 @@
 import { AppLayout } from "components/Layouts/AppLayout";
+import { useSession } from "next-auth/react";
+import { NextPageWithLayout } from "types";
+import { useEffect } from "react";
+import Router from "next/router";
 import Link from "next/link";
-import { NextPageWithLayout } from "../types";
 
 const SolarArray: NextPageWithLayout = () => {
+  const { status, data: sessionData } = useSession();
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!sessionData) {
+    Router.replace("/login");
+    return null;
+  }
+  const { user } = sessionData;
+  
   return (
     <>
       <div className="overflow-hidden bg-white shadow sm:rounded-lg">
@@ -73,6 +88,7 @@ const SolarArray: NextPageWithLayout = () => {
       </div>
     </>
   );
+  return <div>loading</div>;
 };
 
 let user = {
@@ -93,11 +109,7 @@ let array = {
 };
 
 SolarArray.getLayout = (page) => {
-  return (
-    <AppLayout pageTitle="Solar Array" user={user}>
-      {page}
-    </AppLayout>
-  );
+  return <AppLayout pageTitle="Solar Array">{page}</AppLayout>;
 };
 
 export default SolarArray;
