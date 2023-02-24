@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { getArrayData } from "api/solarArrayApi";
 import { Irradiance } from "../models/Irradiance";
+import DataDisplay from "../components/solarForecastTable";
 import {
   Chart as ChartJs,
   CategoryScale,
@@ -18,9 +19,10 @@ import {
   LineElement,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { getUser } from "api/userApi";
+import { getUser } from 'api/userApi';
 
-const Dashboard: NextPageWithLayout = () => {
+const SolarForecast: NextPageWithLayout = () => {
+
   type Dataset = {
     label?: string;
     data: number[];
@@ -32,23 +34,11 @@ const Dashboard: NextPageWithLayout = () => {
 
   const { status, data: sessionData } = useSession();
   const [forecastData, setForecastData] = useState<Irradiance[] | null>(null);
-  const [chartData, setChartData] = useState({
-    datasets: [] as Dataset[],
-    labels: [] as Labels,
-  });
+  const [chartData, setChartData] = useState({ datasets: [] as Dataset[], labels: [] as Labels});
   const [chartOptions, setChartOptions] = useState({});
 
   useEffect(() => {
-    ChartJs.register(
-      CategoryScale,
-      BarElement,
-      Title,
-      Tooltip,
-      Legend,
-      LinearScale,
-      PointElement,
-      LineElement
-    );
+    ChartJs.register(CategoryScale, BarElement, Title, Tooltip, Legend, LinearScale, PointElement, LineElement);
     if (status === "loading") {
       return;
     }
@@ -58,6 +48,8 @@ const Dashboard: NextPageWithLayout = () => {
       return;
     }
     const { user } = sessionData;
+    console.log(user);
+
     const now = new Date();
     const currentMonth = now.getMonth() + 1;
 
@@ -118,10 +110,22 @@ const Dashboard: NextPageWithLayout = () => {
         },
       },
     });
-  }, [status, sessionData]);
+    }, [status, sessionData]);
 
   return (
     <>
+    <div className="flex items-center space-x-4">
+        <label htmlFor="forecast-select">Select forecast:</label>
+        <select
+          id="forecast-select"
+          onChange={(event) => {
+            const day = parseInt(event.target.value);
+          }}
+        >
+          <option value="1">Today</option>
+          <option value="2">Tomorrow</option>
+        </select>
+      </div>
       <div className="space-y-6 pt-8 sm:space-y-5 sm:pt-10">
         <Line options={chartOptions} data={chartData} />
       </div>
@@ -129,8 +133,8 @@ const Dashboard: NextPageWithLayout = () => {
   );
 };
 
-Dashboard.getLayout = (page) => {
-  return <AppLayout pageTitle="Dashboard">{page}</AppLayout>;
+SolarForecast.getLayout = (page) => {
+  return <AppLayout pageTitle="Solar Forecast">{page}</AppLayout>;
 };
 
-export default Dashboard;
+export default SolarForecast;

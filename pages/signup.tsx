@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useRouter } from 'next/router'
 import Link from 'next/link';
 
-const Signup: NextPage = (props) => {
+const Signup: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");

@@ -5,7 +5,8 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { getArrayData } from "api/solarArrayApi";
-import { Irradiance } from "../models/Irradiance";
+// import { Irradiance } from "../models/Irradiance";
+import DataDisplay from "../components/solarForecastTable";
 import {
   Chart as ChartJs,
   CategoryScale,
@@ -17,10 +18,12 @@ import {
   LinearScale,
   LineElement,
 } from "chart.js";
+import { Bar } from "react-chartjs-2";
 import { Line } from "react-chartjs-2";
+// import { CreateUser } from "../models/User";
 import { getUser } from "api/userApi";
 
-const Dashboard: NextPageWithLayout = () => {
+const SolarForecastChart: NextPageWithLayout = () => {
   type Dataset = {
     label?: string;
     data: number[];
@@ -31,7 +34,7 @@ const Dashboard: NextPageWithLayout = () => {
   type Labels = string[];
 
   const { status, data: sessionData } = useSession();
-  const [forecastData, setForecastData] = useState<Irradiance[] | null>(null);
+  // const [forecastData, setForecastData] = useState<Irradiance[] | null>(null);
   const [chartData, setChartData] = useState({
     datasets: [] as Dataset[],
     labels: [] as Labels,
@@ -58,6 +61,8 @@ const Dashboard: NextPageWithLayout = () => {
       return;
     }
     const { user } = sessionData;
+    console.log(user);
+
     const now = new Date();
     const currentMonth = now.getMonth() + 1;
 
@@ -66,7 +71,7 @@ const Dashboard: NextPageWithLayout = () => {
       var arrayResult = await getArrayData(userData.user_id);
       arrayResult.month = currentMonth;
       const forecastResult = await getSolarForecast(arrayResult);
-      setForecastData(forecastResult);
+      // setForecastData(forecastResult);
 
       setChartData({
         labels: [
@@ -129,8 +134,4 @@ const Dashboard: NextPageWithLayout = () => {
   );
 };
 
-Dashboard.getLayout = (page) => {
-  return <AppLayout pageTitle="Dashboard">{page}</AppLayout>;
-};
-
-export default Dashboard;
+export default SolarForecastChart;

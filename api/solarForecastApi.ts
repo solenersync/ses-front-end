@@ -1,6 +1,6 @@
-import { SolarArray } from 'models/SolarArray';
+import { ISolarArray } from 'models/ISolarArray';
 
-export const getSolarForecast = async (arrayData: SolarArray) => {
+export const getSolarForecast = async (arrayData: ISolarArray) => {
 
   const res = await fetch("http://localhost:8080/api/v1/pv/daily", {
     method: "POST",
