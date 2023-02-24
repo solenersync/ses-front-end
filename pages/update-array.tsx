@@ -1,55 +1,84 @@
-import { AppLayout } from 'components/Layouts/AppLayout';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import Router from "next/router";
-import { NextPageWithLayout } from '../types';
+import { AppLayout } from "components/Layouts/AppLayout";
+import Link from "next/link";
+import { NextPageWithLayout } from "../types";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { updateArray } from "api/solarArrayApi";
+import { ISolarArray } from "../models/ISolarArray";
 
 const UpdateArray: NextPageWithLayout = () => {
-  
-  const { status, data: sessionData } = useSession();
+  const router = useRouter();
+  const { lat, lon, peak_power, loss, angle, aspect, mounting, solar_array_id } =
+    router.query;
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
+  const [mountingUpdate, setMountingUpdate] = useState("");
+  const [latUpdate, setLatUpdate] = useState("");
+  const [lonUpdate, setLonUpdate] = useState("");
+  const [peakPowerUpdate, setPeakPowerUpdate] = useState("");
+  const [lossUpdate, setLossUpdate] = useState("");
+  const [angleUpdate, setAngleUpdate] = useState("");
+  const [aspectUpdate, setAspectUpdate] = useState("");
 
-  if (!sessionData) {
-    Router.replace("/login");
-    return null;
-  }
-  const { user } = sessionData;
-  
+  useEffect(() => {
+    setMountingUpdate(mounting?.toString() ?? "");
+    setLatUpdate(lat?.toString() ?? "0");
+    setLonUpdate(lon?.toString() ?? "0");
+    setPeakPowerUpdate(peak_power?.toString() ?? "0");
+    setLossUpdate(loss?.toString() ?? "0");
+    setAngleUpdate(angle?.toString() ?? "0");
+    setAspectUpdate(aspect?.toString() ?? "0");
+  }, []);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const updatedSolarArray: ISolarArray = {
+      solar_array_id: parseInt(solar_array_id?.toString() ?? "0"),
+      lat: parseFloat(latUpdate),
+      lon: parseFloat(lonUpdate),
+      peak_power: parseFloat(peakPowerUpdate),
+      systemLoss: parseFloat(lossUpdate),
+      angle: parseFloat(angleUpdate),
+      aspect: parseFloat(aspectUpdate),
+      mounting: mountingUpdate,
+    };
+
+    const res = await updateArray(updatedSolarArray);
+    if (res) {
+      router.push("/solar-array");
+    }
+  };
+
   return (
     <>
-      
-      <form className="mt-12 px-6 lg:px-8" action="#" method="POST">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-12 px-6 lg:px-8"
+        action="#"
+        method="POST"
+      >
         <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:p-6">
           <div className="md:grid md:grid-cols-2 md:gap-6">
             <div className="md:col-span-1">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">Update Array</h3>
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Update Array
+              </h3>
             </div>
             <div className="mt-5 md:col-span-2 md:mt-0">
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
-                  <label htmlFor="array-name" className="block text-sm font-medium text-gray-700">
-                    Array Name
-                  </label>
-                  <input
-                    type="text"
-                    name="array-name"
-                    id="array-name"
-                    autoComplete="array-name"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <label htmlFor="mounting" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="mounting"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Mounting
                   </label>
                   <select
                     id="mounting"
                     name="mounting"
                     autoComplete="mounting"
+                    value={mountingUpdate}
+                    onChange={(e) => setMountingUpdate(e.target.value)}
                     className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
                   >
                     <option>Free Standing</option>
@@ -58,83 +87,112 @@ const UpdateArray: NextPageWithLayout = () => {
                 </div>
 
                 <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                  <label htmlFor="latitude" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="latitude"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Latitude
                   </label>
                   <input
                     type="number"
                     name="latitude"
                     id="latitude"
+                    value={latUpdate}
+                    onChange={(e) => setLatUpdate(e.target.value)}
                     autoComplete="latitude"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
 
                 <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                  <label htmlFor="longitude" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="longitude"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Longitude
                   </label>
                   <input
                     type="number"
                     name="longitude"
                     id="longitude"
+                    value={lonUpdate}
+                    onChange={(e) => setLonUpdate(e.target.value)}
                     autoComplete="longitude"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
 
                 <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                  <label htmlFor="peak-power" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="peak-power"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Peak Power (kW)
                   </label>
                   <input
                     type="number"
                     name="peak-power"
                     id="peak-power"
+                    value={peakPowerUpdate}
+                    onChange={(e) => setPeakPowerUpdate(e.target.value)}
                     autoComplete="peak-power"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
-                  /> 
+                  />
                 </div>
 
                 <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                  <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="city"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     System loss (%)
                   </label>
                   <input
-                    type="text"
-                    name="city"
-                    id="city"
+                    type="number"
+                    name="systemLoss"
+                    id="systemLoss"
+                    value={lossUpdate}
+                    onChange={(e) => setLossUpdate(e.target.value)}
                     autoComplete="address-level2"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
 
                 <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                  <label htmlFor="region" className="block text-sm font-medium text-gray-700">
-                    Slope (°)
+                  <label
+                    htmlFor="region"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Angle (°)
                   </label>
                   <input
-                    type="text"
-                    name="region"
-                    id="region"
+                    type="number"
+                    name="angle"
+                    id="angle"
+                    value={angleUpdate}
+                    onChange={(e) => setAngleUpdate(e.target.value)}
                     autoComplete="address-level1"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
 
                 <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                  <label htmlFor="postal-code" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="postal-code"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Aspect (0°)
                   </label>
                   <input
-                    type="text"
-                    name="postal-code"
-                    id="postal-code"
-                    autoComplete="postal-code"
+                    type="number"
+                    name="aspect"
+                    id="aspect"
+                    autoComplete="aspect"
+                    value={aspectUpdate}
+                    onChange={(e) => setAspectUpdate(e.target.value)}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
-
               </div>
             </div>
           </div>
@@ -148,26 +206,20 @@ const UpdateArray: NextPageWithLayout = () => {
               Cancel
             </button>
           </Link>
-          <Link href="/solar-array">
             <button
               type="submit"
               className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-rose-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
             >
               Save
             </button>
-          </Link>
         </div>
       </form>
     </>
-  )
-}
+  );
+};
 
-let user = {email: "test@test.com", password: "password1", name: "Frank", phone: 871234567}
-let solarArrays = [{name: "array1", mounting: "Free Standing", latitude: 51.5, longitude: 0.1, peakPower: 4, systemLoss: 10, slope: 20, aspect: 0}, {name: "array2", mounting: "Roof Mounted", latitude: 51.5, longitude: 0.1, peakPower: 4, systemLoss: 10, slope: 20, aspect: 0}]
+UpdateArray.getLayout = (page) => {
+  return <AppLayout pageTitle="Update array details">{page}</AppLayout>;
+};
 
-UpdateArray.getLayout = ( page ) => {
-  return <AppLayout pageTitle="Update array details">{page}</AppLayout>
-}
-
-
-export default UpdateArray
+export default UpdateArray;

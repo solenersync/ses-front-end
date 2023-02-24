@@ -12,12 +12,13 @@ import {
 
 import Footer from 'components/footer'
 import { signOut, useSession } from 'next-auth/react'
+import router from 'next/router'
 
 const navigation = [
   { name: 'Dashboard', href: 'dashboard', icon: HomeIcon, current: true },
   { name: 'Profile', href: 'profile', icon: UsersIcon, current: false },
   { name: 'Solar Array', href: 'solar-array', icon: BoltIcon, current: false },
-  { name: 'Solar Forecast', href: '#', icon: ChartBarIcon, current: false },
+  { name: 'Solar Forecast', href: 'solar-forecast', icon: ChartBarIcon, current: false },
   { name: 'Logout', href: '', icon: UserIcon, current: false },
 ]
 
