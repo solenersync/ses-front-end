@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { getArrayData } from "api/solarArrayApi";
-// import { Irradiance } from "../models/Irradiance";
+// import { Irradiance } from "../types/Irradiance";
 import DataDisplay from "../components/solarForecastTable";
 import {
   Chart as ChartJs,
@@ -20,7 +20,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { Line } from "react-chartjs-2";
-// import { CreateUser } from "../models/User";
+// import { CreateUser } from "../types/User";
 import { getUser } from "api/userApi";
 
 const SolarForecastChart: NextPageWithLayout = () => {

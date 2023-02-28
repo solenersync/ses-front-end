@@ -1,4 +1,4 @@
-import { ISolarArray } from 'models/ISolarArray';
+import { ISolarArray } from 'types/ISolarArray';
 
 export const getSolarForecast = async (arrayData: ISolarArray) => {
 

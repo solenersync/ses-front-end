@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { getArrayData } from "api/solarArrayApi";
-import { Irradiance } from "../models/Irradiance";
+import { Irradiance } from "../types/Irradiance";
 import {
   Chart as ChartJs,
   CategoryScale,
