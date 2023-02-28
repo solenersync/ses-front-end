@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Router from "next/router";
 import Link from "next/link";
 import { getArrayData } from "api/solarArrayApi";
-import { ISolarArray } from "models/ISolarArray";
+import { ISolarArray } from "types/ISolarArray";
 import { getUser } from 'api/userApi';
 
 interface SolarArrayProps {

@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { getArrayData } from "api/solarArrayApi";
-import { Irradiance } from "../models/Irradiance";
+import { Irradiance } from "../types/Irradiance";
 import DataDisplay from "../components/solarForecastTable";
 import {
   Chart as ChartJs,
@@ -19,10 +19,9 @@ import {
   LineElement,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { getUser } from 'api/userApi';
+import { getUser } from "api/userApi";
 
 const SolarForecast: NextPageWithLayout = () => {
-
   type Dataset = {
     label?: string;
     data: number[];
@@ -34,11 +33,23 @@ const SolarForecast: NextPageWithLayout = () => {
 
   const { status, data: sessionData } = useSession();
   const [forecastData, setForecastData] = useState<Irradiance[] | null>(null);
-  const [chartData, setChartData] = useState({ datasets: [] as Dataset[], labels: [] as Labels});
+  const [chartData, setChartData] = useState({
+    datasets: [] as Dataset[],
+    labels: [] as Labels,
+  });
   const [chartOptions, setChartOptions] = useState({});
 
   useEffect(() => {
-    ChartJs.register(CategoryScale, BarElement, Title, Tooltip, Legend, LinearScale, PointElement, LineElement);
+    ChartJs.register(
+      CategoryScale,
+      BarElement,
+      Title,
+      Tooltip,
+      Legend,
+      LinearScale,
+      PointElement,
+      LineElement
+    );
     if (status === "loading") {
       return;
     }
@@ -110,11 +121,11 @@ const SolarForecast: NextPageWithLayout = () => {
         },
       },
     });
-    }, [status, sessionData]);
+  }, [status, sessionData]);
 
   return (
     <>
-    <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4">
         <label htmlFor="forecast-select">Select forecast:</label>
         <select
           id="forecast-select"
