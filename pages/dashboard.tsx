@@ -64,8 +64,14 @@ const Dashboard: NextPageWithLayout = () => {
     async function fetchData() {
       var userData = await getUser(user.email);
       var arrayResult = await getArrayData(userData.user_id);
+      if (!arrayResult) {
+        return <div>Failed to load solar array data.</div>;
+      }
       arrayResult.month = currentMonth;
       const forecastResult = await getSolarForecast(arrayResult);
+      if (!forecastResult) {
+        return <div>Failed to load forecast data.</div>;
+      }
       setForecastData(forecastResult);
 
       setChartData({
