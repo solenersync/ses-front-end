@@ -2,21 +2,36 @@ import { createUser } from "api/authApi";
 import Footer from "components/footer";
 import { NextPage } from "next";
 import React, { useState } from "react";
-import { useRouter } from 'next/router'
-import Link from 'next/link';
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useEffect } from 'react';
+
 
 const Signup: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const router = useRouter()
+  const router = useRouter();
+
+  useEffect (() => {    
+    if (router.query.email) {
+        setEmail(router.query.email as string);
+    }
+  }, [router.query.email]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     createUser({ email, password, name }).then(async (res) => {
-      if(res.status === 200) {
-        router.push('/dashboard')
-      } else {
+      if (res.status === 200) {
+        const res = await signIn("credentials", {
+          email: email,
+          password: password,
+          redirect: false,
+        });
+        if (res?.status == 200) {
+          router.push("/dashboard");
+        }
       }
     });
   };
@@ -52,15 +67,19 @@ const Signup: NextPage = () => {
                 </label>
                 <div className="mt-1">
                   <input
-                    value={router.query.email}
+                    value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     id="email"
                     name="email"
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm cursor-not-allowed focus:outline-none sm:text-sm"
-                    disabled
+                    className={
+                      router.query.email
+                        ? "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm cursor-not-allowed focus:outline-none sm:text-sm"
+                        : "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
+                    }
+                    disabled={router.query.email ? true : false}
                   />
                 </div>
               </div>
@@ -106,7 +125,7 @@ const Signup: NextPage = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div className="text-sm">
                   <Link

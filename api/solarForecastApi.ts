@@ -10,5 +10,9 @@ export const getSolarForecast = async (arrayData: ISolarArray) => {
     },
     body: JSON.stringify(arrayData),
   });
-  return res.json();
+  if (!res.ok) {
+    return null;
+  }
+  const data = await res.json();
+  return data;
 };

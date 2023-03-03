@@ -9,7 +9,11 @@ export const getUser = async (email: string) => {
     },
     body: JSON.stringify({ email: email }),
   });
-  return res.json();
+  if (!res.ok) {
+    return null;
+  }
+  const data = await res.json();
+  return data;
 }
 
 export const updateUser = async (user: User) => { 
@@ -21,6 +25,9 @@ export const updateUser = async (user: User) => {
     },
     body: JSON.stringify(user),
   });
-  console.log(user)
-  return res.json();
+  if (!res.ok) {
+    return null;
+  }
+  const data = await res.json();
+  return data;
 }

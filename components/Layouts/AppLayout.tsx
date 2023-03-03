@@ -12,10 +12,10 @@ import {
 
 import Footer from 'components/footer'
 import { signOut, useSession } from 'next-auth/react'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 
 const navigation = [
-  { name: 'Dashboard', href: 'dashboard', icon: HomeIcon, current: true },
+  { name: 'Dashboard', href: 'dashboard', icon: HomeIcon, current: false },
   { name: 'Profile', href: 'profile', icon: UsersIcon, current: false },
   { name: 'Solar Array', href: 'solar-array', icon: BoltIcon, current: false },
   { name: 'Solar Forecast', href: 'solar-forecast', icon: ChartBarIcon, current: false },
@@ -33,6 +33,8 @@ interface AppLayoutProps {
 
 export function AppLayout({ children, pageTitle}: AppLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { pathname } = useRouter()
+  console.log(pathname);
 
   const handleLogout = async () => {
     await signOut({ redirect: false })
@@ -100,7 +102,7 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            item.current
+                            pathname === `/${item.href}`
                               ? 'bg-gray-100 text-gray-900'
                               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
                             'group flex items-center px-2 py-2 text-base font-medium rounded-md'
@@ -113,7 +115,7 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                         >
                           <item.icon
                             className={classNames(
-                              item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                              pathname === `/${item.href}` ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
                               'mr-4 flex-shrink-0 h-6 w-6'
                             )}
                             aria-hidden="true"
@@ -148,7 +150,7 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                      pathname === `/${item.href}` ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
                       'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
                     )}
                     onClick={() => {
@@ -159,7 +161,7 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                   >
                     <item.icon
                       className={classNames(
-                        item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                        pathname === `/${item.href}` ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
                         'mr-3 flex-shrink-0 h-6 w-6'
                       )}
                       aria-hidden="true"

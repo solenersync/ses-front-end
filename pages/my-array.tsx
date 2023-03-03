@@ -3,10 +3,13 @@ import Link from "next/link";
 import { NextPageWithLayout } from "../types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { updateArray } from "api/solarArrayApi";
+import { createArray, updateArray } from "api/solarArrayApi";
 import { ISolarArray } from "../types/ISolarArray";
+import { useSession } from "next-auth/react";
+import { getUser } from 'api/userApi';
+import Router from "next/router";
 
-const UpdateArray: NextPageWithLayout = () => {
+const MyArray: NextPageWithLayout = () => {
   const router = useRouter();
   const {
     lat,
@@ -19,6 +22,7 @@ const UpdateArray: NextPageWithLayout = () => {
     solar_array_id,
   } = router.query;
 
+  const { status, data: sessionData } = useSession();
   const [mountingUpdate, setMountingUpdate] = useState("");
   const [latUpdate, setLatUpdate] = useState("");
   const [lonUpdate, setLonUpdate] = useState("");
@@ -26,8 +30,26 @@ const UpdateArray: NextPageWithLayout = () => {
   const [lossUpdate, setLossUpdate] = useState("");
   const [angleUpdate, setAngleUpdate] = useState("");
   const [aspectUpdate, setAspectUpdate] = useState("");
+  const [user, setUser] = useState("");
 
   useEffect(() => {
+
+    if (status === "loading") {
+      return;
+    }
+
+    if (!sessionData) {
+      Router.replace("/login");
+      return;
+    }
+    const { user } = sessionData;
+
+    async function fetchData() {
+      var userData = await getUser(user.email);
+      setUser(userData.user_id);
+    }
+    
+    fetchData();
     setMountingUpdate(mounting?.toString() ?? "");
     setLatUpdate(lat?.toString() ?? "0");
     setLonUpdate(lon?.toString() ?? "0");
@@ -35,12 +57,13 @@ const UpdateArray: NextPageWithLayout = () => {
     setLossUpdate(loss?.toString() ?? "0");
     setAngleUpdate(angle?.toString() ?? "0");
     setAspectUpdate(aspect?.toString() ?? "0");
+
   }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const updatedSolarArray: ISolarArray = {
+    const mySolarArray: ISolarArray = {
       solar_array_id: parseInt(solar_array_id?.toString() ?? "0"),
       lat: parseFloat(latUpdate),
       lon: parseFloat(lonUpdate),
@@ -49,9 +72,15 @@ const UpdateArray: NextPageWithLayout = () => {
       angle: parseFloat(angleUpdate),
       aspect: parseFloat(aspectUpdate),
       mounting: mountingUpdate,
+      user_id: user,
     };
 
-    const res = await updateArray(updatedSolarArray);
+    var res = null;
+    if(!solar_array_id) {
+      res = await createArray(mySolarArray);
+    } else {
+      res = await updateArray(mySolarArray);
+    }
     if (res) {
       router.push("/solar-array");
     }
@@ -226,8 +255,8 @@ const UpdateArray: NextPageWithLayout = () => {
   );
 };
 
-UpdateArray.getLayout = (page) => {
-  return <AppLayout pageTitle="Update array details">{page}</AppLayout>;
+MyArray.getLayout = (page) => {
+  return <AppLayout pageTitle="My Solar Array">{page}</AppLayout>;
 };
 
-export default UpdateArray;
+export default MyArray;
