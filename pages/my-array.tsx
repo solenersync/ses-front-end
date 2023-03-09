@@ -6,21 +6,13 @@ import { useEffect, useState } from "react";
 import { createArray, updateArray } from "api/solarArrayApi";
 import { ISolarArray } from "../types/ISolarArray";
 import { useSession } from "next-auth/react";
-import { getUser } from 'api/userApi';
+import { getUser } from "api/userApi";
 import Router from "next/router";
 
 const MyArray: NextPageWithLayout = () => {
   const router = useRouter();
-  const {
-    lat,
-    lon,
-    peak_power,
-    loss,
-    angle,
-    aspect,
-    mounting,
-    solar_array_id,
-  } = router.query;
+  const { lat, lon, peakPower, loss, angle, aspect, mounting, solarArrayId } =
+    router.query;
 
   const { status, data: sessionData } = useSession();
   const [mountingUpdate, setMountingUpdate] = useState("");
@@ -33,7 +25,6 @@ const MyArray: NextPageWithLayout = () => {
   const [user, setUser] = useState("");
 
   useEffect(() => {
-
     if (status === "loading") {
       return;
     }
@@ -46,37 +37,36 @@ const MyArray: NextPageWithLayout = () => {
 
     async function fetchData() {
       var userData = await getUser(user.email);
-      setUser(userData.user_id);
+      setUser(userData.userId);
     }
-    
+
     fetchData();
     setMountingUpdate(mounting?.toString() ?? "");
     setLatUpdate(lat?.toString() ?? "0");
     setLonUpdate(lon?.toString() ?? "0");
-    setPeakPowerUpdate(peak_power?.toString() ?? "0");
+    setPeakPowerUpdate(peakPower?.toString() ?? "0");
     setLossUpdate(loss?.toString() ?? "0");
     setAngleUpdate(angle?.toString() ?? "0");
     setAspectUpdate(aspect?.toString() ?? "0");
-
   }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     const mySolarArray: ISolarArray = {
-      solar_array_id: parseInt(solar_array_id?.toString() ?? "0"),
+      solarArrayId: parseInt(solarArrayId?.toString() ?? "0"),
       lat: parseFloat(latUpdate),
       lon: parseFloat(lonUpdate),
-      peak_power: parseFloat(peakPowerUpdate),
+      peakPower: parseFloat(peakPowerUpdate),
       systemLoss: parseFloat(lossUpdate),
       angle: parseFloat(angleUpdate),
       aspect: parseFloat(aspectUpdate),
       mounting: mountingUpdate,
-      user_id: user,
+      userId: user,
     };
 
     var res = null;
-    if(!solar_array_id) {
+    if (!solarArrayId) {
       res = await createArray(mySolarArray);
     } else {
       res = await updateArray(mySolarArray);
@@ -161,18 +151,18 @@ const MyArray: NextPageWithLayout = () => {
 
                 <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                   <label
-                    htmlFor="peak-power"
+                    htmlFor="peakPower"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Peak Power (kW)
                   </label>
                   <input
                     type="number"
-                    name="peak-power"
-                    id="peak-power"
+                    name="peakPower"
+                    id="peakPower"
                     value={peakPowerUpdate}
                     onChange={(e) => setPeakPowerUpdate(e.target.value)}
-                    autoComplete="peak-power"
+                    autoComplete="peakPower"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>

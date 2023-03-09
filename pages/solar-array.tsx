@@ -6,7 +6,7 @@ import Router from "next/router";
 import Link from "next/link";
 import { getArrayData } from "api/solarArrayApi";
 import { ISolarArray } from "types/ISolarArray";
-import { getUser } from 'api/userApi';
+import { getUser } from "api/userApi";
 
 interface SolarArrayProps {
   array: ISolarArray;
@@ -29,8 +29,8 @@ const SolarArray: NextPageWithLayout<SolarArrayProps> = ({ array }) => {
 
     async function fetchData() {
       var userData = await getUser(user.email);
-      var arrayResult = await getArrayData(userData.user_id);
-      if(!arrayResult) {
+      var arrayResult = await getArrayData(userData.userId);
+      if (!arrayResult) {
         Router.replace("/my-array");
       }
       setSolarArray(arrayResult);
@@ -70,7 +70,7 @@ const SolarArray: NextPageWithLayout<SolarArrayProps> = ({ array }) => {
               <dt className="text-sm font-medium text-gray-500">Peak Power</dt>
               {solarArray && (
                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                  {solarArray.peak_power} kw
+                  {solarArray.peakPower} kw
                 </dd>
               )}
             </div>
@@ -111,9 +111,7 @@ const SolarArray: NextPageWithLayout<SolarArrayProps> = ({ array }) => {
       </div>
       <div className="mt-3 flex justify-left">
         {solarArray && (
-          <Link
-            href={{ pathname: "/my-array", query: { ...solarArray } }}
-          >
+          <Link href={{ pathname: "/my-array", query: { ...solarArray } }}>
             <button className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-rose-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">
               Edit
             </button>

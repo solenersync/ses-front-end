@@ -1,12 +1,9 @@
 import { getSolarForecast } from "api/solarForecastApi";
-import { AppLayout } from "components/Layouts/AppLayout";
 import { NextPageWithLayout } from "types";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { getArrayData } from "api/solarArrayApi";
-// import { Irradiance } from "../types/Irradiance";
-import DataDisplay from "../components/solarForecastTable";
 import {
   Chart as ChartJs,
   CategoryScale,
@@ -18,9 +15,7 @@ import {
   LinearScale,
   LineElement,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
 import { Line } from "react-chartjs-2";
-// import { CreateUser } from "../types/User";
 import { getUser } from "api/userApi";
 
 const SolarForecastChart: NextPageWithLayout = () => {
@@ -34,7 +29,6 @@ const SolarForecastChart: NextPageWithLayout = () => {
   type Labels = string[];
 
   const { status, data: sessionData } = useSession();
-  // const [forecastData, setForecastData] = useState<Irradiance[] | null>(null);
   const [chartData, setChartData] = useState({
     datasets: [] as Dataset[],
     labels: [] as Labels,
@@ -55,24 +49,19 @@ const SolarForecastChart: NextPageWithLayout = () => {
     if (status === "loading") {
       return;
     }
-
     if (!sessionData) {
       Router.replace("/login");
       return;
     }
     const { user } = sessionData;
-    console.log(user);
-
     const now = new Date();
     const currentMonth = now.getMonth() + 1;
 
     async function fetchData() {
       var userData = await getUser(user.email);
-      var arrayResult = await getArrayData(userData.user_id);
+      var arrayResult = await getArrayData(userData.userId);
       arrayResult.month = currentMonth;
       const forecastResult = await getSolarForecast(arrayResult);
-      // setForecastData(forecastResult);
-
       setChartData({
         labels: [
           "00:00",
@@ -103,7 +92,7 @@ const SolarForecastChart: NextPageWithLayout = () => {
         datasets: [
           {
             label: "Kwh",
-            data: forecastResult?.map((x: any) => x.peakOutput) || [],
+            data: forecastResult?.map((x: any) => x.peakGlobalOutput) || [],
             borderColor: "rgba(255, 99, 132, 1)",
             backgroundColor: "rgba(255, 99, 132, 0.2)",
           },

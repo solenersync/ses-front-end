@@ -66,7 +66,7 @@ const SolarForecast: NextPageWithLayout = () => {
 
     async function fetchData() {
       var userData = await getUser(user.email);
-      var arrayResult = await getArrayData(userData.user_id);
+      var arrayResult = await getArrayData(userData.userId);
       if (!arrayResult) {
         return <div>Failed to load solar array data.</div>;
       }
@@ -107,7 +107,7 @@ const SolarForecast: NextPageWithLayout = () => {
         datasets: [
           {
             label: "Kwh",
-            data: forecastResult?.map((x: any) => x.peakOutput) || [],
+            data: forecastResult?.map((x: any) => x.peakGlobalOutput) || [],
             borderColor: "rgba(255, 99, 132, 1)",
             backgroundColor: "rgba(255, 99, 132, 0.2)",
           },

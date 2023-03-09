@@ -1,21 +1,19 @@
-import { ChevronRightIcon, StarIcon } from '@heroicons/react/20/solid'
-import Footer from 'components/footer'
-import { NextPage } from 'next'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-
+import { ChevronRightIcon, StarIcon } from "@heroicons/react/20/solid";
+import Footer from "components/footer";
+import { NextPage } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const Home: NextPage = (props) => {
-
-  const router = useRouter()
+  const router = useRouter();
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    router.push({pathname: '/signup', query: {email: email}})
-  }
-  
+    router.push({ pathname: "/signup", query: { email: email } });
+  };
+
   return (
     <div className="bg-white">
       <main>
@@ -36,10 +34,14 @@ const Home: NextPage = (props) => {
                     Solenersync
                   </h1>
                   <p className="mt-6 text-xl text-gray-500">
-                    Synchronise your home energy with our solar irradiance forecasting service
+                    Synchronise your home energy with our solar irradiance
+                    forecasting service
                   </p>
                 </div>
-                <form onSubmit={handleSubmit} className="mt-12 sm:flex sm:w-full sm:max-w-lg">
+                <form
+                  onSubmit={handleSubmit}
+                  className="mt-12 sm:flex sm:w-full sm:max-w-lg"
+                >
                   <div className="min-w-0 flex-1">
                     <label htmlFor="hero-email" className="sr-only">
                       Email address
@@ -61,19 +63,47 @@ const Home: NextPage = (props) => {
                     </button>
                   </div>
                 </form>
-                <div className="mt-4">Already have an account? <Link className="text-rose-600 hover:text-rose-700" href="/login" >Log in</Link></div>
+                <div className="mt-4">
+                  Already have an account?{" "}
+                  <Link
+                    className="text-rose-600 hover:text-rose-700"
+                    href="/login"
+                  >
+                    Log in
+                  </Link>
+                </div>
                 <div className="mt-10">
                   <div className="inline-flex items-center divide-x divide-gray-300">
                     <div className="flex flex-shrink-0 pr-5">
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div className="min-w-0 flex-1 py-1 pl-5 text-sm text-gray-500 sm:py-3">
-                      <span className="font-medium text-gray-900">Rated 5 stars</span> by over{' '}
-                      <span className="font-medium text-rose-500">500 beta users</span>
+                      <span className="font-medium text-gray-900">
+                        Rated 5 stars
+                      </span>{" "}
+                      by over{" "}
+                      <span className="font-medium text-rose-500">
+                        500 beta users
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -101,10 +131,21 @@ const Home: NextPage = (props) => {
                       height={20}
                       patternUnits="userSpaceOnUse"
                     >
-                      <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
+                      <rect
+                        x={0}
+                        y={0}
+                        width={4}
+                        height={4}
+                        className="text-gray-200"
+                        fill="currentColor"
+                      />
                     </pattern>
                   </defs>
-                  <rect width={404} height={392} fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)" />
+                  <rect
+                    width={404}
+                    height={392}
+                    fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"
+                  />
                 </svg>
               </div>
               <div className="relative -mr-40 pl-6 sm:mx-auto sm:max-w-3xl sm:px-0 lg:h-full lg:max-w-none lg:pl-12">
@@ -118,9 +159,9 @@ const Home: NextPage = (props) => {
           </div>
         </div>
       </main>
-    <Footer/>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
