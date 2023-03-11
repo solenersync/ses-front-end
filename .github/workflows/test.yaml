@@ -22,6 +22,6 @@ jobs:
         run: |
           npm ci
       - name: Jest Unit Tests
-        run: npm run test
+        run: npm test
       - name: Cypress Tests
         run: npm run cypress:run

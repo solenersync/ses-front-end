@@ -34,7 +34,6 @@ interface AppLayoutProps {
 export function AppLayout({ children, pageTitle}: AppLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { pathname } = useRouter()
-  console.log(pathname);
 
   const handleLogout = async () => {
     await signOut({ redirect: false })
@@ -195,11 +194,9 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                 <h1 className="py-4 text-2xl font-semibold text-gray-900 text-center">{pageTitle}</h1>
               </div>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                {/* Replace with your content */}
                 <div className="py-4">
                   { children }
                 </div>
-                {/* /End replace */}
               </div>
             </div>
           </main>
