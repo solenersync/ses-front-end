@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard should render the dashboard 1`] = `
+<div>
+  <div
+    class="space-y-6 pt-8 sm:space-y-5 sm:pt-10"
+  >
+    <canvas
+      height="150"
+      role="img"
+      width="300"
+    />
+  </div>
+</div>
+`;
