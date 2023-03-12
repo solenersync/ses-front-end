@@ -7,7 +7,6 @@ import { Irradiance } from "../types/Irradiance";
 import { SessionProvider, useSession as originalUseSession } from "next-auth/react";
 import { render } from '@testing-library/react';
 import Dashboard from 'pages/dashboard';
-import Router from "next/router";
 
 jest.mock("api/userApi");
 jest.mock("api/solarArrayApi");
@@ -49,7 +48,7 @@ describe("Dashboard", () => {
     "Gd(i)": 1,
     "Gcs(i)": 1,
   };
-  const sessionData = { status: "unauthenticated", data: null };
+  
   const session = { user: { name: 'John Doe', email: "", userId: "", id:"" }, expires: "" };
   const mockUseSession = originalUseSession as jest.Mock;
 
