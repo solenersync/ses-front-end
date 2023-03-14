@@ -12,7 +12,7 @@ describe('Home', () => {
   (useRouter as jest.Mock).mockReturnValue({
       push: routerPushMock});
 
-  it('should render the home page', () => {
+  test('should render the home page', () => {
     const { container } = render(<Home />);
     expect(container).toMatchSnapshot();
   });

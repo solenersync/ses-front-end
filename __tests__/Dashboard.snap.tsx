@@ -1,12 +1,13 @@
 import { getSolarForecast } from "api/solarForecastApi";
 import { getUser } from "api/userApi";
-import client, { User, Session } from "next-auth";
+import { User} from "next-auth";
 import { getArrayData } from "../api/solarArrayApi";
 import { ISolarArray } from "../types/ISolarArray";
 import { Irradiance } from "../types/Irradiance";
 import { SessionProvider, useSession as originalUseSession } from "next-auth/react";
 import { render } from '@testing-library/react';
 import Dashboard from 'pages/dashboard';
+import { expect } from '@jest/globals';
 
 jest.mock("api/userApi");
 jest.mock("api/solarArrayApi");
@@ -48,7 +49,7 @@ describe("Dashboard", () => {
     "Gd(i)": 1,
     "Gcs(i)": 1,
   };
-  
+
   const session = { user: { name: 'John Doe', email: "", userId: "", id:"" }, expires: "" };
   const mockUseSession = originalUseSession as jest.Mock;
 
@@ -66,7 +67,13 @@ describe("Dashboard", () => {
     jest.clearAllMocks();
   });
 
-  it("should render the dashboard", async () => {
+  test("should render the dashboard", async () => {
+    global.ResizeObserver = class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    };
+
     const { container } = render(
       <SessionProvider session={session}>
         <Dashboard />

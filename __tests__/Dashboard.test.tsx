@@ -1,6 +1,6 @@
 import { getSolarForecast } from 'api/solarForecastApi';
 import { getUser } from 'api/userApi';
-import client, { User, Session } from 'next-auth';
+import { User } from 'next-auth';
 import { getArrayData } from '../api/solarArrayApi';
 import { ISolarArray } from '../types/ISolarArray';
 import { Irradiance } from '../types/Irradiance';
@@ -36,23 +36,23 @@ describe('Dashboard', () => {
     jest.clearAllMocks();
   });
 
-  it('should return a user', async () => {
+  test('should return a user', async () => {
     const userData  = await getUser(user.email);
     expect(userData).toEqual(user);
   });
 
-  it('should return a solar array data', async () => {
+  test('should return a solar array data', async () => {
     const solarArrayData  = await getArrayData(user.email);
     expect(solarArrayData).toEqual(solarArray); 
   });
 
 
-  it('should return a solar forecast', async () => {
+  test('should return a solar forecast', async () => {
     const forecastResult  = await getSolarForecast(solarArray);
     expect(forecastResult).toEqual(forecast);
   });
 
-  it('should return an auth session', async () => {
+  test('should return an auth session', async () => {
     const sessionResult  = originalUseSession();
     expect(sessionResult).toEqual(sessionData);
   });
