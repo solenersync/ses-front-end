@@ -1,4 +1,4 @@
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Home from "../pages/index";
 import "@testing-library/jest-dom";
