@@ -59,14 +59,13 @@ const SolarForecast: NextPageWithLayout = () => {
       return;
     }
     const { user } = sessionData;
-    console.log(user);
 
     const now = new Date();
     const currentMonth = now.getMonth() + 1;
 
     async function fetchData() {
       var userData = await getUser(user.email);
-      var arrayResult = await getArrayData(userData.userId);
+      const arrayResult = await getArrayData(userData.userId);
       if (!arrayResult) {
         return <div>Failed to load solar array data.</div>;
       }

@@ -69,9 +69,9 @@ describe("Dashboard", () => {
 
   test("should render the dashboard", async () => {
     global.ResizeObserver = class {
-      observe() {}
-      unobserve() {}
-      disconnect() {}
+      observe() {""}
+      unobserve() {""}
+      disconnect() {""}
     };
 
     const { container } = render(
