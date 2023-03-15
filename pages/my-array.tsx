@@ -5,9 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { createArray, updateArray } from "api/solarArrayApi";
 import { ISolarArray } from "../types/ISolarArray";
-import { useSession } from "next-auth/react";
-import { getUser } from "api/userApi";
-import Router from "next/router";
+import { useUserData } from 'hooks/useUserData';
 
 const MyArray: NextPageWithLayout = () => {
   
@@ -15,7 +13,6 @@ const MyArray: NextPageWithLayout = () => {
   const { lat, lon, peakPower, loss, angle, aspect, mounting, solarArrayId } =
     router.query;
 
-  const { status, data: sessionData } = useSession();
   const [mountingUpdate, setMountingUpdate] = useState("");
   const [latUpdate, setLatUpdate] = useState("");
   const [lonUpdate, setLonUpdate] = useState("");
@@ -23,7 +20,7 @@ const MyArray: NextPageWithLayout = () => {
   const [lossUpdate, setLossUpdate] = useState("");
   const [angleUpdate, setAngleUpdate] = useState("");
   const [aspectUpdate, setAspectUpdate] = useState("");
-  const [userId, setUserId] = useState("");
+  const userId = useUserData();
 
   const mySolarArray: ISolarArray = {
     solarArrayId: parseInt(solarArrayId?.toString() ?? "0"),
@@ -38,22 +35,6 @@ const MyArray: NextPageWithLayout = () => {
   };
 
   useEffect(() => {
-    if (status === "loading") {
-      return;
-    }
-
-    if (!sessionData) {
-      Router.replace("/login");
-      return;
-    }
-    const { user } = sessionData;
-
-    async function fetchData() {
-      var userData = await getUser(user.email);
-      setUserId(userData.userId);
-    }
-
-    fetchData();
     setMountingUpdate(mounting?.toString() ?? "");
     setLatUpdate(lat?.toString() ?? "0");
     setLonUpdate(lon?.toString() ?? "0");
@@ -61,7 +42,6 @@ const MyArray: NextPageWithLayout = () => {
     setLossUpdate(loss?.toString() ?? "0");
     setAngleUpdate(angle?.toString() ?? "0");
     setAspectUpdate(aspect?.toString() ?? "0");
-    setUserId(user.userId);
   }, []);
 
   const handleSubmit = async (e: any) => {

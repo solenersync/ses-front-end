@@ -1,40 +1,28 @@
 import { AppLayout } from "components/Layouts/AppLayout";
-import { useSession } from "next-auth/react";
 import { NextPageWithLayout } from "types";
 import { useEffect, useState } from "react";
 import Router from "next/router";
 import Link from "next/link";
 import { getArrayData } from "api/solarArrayApi";
 import { ISolarArray } from "types/ISolarArray";
-import { getUser } from "api/userApi";
+import { useUserData } from 'hooks/useUserData';
 
 
 const SolarArray: NextPageWithLayout = () => {
-  const { status, data: sessionData } = useSession();
   const [solarArray, setSolarArray] = useState<ISolarArray | null>();
+  const userId = useUserData();
 
   useEffect(() => {
-    if (status === "loading") {
-      return;
-    }
-
-    if (!sessionData) {
-      Router.replace("/login");
-      return;
-    }
-    const { user } = sessionData;
-
     async function fetchData() {
-      var userData = await getUser(user.email);
-      var arrayResult = await getArrayData(userData.userId);
+      if (!userId) return;
+      const arrayResult = await getArrayData(userId);
       if (!arrayResult) {
         Router.replace("/my-array");
       }
       setSolarArray(arrayResult);
     }
-
     fetchData();
-  }, [status, sessionData]);
+  }, [userId]);
 
   return (
     <>

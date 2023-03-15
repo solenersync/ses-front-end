@@ -1,5 +1,4 @@
 import { getSolarForecast } from "api/solarForecastApi";
-import { AppLayout } from "components/Layouts/AppLayout";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { getArrayData } from "api/solarArrayApi";
@@ -33,7 +32,7 @@ type Labels = string[];
 
 const SolarForecastChart = ({ userId, month }: ChartProps) => {
   const { status, data: sessionData } = useSession();
-  const [forecastData, setForecastData] = useState<Irradiance[] | null>(null);
+  const [, setForecastData] = useState<Irradiance[] | null>(null);
   const [chartData, setChartData] = useState({
     datasets: [] as Dataset[],
     labels: [] as Labels,

@@ -23,16 +23,6 @@ describe('SolarArray', () => {
   const user: User = { name: 'John Doe', email: "jd@test.com",  userId: "1", id:"" };
   const mockSolarArray: ISolarArray = { solarArrayId: 1, lon: 0.1276, lat: 51.5072, peakPower: 100, systemLoss: 10, angle: 30, aspect: 180, mounting: "Free Standing", userId: "1"};
   const mockUseSession = originalUseSession as jest.Mock;;
-  const query = {
-    lat: "51.5072",
-    lon: "0.1276",
-    peakPower: "100",
-    loss: "10",
-    angle: "30",
-    aspect: "180",
-    mounting: "Free Standing",
-    solarArrayId: "2",
-  };
 
   afterEach(() => {
     jest.resetAllMocks();
@@ -42,15 +32,12 @@ describe('SolarArray', () => {
     mockUseSession.mockReturnValue({ status: 'loading', data: null });
     render(<SolarArray />);
     expect(Router.replace).not.toHaveBeenCalled();
-    // await waitFor(() => expect(screen.queryByText('My Solar Array')).toBeNull());
 
   });
 
   it('should redirect to login page if user is not authenticated', () => {
-    const routerReplaceMock = jest.fn();
     mockUseSession.mockReturnValueOnce({ status: 'unauthenticated', data: null });
     render(<SolarArray />);
-    // expect(screen.queryByText('My Solar Array')).toBeNull();
     expect(Router.replace).toHaveBeenCalledWith('/login');
   });
 
@@ -72,11 +59,10 @@ describe('SolarArray', () => {
     (getArrayData as jest.Mock).mockReturnValue(null);
     render(<SolarArray />);
     await waitFor(() => expect(Router.replace).toHaveBeenCalledWith('/my-array'));
-    // await waitFor(() => expect(screen.queryByText('My Solar Array')).toBeNull());
   });
 
   it('should render the Edit button if solar array data is available', async () => {
-    (mockUseSession as jest.Mock).mockReturnValue({ status: 'authenticated', data: { user }});
+    mockUseSession.mockReturnValue({ status: 'authenticated', data: { user }});
     (getUser as jest.Mock).mockReturnValue({ userId: '1' });
     (getArrayData as jest.Mock).mockReturnValue(mockSolarArray);
     render(<SolarArray />);
