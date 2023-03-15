@@ -10,9 +10,9 @@ jest.mock("next/router", () => ({
 
 
 class MockResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() {""}
+  unobserve() {""}
+  disconnect() {""}
 }
 
 global.ResizeObserver = MockResizeObserver as any;
