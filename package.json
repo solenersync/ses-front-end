@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "jest",
+    "test": "jest --clearCache && jest",
     "coverage": "jest --coverage",
     "dev": "next dev",
     "build": "next build",
