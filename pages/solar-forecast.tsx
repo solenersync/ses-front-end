@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { getUser } from "api/userApi";
-import SolarForecastChart from 'components/solarForecastChart';
+import SolarForecastChart from "components/solarForecastChart";
 
 const SolarForecast: NextPageWithLayout = () => {
   const { status, data: sessionData } = useSession();
@@ -28,7 +28,6 @@ const SolarForecast: NextPageWithLayout = () => {
       setUserId(userData.userId);
     }
     fetchData();
-   
   }, [status, sessionData]);
 
   return (
@@ -45,7 +44,9 @@ const SolarForecast: NextPageWithLayout = () => {
           <option value="2">Next Month</option>
         </select>
       </div>
-      {userId && month && <SolarForecastChart userId={userId} month={month}></SolarForecastChart>}
+      {userId && month ? (
+        <SolarForecastChart userId={userId} month={month}></SolarForecastChart>
+      ) : null}
     </>
   );
 };

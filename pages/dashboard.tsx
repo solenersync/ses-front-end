@@ -33,7 +33,7 @@ const Dashboard: NextPageWithLayout = () => {
 
   return (
     <>
-      {userId && month && <SolarForecastChart userId={userId} month={month}></SolarForecastChart>}
+      {userId && month ? (<SolarForecastChart userId={userId} month={month}></SolarForecastChart>) : null}
     </>
   );
 };
