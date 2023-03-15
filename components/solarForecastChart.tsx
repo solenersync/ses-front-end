@@ -1,9 +1,9 @@
 import { getSolarForecast } from "api/solarForecastApi";
-import { NextPageWithLayout } from "types";
+import { AppLayout } from "components/Layouts/AppLayout";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import Router from "next/router";
 import { getArrayData } from "api/solarArrayApi";
+import { Irradiance } from "../types/Irradiance";
 import {
   Chart as ChartJs,
   CategoryScale,
@@ -16,19 +16,24 @@ import {
   LineElement,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { getUser } from "api/userApi";
 
-const SolarForecastChart: NextPageWithLayout = () => {
-  type Dataset = {
-    label?: string;
-    data: number[];
-    borderColor?: string;
-    backgroundColor?: string;
-  };
+type ChartProps = {
+  userId: string;
+  month: number;
+};
 
-  type Labels = string[];
+type Dataset = {
+  label?: string;
+  data: number[];
+  borderColor?: string;
+  backgroundColor?: string;
+};
 
+type Labels = string[];
+
+const Dashboard = ({ userId, month }: ChartProps) => {
   const { status, data: sessionData } = useSession();
+  const [forecastData, setForecastData] = useState<Irradiance[] | null>(null);
   const [chartData, setChartData] = useState({
     datasets: [] as Dataset[],
     labels: [] as Labels,
@@ -46,22 +51,19 @@ const SolarForecastChart: NextPageWithLayout = () => {
       PointElement,
       LineElement
     );
-    if (status === "loading") {
-      return;
-    }
-    if (!sessionData) {
-      Router.replace("/login");
-      return;
-    }
-    const { user } = sessionData;
-    const now = new Date();
-    const currentMonth = now.getMonth() + 1;
 
     async function fetchData() {
-      var userData = await getUser(user.email);
-      var arrayResult = await getArrayData(userData.userId);
-      arrayResult.month = currentMonth;
+      const arrayResult = await getArrayData(userId);
+      if (!arrayResult) {
+        return;
+      }
+      arrayResult.month = month;
       const forecastResult = await getSolarForecast(arrayResult);
+      if (!forecastResult) {
+        return;
+      }
+      setForecastData(forecastResult);
+
       setChartData({
         labels: [
           "00:00",
@@ -123,4 +125,8 @@ const SolarForecastChart: NextPageWithLayout = () => {
   );
 };
 
-export default SolarForecastChart;
+Dashboard.getLayout = (page) => {
+  return <AppLayout pageTitle="Dashboard">{page}</AppLayout>;
+};
+
+export default Dashboard;
