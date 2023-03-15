@@ -19,7 +19,7 @@ const SolarForecast: NextPageWithLayout = () => {
         <select
           id="forecast-select"
           onChange={(event) => {
-            const day = parseInt(event.target.value);
+            // const day = parseInt(event.target.value);
           }}
         >
           <option value="1">Current Month</option>

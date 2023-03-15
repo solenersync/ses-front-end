@@ -23,7 +23,7 @@ const Profile: NextPageWithLayout = () => {
     const { user } = sessionData;
 
     async function fetchUser() {
-      var userData = await getUser(user.email);
+      let userData = await getUser(user.email);
       setUpdatedUser(userData);
     }
 

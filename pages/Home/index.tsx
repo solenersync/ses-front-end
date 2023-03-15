@@ -1,4 +1,4 @@
-import { ChevronRightIcon, StarIcon } from "@heroicons/react/20/solid";
+import { StarIcon } from "@heroicons/react/20/solid";
 import Footer from "components/Footer/footer";
 import { NextPage } from "next";
 import Link from "next/link";
