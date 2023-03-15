@@ -5,8 +5,8 @@ import { getUser } from "api/userApi";
 import { User } from 'next-auth';
 import { ISolarArray } from 'types/ISolarArray';
 import "@testing-library/jest-dom";
-import SolarArray from 'pages/solar-array';
-import { getArrayData } from '../api/solarArrayApi';
+import SolarArray from 'pages/SolarArray/solar-array';
+import { getArrayData } from '../../../api/solarArrayApi';
 
 jest.mock("next/router", () => ({
   ...jest.requireActual("next/router"),

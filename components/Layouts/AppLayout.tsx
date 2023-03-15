@@ -1,5 +1,5 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   ChartBarIcon,
@@ -8,42 +8,50 @@ import {
   UsersIcon,
   XMarkIcon,
   UserIcon,
-} from '@heroicons/react/24/outline'
+} from "@heroicons/react/24/outline";
 
-import Footer from 'components/footer'
-import { signOut, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
+import Footer from "components/Footer/footer";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const navigation = [
-  { name: 'Dashboard', href: 'dashboard', icon: HomeIcon, current: false },
-  { name: 'Profile', href: 'profile', icon: UsersIcon, current: false },
-  { name: 'Solar Array', href: 'solar-array', icon: BoltIcon, current: false },
-  { name: 'Solar Forecast', href: 'solar-forecast', icon: ChartBarIcon, current: false },
-  { name: 'Logout', href: '', icon: UserIcon, current: false },
-]
+  { name: "Dashboard", href: "dashboard", icon: HomeIcon, current: false },
+  { name: "Profile", href: "profile", icon: UsersIcon, current: false },
+  { name: "Solar Array", href: "solar-array", icon: BoltIcon, current: false },
+  {
+    name: "Solar Forecast",
+    href: "solar-forecast",
+    icon: ChartBarIcon,
+    current: false,
+  },
+  { name: "Logout", href: "", icon: UserIcon, current: false },
+];
 
 function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 interface AppLayoutProps {
-  children: React.ReactElement,
-  pageTitle: string,
+  children: React.ReactElement;
+  pageTitle: string;
 }
 
-
-export function AppLayout({ children, pageTitle}: AppLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { pathname } = useRouter()
+export function AppLayout({ children, pageTitle }: AppLayoutProps) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { pathname } = useRouter();
 
   const handleLogout = async () => {
-    await signOut({ redirect: false })
-  }
+    await signOut({ redirect: false });
+  };
 
   return (
     <>
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
-          <Dialog as="div" className="relative z-40 md:hidden" onClose={setSidebarOpen}>
+          <Dialog
+            as="div"
+            className="relative z-40 md:hidden"
+            onClose={setSidebarOpen}
+          >
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -83,7 +91,10 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                         onClick={() => setSidebarOpen(false)}
                       >
                         <span className="sr-only">Close sidebar</span>
-                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                        <XMarkIcon
+                          className="h-6 w-6 text-white"
+                          aria-hidden="true"
+                        />
                       </button>
                     </div>
                   </Transition.Child>
@@ -102,9 +113,9 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                           href={item.href}
                           className={classNames(
                             pathname === `/${item.href}`
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                            'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                            "group flex items-center px-2 py-2 text-base font-medium rounded-md"
                           )}
                           onClick={() => {
                             if (item.name === "Logout") {
@@ -114,8 +125,10 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                         >
                           <item.icon
                             className={classNames(
-                              pathname === `/${item.href}` ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                              'mr-4 flex-shrink-0 h-6 w-6'
+                              pathname === `/${item.href}`
+                                ? "text-gray-500"
+                                : "text-gray-400 group-hover:text-gray-500",
+                              "mr-4 flex-shrink-0 h-6 w-6"
                             )}
                             aria-hidden="true"
                           />
@@ -126,7 +139,9 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
-              <div className="w-14 flex-shrink-0">{/* Force sidebar to shrink to fit close icon */}</div>
+              <div className="w-14 flex-shrink-0">
+                {/* Force sidebar to shrink to fit close icon */}
+              </div>
             </div>
           </Dialog>
         </Transition.Root>
@@ -149,8 +164,10 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      pathname === `/${item.href}` ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                      'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                      pathname === `/${item.href}`
+                        ? "bg-gray-100 text-gray-900"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                      "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                     )}
                     onClick={() => {
                       if (item.name === "Logout") {
@@ -160,8 +177,10 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
                   >
                     <item.icon
                       className={classNames(
-                        pathname === `/${item.href}` ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                        'mr-3 flex-shrink-0 h-6 w-6'
+                        pathname === `/${item.href}`
+                          ? "text-gray-500"
+                          : "text-gray-400 group-hover:text-gray-500",
+                        "mr-3 flex-shrink-0 h-6 w-6"
                       )}
                       aria-hidden="true"
                     />
@@ -185,24 +204,24 @@ export function AppLayout({ children, pageTitle}: AppLayoutProps) {
           </div>
           <main className="flex-1">
             <div className="py-6 ">
-                  {/* <img
+              {/* <img
                     className="h-20 w-auto"
                     src="name.png"
                     alt="Solenersync"
                   /> */}
               <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                <h1 className="py-4 text-2xl font-semibold text-gray-900 text-center">{pageTitle}</h1>
+                <h1 className="py-4 text-2xl font-semibold text-gray-900 text-center">
+                  {pageTitle}
+                </h1>
               </div>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                <div className="py-4">
-                  { children }
-                </div>
+                <div className="py-4">{children}</div>
               </div>
             </div>
           </main>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
-  )
+  );
 }

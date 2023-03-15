@@ -1,12 +1,11 @@
 import { createUser } from "api/authApi";
-import Footer from "components/footer";
+import Footer from "components/Footer/footer";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { useEffect } from 'react';
-
+import { useEffect } from "react";
 
 const Signup: NextPage = () => {
   const [email, setEmail] = useState("");
@@ -14,9 +13,9 @@ const Signup: NextPage = () => {
   const [name, setName] = useState("");
   const router = useRouter();
 
-  useEffect (() => {    
+  useEffect(() => {
     if (router.query.email) {
-        setEmail(router.query.email as string);
+      setEmail(router.query.email as string);
     }
   }, [router.query.email]);
 

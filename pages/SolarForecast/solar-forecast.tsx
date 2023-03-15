@@ -1,8 +1,8 @@
 import { AppLayout } from "components/Layouts/AppLayout";
 import { NextPageWithLayout } from "types";
 import React, { useEffect, useState } from "react";
-import SolarForecastChart from "components/solarForecastChart";
-import { useUserData } from 'hooks/useUserData';
+import SolarForecastChart from "components/SolarForecastChart/solarForecastChart";
+import { useUserData } from "hooks/useUserData";
 
 const SolarForecast: NextPageWithLayout = () => {
   const [month, setMonth] = useState<number | null>(null);

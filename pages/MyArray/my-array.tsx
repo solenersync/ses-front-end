@@ -1,14 +1,13 @@
 import { AppLayout } from "components/Layouts/AppLayout";
 import Link from "next/link";
-import { NextPageWithLayout } from "../types";
+import { NextPageWithLayout } from "../../types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { createArray, updateArray } from "api/solarArrayApi";
-import { ISolarArray } from "../types/ISolarArray";
-import { useUserData } from 'hooks/useUserData';
+import { ISolarArray } from "../../types/ISolarArray";
+import { useUserData } from "hooks/useUserData";
 
 const MyArray: NextPageWithLayout = () => {
-  
   const router = useRouter();
   const { lat, lon, peakPower, loss, angle, aspect, mounting, solarArrayId } =
     router.query;
@@ -35,7 +34,7 @@ const MyArray: NextPageWithLayout = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if(!userId) return;
+    if (!userId) return;
 
     const mySolarArray: ISolarArray = {
       solarArrayId: parseInt(solarArrayId?.toString() ?? "0"),

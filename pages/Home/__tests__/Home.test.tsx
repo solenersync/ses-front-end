@@ -1,19 +1,18 @@
 import { useRouter } from "next/router";
 import { render, screen, fireEvent } from "@testing-library/react";
-import Home from "../pages/index";
+import Home from "../index";
 import "@testing-library/jest-dom";
 
 jest.mock("next/router", () => ({
-  useRouter: jest.fn()
+  useRouter: jest.fn(),
 }));
 
 describe("Home page", () => {
-  
   const routerPushMock = jest.fn();
 
   beforeEach(() => {
     (useRouter as jest.Mock).mockReturnValue({
-      push: routerPushMock
+      push: routerPushMock,
     });
   });
 

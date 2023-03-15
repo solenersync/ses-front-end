@@ -1,4 +1,4 @@
-import { NextPageWithLayout } from "../types";
+import { NextPageWithLayout } from "../../types";
 
 const AddArrayCard: NextPageWithLayout = () => {
   return (

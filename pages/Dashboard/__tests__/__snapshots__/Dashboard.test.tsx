@@ -1,9 +1,9 @@
 import { getSolarForecast } from 'api/solarForecastApi';
 import { getUser } from 'api/userApi';
 import { User } from 'next-auth';
-import { getArrayData } from '../api/solarArrayApi';
-import { ISolarArray } from '../types/ISolarArray';
-import { Irradiance } from '../types/Irradiance';
+import { getArrayData } from '../../../../api/solarArrayApi';
+import { ISolarArray } from '../../../../types/ISolarArray';
+import { Irradiance } from '../../../../types/Irradiance';
 import { useSession as originalUseSession } from 'next-auth/react';
 
 jest.mock('api/userApi');

@@ -1,4 +1,4 @@
-import Footer from "components/footer";
+import Footer from "components/Footer/footer";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { useRouter } from "next/router";

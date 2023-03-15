@@ -1,12 +1,12 @@
 import { getSolarForecast } from "api/solarForecastApi";
 import { getUser } from "api/userApi";
 import { User} from "next-auth";
-import { getArrayData } from "../api/solarArrayApi";
-import { ISolarArray } from "../types/ISolarArray";
-import { Irradiance } from "../types/Irradiance";
+import { getArrayData } from "../../../api/solarArrayApi";
+import { ISolarArray } from "../../../types/ISolarArray";
+import { Irradiance } from "../../../types/Irradiance";
 import { SessionProvider, useSession as originalUseSession } from "next-auth/react";
 import { render } from '@testing-library/react';
-import Dashboard from 'pages/dashboard';
+import Dashboard from 'pages/Dashboard/dashboard';
 import { expect } from '@jest/globals';
 
 jest.mock("api/userApi");

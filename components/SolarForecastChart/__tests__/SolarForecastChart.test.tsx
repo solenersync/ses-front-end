@@ -1,19 +1,25 @@
 import React from "react";
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { useSession } from "next-auth/react";
 import { getSolarForecast } from "api/solarForecastApi";
-import SolarForecastChart from 'components/solarForecastChart';
-import { getArrayData } from 'api/solarArrayApi';
+import SolarForecastChart from "components/SolarForecastChart/solarForecastChart";
+import { getArrayData } from "api/solarArrayApi";
 
 jest.mock("next-auth/react");
 jest.mock("api/solarForecastApi");
 jest.mock("api/solarArrayApi");
 
 class MockResizeObserver {
-  observe() {""}
-  unobserve() {""}
-  disconnect() {""}
+  observe() {
+    ("");
+  }
+  unobserve() {
+    ("");
+  }
+  disconnect() {
+    ("");
+  }
 }
 
 global.ResizeObserver = MockResizeObserver as any;
@@ -36,7 +42,9 @@ describe("SolarForecastChart", () => {
     (getSolarForecast as jest.Mock).mockReturnValue(mockForecastData);
   });
 
-  afterEach(() => { jest.clearAllMocks(); });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
   it("renders the chart with the provided data", async () => {
     (getArrayData as jest.Mock).mockReturnValue(mockArrayData);
@@ -49,17 +57,17 @@ describe("SolarForecastChart", () => {
   test("will render an empty chart if no array data returned", async () => {
     (getArrayData as jest.Mock).mockResolvedValue(null);
 
-    await act( async () => {
+    await act(async () => {
       render(<SolarForecastChart userId={mockUserId} month={mockMonth} />);
     });
-    expect(screen.getByTestId("solar-forecast-chart")).toBeInTheDocument();
+    await screen.findAllByTestId("solar-forecast-chart");
     expect(getArrayData).toHaveBeenCalledWith("1");
     expect(getSolarForecast).not.toHaveBeenCalled();
   });
 
   test("fetches the correct data for the chart", async () => {
     (getArrayData as jest.Mock).mockReturnValue(mockArrayData);
-    await act( async () => {
+    await act(async () => {
       render(<SolarForecastChart userId={mockUserId} month={mockMonth} />);
     });
     await screen.findAllByTestId("solar-forecast-chart");
@@ -69,7 +77,7 @@ describe("SolarForecastChart", () => {
 
   test("will render an empty chart if no forecast result data returned", async () => {
     (getSolarForecast as jest.Mock).mockReturnValue(null);
-    await act( async () => {
+    await act(async () => {
       render(<SolarForecastChart userId={mockUserId} month={mockMonth} />);
     });
     await screen.findAllByTestId("solar-forecast-chart");

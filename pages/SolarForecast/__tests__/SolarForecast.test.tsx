@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
-import SolarForecast from "pages/solar-forecast";
+import "@testing-library/jest-dom";
+import SolarForecast from "pages/SolarForecast/solar-forecast";
 import { useUserData } from "hooks/useUserData";
 
 jest.mock("hooks/useUserData");
-jest.mock("components/solarForecastChart", () => {
+jest.mock("components/SolarForecastChart/solarForecastChart", () => {
   return function MockSolarForecastChart() {
     return <div data-testid="solar-forecast-chart"></div>;
   };
@@ -32,7 +32,9 @@ describe("SolarForecast", () => {
 
   it("updates the forecast selection", () => {
     render(<SolarForecast />);
-    fireEvent.change(screen.getByLabelText("Select forecast:"), { target: { value: "2" } });
+    fireEvent.change(screen.getByLabelText("Select forecast:"), {
+      target: { value: "2" },
+    });
     expect(screen.getByLabelText("Select forecast:")).toHaveValue("2");
   });
 });
