@@ -1,4 +1,4 @@
-import { NextPageWithLayout } from '../types';
+import { NextPageWithLayout } from "../types";
 
 const AddArrayCard: NextPageWithLayout = () => {
   return (
@@ -7,12 +7,17 @@ const AddArrayCard: NextPageWithLayout = () => {
         <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:p-6">
           <div className="md:grid md:grid-cols-2 md:gap-6">
             <div className="md:col-span-1">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">Add Array</h3>
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Add Array
+              </h3>
             </div>
             <div className="mt-5 md:col-span-2 md:mt-0">
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
-                  <label htmlFor="array-name" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="array-name"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Array Name
                   </label>
                   <input
@@ -25,7 +30,10 @@ const AddArrayCard: NextPageWithLayout = () => {
                 </div>
 
                 <div className="col-span-6 sm:col-span-3">
-                  <label htmlFor="mounting" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="mounting"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Mounting
                   </label>
                   <select
@@ -40,7 +48,10 @@ const AddArrayCard: NextPageWithLayout = () => {
                 </div>
 
                 <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                  <label htmlFor="latitude" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="latitude"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Latitude
                   </label>
                   <input
@@ -53,7 +64,10 @@ const AddArrayCard: NextPageWithLayout = () => {
                 </div>
 
                 <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                  <label htmlFor="longitude" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="longitude"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Longitude
                   </label>
                   <input
@@ -66,20 +80,26 @@ const AddArrayCard: NextPageWithLayout = () => {
                 </div>
 
                 <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                  <label htmlFor="peak-power" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="peakPower"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Peak Power (kW)
                   </label>
                   <input
                     type="number"
-                    name="peak-power"
-                    id="peak-power"
-                    autoComplete="peak-power"
+                    name="peakPower"
+                    id="peakPower"
+                    autoComplete="peakPower"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
-                  /> 
+                  />
                 </div>
 
                 <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                  <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="city"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     System loss (%)
                   </label>
                   <input
@@ -92,7 +112,10 @@ const AddArrayCard: NextPageWithLayout = () => {
                 </div>
 
                 <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                  <label htmlFor="region" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="region"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Slope (°)
                   </label>
                   <input
@@ -105,7 +128,10 @@ const AddArrayCard: NextPageWithLayout = () => {
                 </div>
 
                 <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                  <label htmlFor="postal-code" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="postal-code"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Aspect (0°)
                   </label>
                   <input
@@ -116,7 +142,6 @@ const AddArrayCard: NextPageWithLayout = () => {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
-
               </div>
             </div>
           </div>
@@ -137,7 +162,7 @@ const AddArrayCard: NextPageWithLayout = () => {
         </div>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default AddArrayCard
+export default AddArrayCard;

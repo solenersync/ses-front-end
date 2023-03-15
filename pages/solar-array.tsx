@@ -1,43 +1,28 @@
 import { AppLayout } from "components/Layouts/AppLayout";
-import { useSession } from "next-auth/react";
 import { NextPageWithLayout } from "types";
 import { useEffect, useState } from "react";
 import Router from "next/router";
 import Link from "next/link";
 import { getArrayData } from "api/solarArrayApi";
 import { ISolarArray } from "types/ISolarArray";
-import { getUser } from 'api/userApi';
+import { useUserData } from 'hooks/useUserData';
 
-interface SolarArrayProps {
-  array: ISolarArray;
-}
 
-const SolarArray: NextPageWithLayout<SolarArrayProps> = ({ array }) => {
-  const { status, data: sessionData } = useSession();
+const SolarArray: NextPageWithLayout = () => {
   const [solarArray, setSolarArray] = useState<ISolarArray | null>();
+  const userId = useUserData();
 
   useEffect(() => {
-    if (status === "loading") {
-      return;
-    }
-
-    if (!sessionData) {
-      Router.replace("/login");
-      return;
-    }
-    const { user } = sessionData;
-
     async function fetchData() {
-      var userData = await getUser(user.email);
-      var arrayResult = await getArrayData(userData.user_id);
-      if(!arrayResult) {
+      if (!userId) return;
+      const arrayResult = await getArrayData(userId);
+      if (!arrayResult) {
         Router.replace("/my-array");
       }
       setSolarArray(arrayResult);
     }
-
     fetchData();
-  }, [status, sessionData]);
+  }, [userId]);
 
   return (
     <>
@@ -70,7 +55,7 @@ const SolarArray: NextPageWithLayout<SolarArrayProps> = ({ array }) => {
               <dt className="text-sm font-medium text-gray-500">Peak Power</dt>
               {solarArray && (
                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                  {solarArray.peak_power} kw
+                  {solarArray.peakPower} kw
                 </dd>
               )}
             </div>
@@ -111,9 +96,7 @@ const SolarArray: NextPageWithLayout<SolarArrayProps> = ({ array }) => {
       </div>
       <div className="mt-3 flex justify-left">
         {solarArray && (
-          <Link
-            href={{ pathname: "/my-array", query: { ...solarArray } }}
-          >
+          <Link href={{ pathname: "/my-array", query: { ...solarArray } }}>
             <button className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-rose-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">
               Edit
             </button>

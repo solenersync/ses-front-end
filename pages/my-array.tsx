@@ -5,24 +5,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { createArray, updateArray } from "api/solarArrayApi";
 import { ISolarArray } from "../types/ISolarArray";
-import { useSession } from "next-auth/react";
-import { getUser } from 'api/userApi';
-import Router from "next/router";
+import { useUserData } from 'hooks/useUserData';
 
 const MyArray: NextPageWithLayout = () => {
+  
   const router = useRouter();
-  const {
-    lat,
-    lon,
-    peak_power,
-    loss,
-    angle,
-    aspect,
-    mounting,
-    solar_array_id,
-  } = router.query;
+  const { lat, lon, peakPower, loss, angle, aspect, mounting, solarArrayId } =
+    router.query;
 
-  const { status, data: sessionData } = useSession();
   const [mountingUpdate, setMountingUpdate] = useState("");
   const [latUpdate, setLatUpdate] = useState("");
   const [lonUpdate, setLonUpdate] = useState("");
@@ -30,53 +20,37 @@ const MyArray: NextPageWithLayout = () => {
   const [lossUpdate, setLossUpdate] = useState("");
   const [angleUpdate, setAngleUpdate] = useState("");
   const [aspectUpdate, setAspectUpdate] = useState("");
-  const [user, setUser] = useState("");
+  const userId = useUserData();
 
   useEffect(() => {
-
-    if (status === "loading") {
-      return;
-    }
-
-    if (!sessionData) {
-      Router.replace("/login");
-      return;
-    }
-    const { user } = sessionData;
-
-    async function fetchData() {
-      var userData = await getUser(user.email);
-      setUser(userData.user_id);
-    }
-    
-    fetchData();
     setMountingUpdate(mounting?.toString() ?? "");
     setLatUpdate(lat?.toString() ?? "0");
     setLonUpdate(lon?.toString() ?? "0");
-    setPeakPowerUpdate(peak_power?.toString() ?? "0");
+    setPeakPowerUpdate(peakPower?.toString() ?? "0");
     setLossUpdate(loss?.toString() ?? "0");
     setAngleUpdate(angle?.toString() ?? "0");
     setAspectUpdate(aspect?.toString() ?? "0");
-
   }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
+    if(!userId) return;
+
     const mySolarArray: ISolarArray = {
-      solar_array_id: parseInt(solar_array_id?.toString() ?? "0"),
+      solarArrayId: parseInt(solarArrayId?.toString() ?? "0"),
       lat: parseFloat(latUpdate),
       lon: parseFloat(lonUpdate),
-      peak_power: parseFloat(peakPowerUpdate),
+      peakPower: parseFloat(peakPowerUpdate),
       systemLoss: parseFloat(lossUpdate),
       angle: parseFloat(angleUpdate),
       aspect: parseFloat(aspectUpdate),
       mounting: mountingUpdate,
-      user_id: user,
+      userId: userId,
     };
 
     var res = null;
-    if(!solar_array_id) {
+    if (!solarArrayId) {
       res = await createArray(mySolarArray);
     } else {
       res = await updateArray(mySolarArray);
@@ -112,6 +86,7 @@ const MyArray: NextPageWithLayout = () => {
                   </label>
                   <select
                     id="mounting"
+                    data-testid="mounting"
                     name="mounting"
                     autoComplete="mounting"
                     value={mountingUpdate}
@@ -134,6 +109,7 @@ const MyArray: NextPageWithLayout = () => {
                     type="number"
                     name="latitude"
                     id="latitude"
+                    data-testid="latitude"
                     value={latUpdate}
                     onChange={(e) => setLatUpdate(e.target.value)}
                     autoComplete="latitude"
@@ -152,6 +128,7 @@ const MyArray: NextPageWithLayout = () => {
                     type="number"
                     name="longitude"
                     id="longitude"
+                    data-testid="longitude"
                     value={lonUpdate}
                     onChange={(e) => setLonUpdate(e.target.value)}
                     autoComplete="longitude"
@@ -161,18 +138,19 @@ const MyArray: NextPageWithLayout = () => {
 
                 <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                   <label
-                    htmlFor="peak-power"
+                    htmlFor="peakPower"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Peak Power (kW)
                   </label>
                   <input
                     type="number"
-                    name="peak-power"
-                    id="peak-power"
+                    name="peakPower"
+                    id="peakPower"
+                    data-testid="peakPower"
                     value={peakPowerUpdate}
                     onChange={(e) => setPeakPowerUpdate(e.target.value)}
-                    autoComplete="peak-power"
+                    autoComplete="peakPower"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
@@ -188,6 +166,7 @@ const MyArray: NextPageWithLayout = () => {
                     type="number"
                     name="systemLoss"
                     id="systemLoss"
+                    data-testid="systemLoss"
                     value={lossUpdate}
                     onChange={(e) => setLossUpdate(e.target.value)}
                     autoComplete="address-level2"
@@ -206,6 +185,7 @@ const MyArray: NextPageWithLayout = () => {
                     type="number"
                     name="angle"
                     id="angle"
+                    data-testid="angle"
                     value={angleUpdate}
                     onChange={(e) => setAngleUpdate(e.target.value)}
                     autoComplete="address-level1"
@@ -224,6 +204,7 @@ const MyArray: NextPageWithLayout = () => {
                     type="number"
                     name="aspect"
                     id="aspect"
+                    data-testid="aspect"
                     autoComplete="aspect"
                     value={aspectUpdate}
                     onChange={(e) => setAspectUpdate(e.target.value)}
@@ -238,6 +219,7 @@ const MyArray: NextPageWithLayout = () => {
           <Link href="/solar-array">
             <button
               type="button"
+              data-testid="cancel-button"
               className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
             >
               Cancel
@@ -245,6 +227,7 @@ const MyArray: NextPageWithLayout = () => {
           </Link>
           <button
             type="submit"
+            data-testid="save-button"
             className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-rose-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
           >
             Save

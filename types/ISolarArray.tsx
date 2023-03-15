@@ -1,11 +1,11 @@
 export interface ISolarArray {
-  solar_array_id: number;
+  solarArrayId: number;
   lon: number;
   lat: number;
-  peak_power: number;
+  peakPower: number;
   systemLoss: number;
   angle: number;
   aspect: number;
   mounting: string;
-  user_id: string;
+  userId: string;
 }

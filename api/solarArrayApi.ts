@@ -42,3 +42,9 @@ export const updateArray = async (arrayData: ISolarArray) => {
   const data = await res.json();
   return data;
 };
+
+export const solarArrayApi =  {
+  getArrayData,
+  createArray,
+  updateArray,
+}

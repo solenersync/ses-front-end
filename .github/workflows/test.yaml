@@ -2,7 +2,7 @@ name: ci-test
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   test:
@@ -17,9 +17,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
+          cache: "npm"
       - name: Install
         run: |
           npm ci
-      - name: Cypress Tests 
+      # - name: Jest Unit Tests
+      #   run: npm test
+      - name: Cypress Tests
         run: npm run cypress:run

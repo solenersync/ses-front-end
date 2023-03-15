@@ -1,12 +1,8 @@
 import { getSolarForecast } from "api/solarForecastApi";
-import { AppLayout } from "components/Layouts/AppLayout";
-import { NextPageWithLayout } from "types";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import Router from "next/router";
 import { getArrayData } from "api/solarArrayApi";
-// import { Irradiance } from "../types/Irradiance";
-import DataDisplay from "../components/solarForecastTable";
+import { Irradiance } from "../types/Irradiance";
 import {
   Chart as ChartJs,
   CategoryScale,
@@ -18,23 +14,25 @@ import {
   LinearScale,
   LineElement,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
 import { Line } from "react-chartjs-2";
-// import { CreateUser } from "../types/User";
-import { getUser } from "api/userApi";
 
-const SolarForecastChart: NextPageWithLayout = () => {
-  type Dataset = {
-    label?: string;
-    data: number[];
-    borderColor?: string;
-    backgroundColor?: string;
-  };
+type ChartProps = {
+  userId: string;
+  month: number;
+};
 
-  type Labels = string[];
+type Dataset = {
+  label?: string;
+  data: number[];
+  borderColor?: string;
+  backgroundColor?: string;
+};
 
+type Labels = string[];
+
+const SolarForecastChart = ({ userId, month }: ChartProps) => {
   const { status, data: sessionData } = useSession();
-  // const [forecastData, setForecastData] = useState<Irradiance[] | null>(null);
+  const [, setForecastData] = useState<Irradiance[] | null>(null);
   const [chartData, setChartData] = useState({
     datasets: [] as Dataset[],
     labels: [] as Labels,
@@ -52,26 +50,18 @@ const SolarForecastChart: NextPageWithLayout = () => {
       PointElement,
       LineElement
     );
-    if (status === "loading") {
-      return;
-    }
-
-    if (!sessionData) {
-      Router.replace("/login");
-      return;
-    }
-    const { user } = sessionData;
-    console.log(user);
-
-    const now = new Date();
-    const currentMonth = now.getMonth() + 1;
 
     async function fetchData() {
-      var userData = await getUser(user.email);
-      var arrayResult = await getArrayData(userData.user_id);
-      arrayResult.month = currentMonth;
+      const arrayResult = await getArrayData(userId);
+      if (!arrayResult) {
+        return;
+      }
+      arrayResult.month = month;
       const forecastResult = await getSolarForecast(arrayResult);
-      // setForecastData(forecastResult);
+      if (!forecastResult) {
+        return;
+      }
+      setForecastData(forecastResult);
 
       setChartData({
         labels: [
@@ -103,7 +93,7 @@ const SolarForecastChart: NextPageWithLayout = () => {
         datasets: [
           {
             label: "Kwh",
-            data: forecastResult?.map((x: any) => x.peakOutput) || [],
+            data: forecastResult?.map((x: any) => x.peakGlobalOutput) || [],
             borderColor: "rgba(255, 99, 132, 1)",
             backgroundColor: "rgba(255, 99, 132, 0.2)",
           },
@@ -128,10 +118,9 @@ const SolarForecastChart: NextPageWithLayout = () => {
   return (
     <>
       <div className="space-y-6 pt-8 sm:space-y-5 sm:pt-10">
-        <Line options={chartOptions} data={chartData} />
+        <Line options={chartOptions} data={chartData} data-testid="solar-forecast-chart"/>
       </div>
     </>
   );
 };
-
 export default SolarForecastChart;
