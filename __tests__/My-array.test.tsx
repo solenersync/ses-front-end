@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { useRouter } from "next/router";
 import { useSession as originalUseSession } from 'next-auth/react';
 import { createArray, updateArray } from "api/solarArrayApi";

@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "jest --clearCache && jest",
-    "coverage": "jest --clearCache && jest --coverage",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "clear:cache": "jest --clearCache",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

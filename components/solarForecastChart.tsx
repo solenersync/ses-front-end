@@ -118,7 +118,7 @@ const SolarForecastChart = ({ userId, month }: ChartProps) => {
   return (
     <>
       <div className="space-y-6 pt-8 sm:space-y-5 sm:pt-10">
-        <Line options={chartOptions} data={chartData} />
+        <Line options={chartOptions} data={chartData} data-testid="solar-forecast-chart"/>
       </div>
     </>
   );
