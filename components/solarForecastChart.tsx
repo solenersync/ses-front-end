@@ -31,7 +31,7 @@ type Dataset = {
 
 type Labels = string[];
 
-const Dashboard = ({ userId, month }: ChartProps) => {
+const SolarForecastChart = ({ userId, month }: ChartProps) => {
   const { status, data: sessionData } = useSession();
   const [forecastData, setForecastData] = useState<Irradiance[] | null>(null);
   const [chartData, setChartData] = useState({
@@ -124,9 +124,4 @@ const Dashboard = ({ userId, month }: ChartProps) => {
     </>
   );
 };
-
-Dashboard.getLayout = (page) => {
-  return <AppLayout pageTitle="Dashboard">{page}</AppLayout>;
-};
-
-export default Dashboard;
+export default SolarForecastChart;
