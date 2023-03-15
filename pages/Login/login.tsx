@@ -55,6 +55,7 @@ const Login: NextPage = () => {
                   <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    data-testid="email"
                     id="email"
                     name="email"
                     type="email"
@@ -77,6 +78,7 @@ const Login: NextPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     id="password"
+                    data-testid="password"
                     name="password"
                     type="password"
                     autoComplete="current-password"
@@ -99,6 +101,7 @@ const Login: NextPage = () => {
               <div>
                 <button
                   type="submit"
+                  data-testid="sign-in-button"
                   className="flex w-full justify-center rounded-md border border-transparent bg-rose-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
                 >
                   Sign in
