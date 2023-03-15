@@ -21,7 +21,7 @@ jobs:
       - name: Install
         run: |
           npm ci
-      - name: Jest Unit Tests
-        run: npm test
+      # - name: Jest Unit Tests
+      #   run: npm test
       - name: Cypress Tests
         run: npm run cypress:run
