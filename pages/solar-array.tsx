@@ -8,11 +8,8 @@ import { getArrayData } from "api/solarArrayApi";
 import { ISolarArray } from "types/ISolarArray";
 import { getUser } from "api/userApi";
 
-interface SolarArrayProps {
-  array: ISolarArray;
-}
 
-const SolarArray: NextPageWithLayout<SolarArrayProps> = ({ array }) => {
+const SolarArray: NextPageWithLayout = () => {
   const { status, data: sessionData } = useSession();
   const [solarArray, setSolarArray] = useState<ISolarArray | null>();
 

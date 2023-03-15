@@ -75,7 +75,6 @@ const MyArray: NextPageWithLayout = () => {
     }
     if (res) {
       router.push("/solar-array");
-      console.log('pushed')
     }
   };
 
