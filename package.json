@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "jest --clearCache && jest",
-    "coverage": "jest --coverage",
+    "coverage": "jest --clearCache && jest --coverage",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
