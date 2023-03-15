@@ -1,8 +1,8 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
 import { useRouter } from "next/router";
 import { useSession as originalUseSession } from 'next-auth/react';
 import { createArray, updateArray } from "api/solarArrayApi";
-import { getUser } from "api/userApi";
+import { useUserData } from "hooks/useUserData";
 import MyArray from "pages/my-array";
 import { User } from 'next-auth';
 import { ISolarArray } from 'types/ISolarArray';
@@ -17,6 +17,9 @@ jest.mock('next-auth/react', () => ({
 }));
 jest.mock("api/solarArrayApi");
 jest.mock("api/userApi");
+jest.mock("hooks/useUserData", () => ({
+  useUserData: jest.fn(() => "1"),
+}));
 
 describe("MyArray", () => {
 
@@ -39,7 +42,7 @@ describe("MyArray", () => {
       status: 'authenticated',
       data: {user},
     });
-    (getUser as jest.Mock).mockResolvedValue(user);
+    (useUserData as jest.Mock).mockReturnValue("1");
     (createArray as jest.Mock).mockResolvedValue(solarArray);
     (updateArray as jest.Mock).mockResolvedValue(solarArray);
   });

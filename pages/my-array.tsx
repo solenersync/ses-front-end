@@ -22,18 +22,6 @@ const MyArray: NextPageWithLayout = () => {
   const [aspectUpdate, setAspectUpdate] = useState("");
   const userId = useUserData();
 
-  const mySolarArray: ISolarArray = {
-    solarArrayId: parseInt(solarArrayId?.toString() ?? "0"),
-    lat: parseFloat(latUpdate),
-    lon: parseFloat(lonUpdate),
-    peakPower: parseFloat(peakPowerUpdate),
-    systemLoss: parseFloat(lossUpdate),
-    angle: parseFloat(angleUpdate),
-    aspect: parseFloat(aspectUpdate),
-    mounting: mountingUpdate,
-    userId: userId,
-  };
-
   useEffect(() => {
     setMountingUpdate(mounting?.toString() ?? "");
     setLatUpdate(lat?.toString() ?? "0");
@@ -46,6 +34,20 @@ const MyArray: NextPageWithLayout = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    if(!userId) return;
+
+    const mySolarArray: ISolarArray = {
+      solarArrayId: parseInt(solarArrayId?.toString() ?? "0"),
+      lat: parseFloat(latUpdate),
+      lon: parseFloat(lonUpdate),
+      peakPower: parseFloat(peakPowerUpdate),
+      systemLoss: parseFloat(lossUpdate),
+      angle: parseFloat(angleUpdate),
+      aspect: parseFloat(aspectUpdate),
+      mounting: mountingUpdate,
+      userId: userId,
+    };
 
     var res = null;
     if (!solarArrayId) {
