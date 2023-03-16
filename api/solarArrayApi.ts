@@ -27,8 +27,6 @@ export const createArray = async (arrayData: ISolarArray) => {
 };
 
 export const updateArray = async (arrayData: ISolarArray) => {
-  console.log('updateArray');
-  console.log(arrayData);
 
   const res = await fetch('http://localhost:8083/api/v1/solar-arrays/update', {
     method: 'POST',

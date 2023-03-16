@@ -52,7 +52,6 @@ const MyArray: NextPageWithLayout = () => {
     if (!solarArrayId) {
       res = await createArray(mySolarArray);
     } else {
-      console.log(mySolarArray)
       res = await updateArray(mySolarArray);
     }
     if (res) {
