@@ -19,7 +19,7 @@ const MyArray: NextPageWithLayout = () => {
   const [lossUpdate, setLossUpdate] = useState('');
   const [angleUpdate, setAngleUpdate] = useState('');
   const [aspectUpdate, setAspectUpdate] = useState('');
-  const userId = useUserData();
+  const user = useUserData();
 
   useEffect(() => {
     setMountingUpdate(mounting?.toString() ?? '');
@@ -34,7 +34,7 @@ const MyArray: NextPageWithLayout = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (!userId) return;
+    if (!user.userId) return;
 
     const mySolarArray: ISolarArray = {
       solarArrayId: parseInt(solarArrayId?.toString() ?? '0'),
@@ -45,7 +45,7 @@ const MyArray: NextPageWithLayout = () => {
       angle: parseFloat(angleUpdate),
       aspect: parseFloat(aspectUpdate),
       mounting: mountingUpdate,
-      userId: userId,
+      userId: user.userId,
     };
 
     let res = null;

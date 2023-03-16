@@ -6,7 +6,7 @@ import { useUserData } from 'hooks/useUserData';
 
 const SolarForecast: NextPageWithLayout = () => {
   const [month, setMonth] = useState<number | null>(null);
-  const userId = useUserData();
+  const user = useUserData();
 
   useEffect(() => {
     setMonth(new Date().getMonth() + 1);
@@ -27,8 +27,8 @@ const SolarForecast: NextPageWithLayout = () => {
           <option value='2'>Next Month</option>
         </select>
       </div>
-      {userId && month ? (
-        <SolarForecastChart userId={userId} month={month}></SolarForecastChart>
+      {user.userId && month ? (
+        <SolarForecastChart userId={user.userId} month={month}></SolarForecastChart>
       ) : null}
     </>
   );

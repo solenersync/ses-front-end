@@ -56,7 +56,7 @@ describe('MyArray', () => {
       status: 'authenticated',
       data: { user },
     });
-    (useUserData as jest.Mock).mockReturnValue('1');
+    (useUserData as jest.Mock).mockReturnValue(user);
     (createArray as jest.Mock).mockResolvedValue(solarArray);
     (updateArray as jest.Mock).mockResolvedValue(solarArray);
   });

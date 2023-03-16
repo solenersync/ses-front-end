@@ -29,7 +29,7 @@ describe('UseUserData Hook', () => {
     (getUser as jest.Mock).mockResolvedValue(user);
     (originalUseSession as jest.Mock).mockReturnValue({ status: 'authenticated', data: {user}});
     const { result } = renderHook(() => useUserData());
-    await waitFor(() => expect(result.current).toBe(user.userId));
+    await waitFor(() => expect(result.current).toBe(user));
     expect(getUser).toHaveBeenCalledWith(user.email);
   });
 

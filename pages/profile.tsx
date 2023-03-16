@@ -1,34 +1,23 @@
 import { AppLayout } from 'components/Layouts/AppLayout';
 import { NextPageWithLayout } from 'types';
-import Router from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import router from 'next/router';
-import { getUser, updateUser } from 'api/userApi';
+import { updateUser } from 'api/userApi';
 import { User } from 'next-auth';
 import Link from 'next/link';
+import { useUserData } from 'hooks/useUserData';
 
 const Profile: NextPageWithLayout = () => {
-  const { status, data: sessionData } = useSession();
   const [updatedUser, setUpdatedUser] = useState<User | undefined>();
+  const user = useUserData();
 
   useEffect(() => {
-    if (status === 'loading') {
-      return;
-    }
-    if (!sessionData) {
-      Router.replace('/login');
-      return;
-    }
-    const { user } = sessionData;
-
     async function fetchUser() {
-      let userData = await getUser(user.email);
-      setUpdatedUser(userData);
+      setUpdatedUser(user);
     }
-
     fetchUser();
-  }, [status, sessionData]);
+  }, [user]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();

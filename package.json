@@ -6,6 +6,7 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "clear:cache": "jest --clearCache",
+    "watch": "jest --watch",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import SolarForecast from 'pages/solar-forecast';
 import { useUserData } from 'hooks/useUserData';
 import '@testing-library/jest-dom';
+import { User } from 'next-auth';
 
 jest.mock('hooks/useUserData');
 jest.mock('next/router', () => ({
@@ -15,10 +16,10 @@ jest.mock('components/SolarForecastChart/solarForecastChart', () => {
 });
 
 describe('SolarForecast page', () => {
-  const mockUserId = '1'
+  const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: '1', id:'' };
 
   beforeEach(() => {
-    (useUserData as jest.Mock).mockReturnValue(mockUserId);
+    (useUserData as jest.Mock).mockReturnValue(user);
   });
 
   afterEach(() => {

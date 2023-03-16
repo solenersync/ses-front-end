@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Router from 'next/router';
 import { getUser } from 'api/userApi';
+import { User } from 'next-auth';
 
 export const useUserData = () => {
   const { status, data: sessionData } = useSession();
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
 
   useEffect(() => {
     if (status === 'loading') {
@@ -17,11 +18,11 @@ export const useUserData = () => {
     }
     const { user } = sessionData;
     async function fetchData() {
-      const userData = await getUser(user.email);
-      setUserId(userData.userId);
+      const userResp = await getUser(user.email);
+      setUserData(userResp);
     }
     fetchData();
   }, [status, sessionData]);
 
-  return userId;
+  return userData;
 };

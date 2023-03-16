@@ -10,19 +10,19 @@ import { useUserData } from 'hooks/useUserData';
 
 const SolarArray: NextPageWithLayout = () => {
   const [solarArray, setSolarArray] = useState<ISolarArray | null>();
-  const userId = useUserData();
+  const user = useUserData();
 
   useEffect(() => {
     async function fetchData() {
-      if (!userId) return;
-      const arrayResult = await getArrayData(userId);
+      if (!user.userId) return;
+      const arrayResult = await getArrayData(user.userId);
       if (!arrayResult) {
         Router.replace('/my-array');
       }
       setSolarArray(arrayResult);
     }
     fetchData();
-  }, [userId]);
+  }, [user.userId]);
 
   return (
     <>

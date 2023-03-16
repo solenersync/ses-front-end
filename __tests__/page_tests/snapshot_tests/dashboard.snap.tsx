@@ -20,10 +20,10 @@ jest.mock('components/SolarForecastChart/solarForecastChart', () => {
 });
 
 describe('Dashboard', () => {
-  const mockUserId = '1';
+  const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: '1', id:'' };
 
   beforeEach(() => {
-    (useUserData as jest.Mock).mockReturnValue(mockUserId);
+    (useUserData as jest.Mock).mockReturnValue(user);
   });
 
   afterEach(() => {
