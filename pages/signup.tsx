@@ -1,4 +1,4 @@
-import { createUser } from 'api/authApi';
+import { createUser } from 'api/userApi';
 import Footer from 'components/Footer/footer';
 import { NextPage } from 'next';
 import React, { useState, useEffect } from 'react';

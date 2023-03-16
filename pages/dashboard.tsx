@@ -14,7 +14,7 @@ const Dashboard: NextPageWithLayout = () => {
 
   return (
     <>
-      {user.userId && month ? (
+      {user && month ? (
         <SolarForecastChart userId={user.userId} month={month}></SolarForecastChart>
       ) : null}
     </>

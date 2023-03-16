@@ -3,7 +3,7 @@ export interface ISolarArray {
   lon: number;
   lat: number;
   peakPower: number;
-  systemLoss: number;
+  loss: number;
   angle: number;
   aspect: number;
   mounting: string;

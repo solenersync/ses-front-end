@@ -16,7 +16,7 @@ jest.mock('api/solarArrayApi');
 
 describe('SolarArray page', () => {
   const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: '1', id:'' };
-  const mockSolarArray: ISolarArray = { solarArrayId: 1, lon: -6.519937, lat: 52.207480, peakPower: 7, systemLoss: 0.1, angle: 35, aspect: 2, mounting: 'Free Standing', userId: '1'};
+  const mockSolarArray: ISolarArray = { solarArrayId: 1, lon: -6.519937, lat: 52.207480, peakPower: 7, loss: 0.1, angle: 35, aspect: 2, mounting: 'Free Standing', userId: '1'};
 
   beforeEach(() => {
     (useUserData as jest.Mock).mockReturnValue(user);
