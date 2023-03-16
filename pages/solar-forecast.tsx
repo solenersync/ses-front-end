@@ -27,7 +27,7 @@ const SolarForecast: NextPageWithLayout = () => {
           <option value='2'>Next Month</option>
         </select>
       </div>
-      {user.userId && month ? (
+      {user && month ? (
         <SolarForecastChart userId={user.userId} month={month}></SolarForecastChart>
       ) : null}
     </>

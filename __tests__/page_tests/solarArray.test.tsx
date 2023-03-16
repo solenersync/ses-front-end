@@ -16,7 +16,7 @@ jest.mock('api/solarArrayApi');
 
 describe('SolarArray page', () => {
   const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: '1', id:'' };
-  const mockSolarArray: ISolarArray = { solarArrayId: 1, lon: -6.519937, lat: 52.207480, peakPower: 7, systemLoss: 0.1, angle: 35, aspect: 2, mounting: 'Free Standing', userId: '1'};
+  const mockSolarArray: ISolarArray = { solarArrayId: 1, lon: -6.519937, lat: 52.207480, peakPower: 7, loss: 0.1, angle: 35, aspect: 2, mounting: 'Free Standing', userId: '1'};
 
   beforeEach(() => {
     (useUserData as jest.Mock).mockReturnValue(user);
@@ -26,7 +26,7 @@ describe('SolarArray page', () => {
     jest.resetAllMocks();
   });
 
-  it('should fetch solar array data and render the component', async () => {
+  test('should fetch solar array data and render the component', async () => {
     (getArrayData as jest.Mock).mockReturnValue(mockSolarArray);
     render(<SolarArray />);
     expect(screen.queryByText('My Solar Array')).toBeInTheDocument();
@@ -35,13 +35,13 @@ describe('SolarArray page', () => {
     await waitFor(() => expect(screen.getByText(mockSolarArray.lat.toString())).toBeInTheDocument());
   });
 
-  it('should redirect to my-array page if solar array data is null', async () => {
+  test('should redirect to my-array page if solar array data is null', async () => {
     (getArrayData as jest.Mock).mockReturnValue(null);
     render(<SolarArray />);
     await waitFor(() => expect(Router.replace).toHaveBeenCalledWith('/my-array'));
   });
 
-  it('should render the edit button if solar array data is available', async () => {
+  test('should render the edit button if solar array data is available', async () => {
     (getArrayData as jest.Mock).mockReturnValue(mockSolarArray);
     render(<SolarArray />);
     await waitFor(() => expect(screen.getByText('Edit')).toBeInTheDocument());

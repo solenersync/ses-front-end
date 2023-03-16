@@ -14,7 +14,7 @@ const SolarArray: NextPageWithLayout = () => {
 
   useEffect(() => {
     async function fetchData() {
-      if (!user.userId) return;
+      if (!user) return;
       const arrayResult = await getArrayData(user.userId);
       if (!arrayResult) {
         Router.replace('/my-array');
@@ -22,7 +22,7 @@ const SolarArray: NextPageWithLayout = () => {
       setSolarArray(arrayResult);
     }
     fetchData();
-  }, [user.userId]);
+  }, [user]);
 
   return (
     <>
@@ -63,7 +63,7 @@ const SolarArray: NextPageWithLayout = () => {
               <dt className='text-sm font-medium text-gray-500'>System Loss</dt>
               {solarArray && (
                 <dd className='mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
-                  {solarArray.systemLoss} %
+                  {solarArray.loss} %
                 </dd>
               )}
             </div>

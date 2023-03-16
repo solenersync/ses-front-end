@@ -33,7 +33,7 @@ describe('MyArray', () => {
     lon: -6.519937,
     lat: 52.207480,
     peakPower: 7,
-    systemLoss: 0.1,
+    loss: 0.1,
     angle: 35,
     aspect: 2,
     mounting: 'Free Standing',
@@ -78,7 +78,7 @@ describe('MyArray', () => {
     expect(screen.getByTestId('latitude')).toBeInTheDocument();
     expect(screen.getByTestId('longitude')).toBeInTheDocument();
     expect(screen.getByTestId('peakPower')).toBeInTheDocument();
-    expect(screen.getByTestId('systemLoss')).toBeInTheDocument();
+    expect(screen.getByTestId('loss')).toBeInTheDocument();
     expect(screen.getByTestId('angle')).toBeInTheDocument();
     expect(screen.getByTestId('aspect')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
@@ -104,7 +104,7 @@ describe('MyArray', () => {
     fireEvent.change(screen.getByTestId('peakPower'), {
       target: { value: '7.2' },
     });
-    fireEvent.change(screen.getByTestId('systemLoss'), {
+    fireEvent.change(screen.getByTestId('loss'), {
       target: { value: '0.1' },
     });
     fireEvent.change(screen.getByTestId('angle'), { target: { value: '45' } });
@@ -121,7 +121,7 @@ describe('MyArray', () => {
       lat: 52.207480,
       lon: -6.519937,
       peakPower: 7.2,
-      systemLoss: 0.1,
+      loss: 0.1,
       angle: 45,
       aspect: 15,
       mounting: 'Free Standing',

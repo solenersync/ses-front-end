@@ -34,14 +34,14 @@ const MyArray: NextPageWithLayout = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (!user.userId) return;
+    if (!user) return;
 
     const mySolarArray: ISolarArray = {
       solarArrayId: parseInt(solarArrayId?.toString() ?? '0'),
       lat: parseFloat(latUpdate),
       lon: parseFloat(lonUpdate),
       peakPower: parseFloat(peakPowerUpdate),
-      systemLoss: parseFloat(lossUpdate),
+      loss: parseFloat(lossUpdate),
       angle: parseFloat(angleUpdate),
       aspect: parseFloat(aspectUpdate),
       mounting: mountingUpdate,
@@ -163,9 +163,9 @@ const MyArray: NextPageWithLayout = () => {
                   </label>
                   <input
                     type='number'
-                    name='systemLoss'
-                    id='systemLoss'
-                    data-testid='systemLoss'
+                    name='loss'
+                    id='loss'
+                    data-testid='loss'
                     value={lossUpdate}
                     onChange={(e) => setLossUpdate(e.target.value)}
                     autoComplete='address-level2'
