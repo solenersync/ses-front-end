@@ -2,10 +2,10 @@ import { User } from 'next-auth';
 
 export const getUser = async (email: string) => {  
   const res = await fetch(`http://localhost:8081/api/v1/users/user`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email: email }),
   });
@@ -16,12 +16,29 @@ export const getUser = async (email: string) => {
   return data;
 }
 
+export const createUser = async (userData: any) => {
+  let user = {
+    email: userData.email,
+    name: userData.name,
+    password: userData.password,
+  };
+  const res = await fetch('http://localhost:8081/api/v1/users/user/create', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+  });
+  return res;
+};
+
 export const updateUser = async (user: User) => { 
   const res = await fetch(`http://localhost:8081/api/v1/users/user/update`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(user),
   });

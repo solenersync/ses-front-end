@@ -1,15 +1,15 @@
-import CredentialsProvider from "next-auth/providers/credentials"
-import NextAuth, { NextAuthOptions, User } from "next-auth"
-import { authenticate } from "../../../api/authApi";
+import CredentialsProvider from 'next-auth/providers/credentials'
+import NextAuth, { NextAuthOptions, User } from 'next-auth'
+import { authenticate } from '../../../api/authApi';
 
 const authOptions: NextAuthOptions = {
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   
   providers: [
     CredentialsProvider({
-      type: "credentials",    
+      type: 'credentials',    
       credentials: {},
       async authorize(credentials, req) {
         const { email, password } = credentials as {
@@ -26,7 +26,7 @@ const authOptions: NextAuthOptions = {
     })
   ],
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   // callbacks: {
   //   async session({ session, user }) {
