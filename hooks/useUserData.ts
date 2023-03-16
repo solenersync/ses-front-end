@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import Router from "next/router";
-import { getUser } from "api/userApi";
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import Router from 'next/router';
+import { getUser } from 'api/userApi';
 
 export const useUserData = () => {
   const { status, data: sessionData } = useSession();
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (status === "loading") {
+    if (status === 'loading') {
       return;
     }
     if (!sessionData) {
-      Router.replace("/login");
+      Router.replace('/login');
       return;
     }
     const { user } = sessionData;

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard should render a chart on the dashboard  1`] = `
+<div>
+  <div
+    data-testid="solar-forecast-chart"
+  />
+</div>
+`;
