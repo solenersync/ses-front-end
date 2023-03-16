@@ -26,7 +26,7 @@ describe('SolarArray page', () => {
     jest.resetAllMocks();
   });
 
-  it('should fetch solar array data and render the component', async () => {
+  test('should fetch solar array data and render the component', async () => {
     (getArrayData as jest.Mock).mockReturnValue(mockSolarArray);
     render(<SolarArray />);
     expect(screen.queryByText('My Solar Array')).toBeInTheDocument();
@@ -35,13 +35,13 @@ describe('SolarArray page', () => {
     await waitFor(() => expect(screen.getByText(mockSolarArray.lat.toString())).toBeInTheDocument());
   });
 
-  it('should redirect to my-array page if solar array data is null', async () => {
+  test('should redirect to my-array page if solar array data is null', async () => {
     (getArrayData as jest.Mock).mockReturnValue(null);
     render(<SolarArray />);
     await waitFor(() => expect(Router.replace).toHaveBeenCalledWith('/my-array'));
   });
 
-  it('should render the edit button if solar array data is available', async () => {
+  test('should render the edit button if solar array data is available', async () => {
     (getArrayData as jest.Mock).mockReturnValue(mockSolarArray);
     render(<SolarArray />);
     await waitFor(() => expect(screen.getByText('Edit')).toBeInTheDocument());

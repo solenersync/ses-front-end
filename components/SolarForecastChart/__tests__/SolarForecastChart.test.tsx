@@ -46,7 +46,7 @@ describe('SolarForecastChart', () => {
     jest.clearAllMocks();
   });
 
-  it('renders the chart with the provided data', async () => {
+  test('renders the chart with the provided data', async () => {
     (getArrayData as jest.Mock).mockReturnValue(mockArrayData);
     await act(async () => {
       render(<SolarForecastChart userId={mockUserId} month={mockMonth} />);

@@ -26,18 +26,18 @@ describe('SolarForecast page', () => {
     jest.resetAllMocks();
   });
 
-  it('should render the forecast selector', () => {
+  test('should render the forecast selector', () => {
     render(<SolarForecast />);
     expect(screen.getByTestId('forecast-select')).toBeInTheDocument();
     expect(screen.getByText('Select forecast:')).toBeInTheDocument();
   });
 
-  it('should render the SolarForecastChart component when userId and month are available', () => {
+  test('should render the SolarForecastChart component when userId and month are available', () => {
     render(<SolarForecast />);
     expect(screen.getByTestId('solar-forecast-chart')).toBeInTheDocument();
   });
 
-  it('should update the forecast selection', () => {
+  test('should update the forecast selection', () => {
     render(<SolarForecast />);
     fireEvent.change(screen.getByTestId('forecast-select'), {
       target: { value: '2' },
