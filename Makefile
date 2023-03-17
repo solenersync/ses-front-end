@@ -1,180 +1,131 @@
-PACTICIPANT ?= "pactflow-example-bi-directional-provider-postman"
-GITHUB_REPO := "pactflow/example-bi-directional-provider-postman"
-VERSION?=$(shell npx -y absolute-version)
-BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
+# Why are we using a Makefile? PactFlow has around 30 example consumer and provider projects that show how to use Pact. 
+# We often use them for demos and workshops, and Makefiles allow us to provide a consistent language and platform agnostic interface
+# for each project. You do not need to use Makefiles to use Pact in your own project!
 
-## ====================
-## Demo Specific Example Variables
-## ====================
-OAS_PATH=oas/swagger.yml
-REPORT_PATH?=$(shell ls newman/*)
-REPORT_FILE_CONTENT_TYPE?=text/plain
-VERIFIER_TOOL?=postman
+# Default to the read only token - the read/write token will be present on Travis CI.
+# It's set as a secure environment variable in the .travis.yml file
+GITHUB_ORG="pactflow"
+PACTICIPANT="pactflow-example-consumer"
+GITHUB_WEBHOOK_UUID := "04510dc1-7f0a-4ed2-997d-114bfa86f8ad"
+PACT_CLI="docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli"
 
-## =====================
-## Build/test tasks
-## =====================
+.EXPORT_ALL_VARIABLES:
+GIT_COMMIT?=$(shell git rev-parse HEAD)
+GIT_BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
+ENVIRONMENT?=production
 
-install: npm install
+# Only deploy from master (to production env) or test (to test env)
+ifeq ($(GIT_BRANCH),master)
+	ENVIRONMENT=production
+	DEPLOY_TARGET=deploy
+else
+	ifeq ($(GIT_BRANCH),test)
+		ENVIRONMENT=test
+		DEPLOY_TARGET=deploy
+	else
+		DEPLOY_TARGET=no_deploy
+	endif
+endif
 
-test: .env
-	@echo "\n========== STAGE: test ✅ ==========\n"
-	@echo "Running postman collection via Newman CLI runner, to test locally running provider"
-	@npm run test
-	@echo "converting postman collection into OAS spec"
-	@npm run test:convert 
+all: test
 
 ## ====================
 ## CI tasks
 ## ====================
 
-all: ci
-all_docker: ci_docker
-all_ruby_standalone: ci_ruby_standalone
-all_ruby_cli: ci_ruby_cli
+ci: test publish_pacts can_i_deploy $(DEPLOY_TARGET)
 
 # Run the ci target from a developer machine with the environment variables
-# set as if it was on Github Actions.
+# set as if it was on CI.
 # Use this for quick feedback when playing around with your workflows.
-ci: .env test_and_publish can_i_deploy $(DEPLOY_TARGET)
+fake_ci: .env
+	@CI=true \
+	REACT_APP_API_BASE_URL=http://localhost:8080 \
+	make ci
 
-ci_ruby_cli:
-	PACT_TOOL=ruby_cli make ci
-ci_docker:
-	PACT_TOOL=docker make ci
-ci_ruby_standalone:
-	PACT_TOOL=ruby_standalone make ci
+publish_pacts: .env
+	@echo "\n========== STAGE: publish pacts ==========\n"
+	@"${PACT_CLI}" publish ${PWD}/pacts --consumer-app-version ${GIT_COMMIT} --branch ${GIT_BRANCH}
 
-test_and_publish:
-	@if make test; then \
-		EXIT_CODE=0 make publish_provider_contract; \
-	else \
-		EXIT_CODE=1 make publish_provider_contract; \
-	fi; \
+## =====================
+## Build/test tasks
+## =====================
 
-publish_provider_contract: .env
-	@echo "\n========== STAGE: publish-provider-contract (spec + results) ==========\n"
-	${PACTFLOW_CLI_COMMAND} publish-provider-contract \
-      ${OAS_PATH} \
-      --provider ${PACTICIPANT} \
-      --provider-app-version ${VERSION} \
-      --branch ${BRANCH} \
-      --content-type application/yaml \
-      --verification-exit-code=${EXIT_CODE} \
-      --verification-results ${REPORT_PATH} \
-      --verification-results-content-type ${REPORT_FILE_CONTENT_TYPE}\
-      --verifier ${VERIFIER_TOOL}
+test: .env
+	@echo "\n========== STAGE: test (pact) ==========\n"
+	npm run test:pact
 
 ## =====================
 ## Deploy tasks
 ## =====================
 
-# Only deploy from main/master
-ifneq ($(filter $(BRANCH),main master),)
-	DEPLOY_TARGET=deploy
-else
-	DEPLOY_TARGET=no_deploy
-endif
+create_environment:
+	@"${PACT_CLI}" broker create-environment --name production --production
 
 deploy: deploy_app record_deployment
-deploy_target: can_i_deploy $(DEPLOY_TARGET)
+
 no_deploy:
 	@echo "Not deploying as not on master branch"
 
 can_i_deploy: .env
-	@echo "\n========== STAGE: can-i-deploy? 🌉 ==========\n"
-	${PACT_BROKER_COMMAND} can-i-deploy \
-	--pacticipant ${PACTICIPANT} \
-	--version ${VERSION} \
-	--to-environment production
+	@echo "\n========== STAGE: can-i-deploy? ==========\n"
+	@"${PACT_CLI}" broker can-i-deploy \
+	  --pacticipant ${PACTICIPANT} \
+	  --version ${GIT_COMMIT} \
+	  --to-environment ${ENVIRONMENT} \
+	  --retry-while-unknown 30 \
+	  --retry-interval 10
 
 deploy_app:
-	@echo "\n========== STAGE: deploy 🚀 ==========\n"
-	@echo "Deploying to prod"
+	@echo "\n========== STAGE: deploy ==========\n"
+	@echo "Deploying to ${ENVIRONMENT}"
 
 record_deployment: .env
-	${PACT_BROKER_COMMAND} \
-	record_deployment \
-	--pacticipant ${PACTICIPANT} \
-	--version ${VERSION} \
-	--environment production
+	@"${PACT_CLI}" broker record-deployment --pacticipant ${PACTICIPANT} --version ${GIT_COMMIT} --environment ${ENVIRONMENT}
 
 ## =====================
-## Multi-platform detection and support
-## Pact CLI install/uninstall tasks
+## PactFlow set up tasks
 ## =====================
-SHELL := /bin/bash
-PACT_TOOL?=docker
-PACT_CLI_DOCKER_VERSION?=latest
-PACT_CLI_VERSION?=latest
-PACT_CLI_STANDALONE_VERSION?=1.89.00
-PACT_CLI_DOCKER_RUN_COMMAND?=docker run --rm -v /${PWD}:/${PWD} -w ${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:${PACT_CLI_DOCKER_VERSION}
-PACT_BROKER_COMMAND=pact-broker
-PACTFLOW_CLI_COMMAND=pactflow
 
-ifeq '$(findstring ;,$(PATH))' ';'
-	detected_OS := Windows
-else
-	detected_OS := $(shell uname 2>/dev/null || echo Unknown)
-	detected_OS := $(patsubst CYGWIN%,Cygwin,$(detected_OS))
-	detected_OS := $(patsubst MSYS%,MSYS,$(detected_OS))
-	detected_OS := $(patsubst MINGW%,MSYS,$(detected_OS))
-endif
+# This should be called once before creating the webhook
+# with the environment variable GITHUB_TOKEN set
+create_github_token_secret:
+	@curl -v -X POST ${PACT_BROKER_BASE_URL}/secrets \
+	-H "Authorization: Bearer ${PACT_BROKER_TOKEN}" \
+	-H "Content-Type: application/json" \
+	-H "Accept: application/hal+json" \
+	-d  "{\"name\":\"githubCommitStatusToken\",\"description\":\"Github token for updating commit statuses\",\"value\":\"${GITHUB_TOKEN}\"}"
 
-ifeq ($(PACT_TOOL),ruby_standalone)
-# add path to standalone, and add bat if windows
-	ifneq ($(filter $(detected_OS),Windows MSYS),)
-		PACT_BROKER_COMMAND:="./pact/bin/${PACT_BROKER_COMMAND}.bat"
-		PACTFLOW_CLI_COMMAND:="./pact/bin/${PACTFLOW_CLI_COMMAND}.bat"
-	else
-		PACT_BROKER_COMMAND:="./pact/bin/${PACT_BROKER_COMMAND}"
-		PACTFLOW_CLI_COMMAND:="./pact/bin/${PACTFLOW_CLI_COMMAND}"
-	endif
-endif
+# This webhook will update the Github commit status for this commit
+# so that any PRs will get a status that shows what the status of
+# the pact is.
+create_or_update_github_commit_status_webhook:
+	@"${PACT_CLI}" \
+	  broker create-or-update-webhook \
+	  'https://api.github.com/repos/pactflow/example-consumer/statuses/$${pactbroker.consumerVersionNumber}' \
+	  --header 'Content-Type: application/json' 'Accept: application/vnd.github.v3+json' 'Authorization: token $${user.githubCommitStatusToken}' \
+	  --request POST \
+	  --data @${PWD}/pactflow/github-commit-status-webhook.json \
+	  --uuid ${GITHUB_WEBHOOK_UUID} \
+	  --consumer ${PACTICIPANT} \
+	  --contract-published \
+	  --provider-verification-published \
+	  --description "Github commit status webhook for ${PACTICIPANT}"
 
-ifeq ($(PACT_TOOL),docker)
-# add docker run command path
-	PACT_BROKER_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACT_BROKER_COMMAND}
-	PACTFLOW_CLI_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACTFLOW_CLI_COMMAND}
-endif
+test_github_webhook:
+	@curl -v -X POST ${PACT_BROKER_BASE_URL}/webhooks/${GITHUB_WEBHOOK_UUID}/execute -H "Authorization: Bearer ${PACT_BROKER_TOKEN}"
 
-
-install-pact-ruby-cli:
-	case "${PACT_CLI_VERSION}" in \
-	latest) gem install pact_broker-client;; \
-	"") gem install pact_broker-client;; \
-		*) gem install pact_broker-client -v ${PACT_CLI_VERSION} ;; \
-	esac
-
-uninstall-pact-ruby-cli:
-	gem uninstall -aIx pact_broker-client
-
-install-pact-ruby-standalone:
-	case "${detected_OS}" in \
-	Windows|MSYS) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-win32.zip && \
-		unzip pact-${PACT_CLI_STANDALONE_VERSION}-win32.zip && \
-		./pact/bin/pact-mock-service.bat --help && \
-		./pact/bin/pact-provider-verifier.bat --help && \
-		./pact/bin/pactflow.bat help;; \
-	Darwin) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-osx.tar.gz && \
-		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-osx.tar.gz && \
-		./pact/bin/pact-mock-service --help && \
-		./pact/bin/pact-provider-verifier --help && \
-		./pact/bin/pactflow help;; \
-	Linux) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
-		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
-		./pact/bin/pact-mock-service --help && \
-		./pact/bin/pact-provider-verifier --help && \
-		./pact/bin/pactflow help;; \
-	esac
 
 ## ======================
 ## Misc
 ## ======================
 
-convert:
-	npm run test:convert
 .env:
 	touch .env
 
-.PHONY: start stop test
+output:
+	mkdir -p ./pacts
+	touch ./pacts/tmp
+
+clean: output
+	rm pacts/*
