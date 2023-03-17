@@ -1,50 +1,29 @@
-import { User } from 'next-auth';
+import axiosInstance from 'axios.config';
+import { ICreateUser } from '../types/ICreateUser';
+import { IUpdateUser } from '../types/IUpdateUser';
 
 export const getUser = async (email: string) => {  
-  const res = await fetch(`http://localhost:8081/api/v1/users/user`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email: email }),
-  });
-  if (!res.ok) {
+  try {
+    axiosInstance.defaults.baseURL = process.env.API_BASE_URL;
+    const response = await axiosInstance.post('/api/v1/users/user', { email });
+    return response.data;
+  } catch (error) {
     return null;
   }
-  const data = await res.json();
-  return data;
-}
-
-export const createUser = async (userData: any) => {
-  let user = {
-    email: userData.email,
-    name: userData.name,
-    password: userData.password,
-  };
-  const res = await fetch('http://localhost:8081/api/v1/users/user/create', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  });
-  return res;
 };
 
-export const updateUser = async (user: User) => { 
-  const res = await fetch(`http://localhost:8081/api/v1/users/user/update`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  });
-  if (!res.ok) {
+export const createUser = async (userData: ICreateUser) => {
+  axiosInstance.defaults.baseURL = process.env.API_BASE_URL;
+  const response = await axiosInstance.post('/api/v1/users/user/create', userData);
+  return response;
+};
+
+export const updateUser = async (userData: IUpdateUser) => {
+  axiosInstance.defaults.baseURL = process.env.API_BASE_URL; 
+  try {
+    const response = await axiosInstance.put('/api/v1/users/user/update', userData);
+    return response;
+  } catch (error) {
     return null;
   }
-  const data = await res.json();
-  return data;
-}
+};

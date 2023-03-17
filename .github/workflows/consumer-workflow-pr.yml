@@ -1,0 +1,30 @@
+name: Pact consumer - on push to PR
+on:
+  pull_request:
+    branches:
+      - master
+env:
+  PACT_BROKER_BASE_URL: https://solenersync.pactflow.io
+  GIT_COMMIT: ${{ github.event.pull_request.head.sha }}
+
+jobs:
+  generate-and-publish-contracts:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+          cache: 'npm'
+      - name: Prepare
+        run: npm ci
+      - name: Test
+        run: npm run pact:test
+      - name: Publish contracts
+        run: |
+          echo "PWD=$(pwd)" >> $GITHUB_ENV
+          GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
+          docker run --rm -v $PWD:$PWD pactfoundation/pact-cli publish $PWD/pacts --consumer-app-version $GIT_COMMIT --tag $GIT_BRANCH --broker-base-url $PACT_BROKER_BASE_URL
