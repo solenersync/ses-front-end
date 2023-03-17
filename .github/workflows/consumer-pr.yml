@@ -29,7 +29,7 @@ jobs:
       - name: Test
         env:
           PACT_PROVIDER: ${{ matrix.pact_provider }}
-        run: npm run pact:test
+        run: npm run test:pact
       - name: Publish pacts between ses-front-end and ${{ matrix.pact_provider }}
         run: |
           echo "PWD=$(pwd)" >> $GITHUB_ENV
