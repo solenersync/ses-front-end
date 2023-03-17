@@ -13,7 +13,7 @@ const Profile: NextPageWithLayout = () => {
 
   useEffect(() => {
     async function fetchUser() {
-      setUpdatedUser({email: user.email, name: user.name} as IUpdateUser);
+      setUpdatedUser({email: user?.email, name: user?.name} as IUpdateUser);
     }
     fetchUser();
   }, [user]);

@@ -2,7 +2,7 @@ name: Pact consumer - on push to PR
 on:
   pull_request:
     branches:
-      - master
+      - main
 env:
   PACT_BROKER_BASE_URL: https://solenersync.pactflow.io
   GIT_COMMIT: ${{ github.event.pull_request.head.sha }}
