@@ -29,11 +29,13 @@ jobs:
       - name: Test
         env:
           PACT_PROVIDER: ${{ matrix.pact_provider }}
-        run: make test
+        run: npm run pact:test
       - name: Publish pacts between ses-front-end and ${{ matrix.pact_provider }}
-        run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
-        env:
-          PACT_PROVIDER: ${{ matrix.pact_provider }}
+        run: |
+          echo "PWD=$(pwd)" >> $GITHUB_ENV
+          GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
+          docker run --rm -v $PWD:$PWD pactfoundation/pact-cli publish $PWD/pacts --consumer-app-version $GIT_COMMIT --tag $GIT_BRANCH --broker-base-url $PACT_BROKER_BASE_URL
 
   # # Runs on branches as well, so we know the status of our PRs
   # can-i-deploy:
