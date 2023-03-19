@@ -1,46 +1,32 @@
 import { ISolarArray } from 'types/ISolarArray';
+import { axiosSolarArrayApi } from 'axios.config';
+
 
 export const getArrayData = async (userId: string) => {
-  const res = await fetch(`http://localhost:8083/api/v1/solar-arrays/array/user/${userId}`);
-  if (!res.ok) {
+  axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
+  try {
+    const response = await axiosSolarArrayApi.get(`/api/v1/solar-arrays/array/user/${userId}`);
+    return response.data;
+  } catch (error) {
     return null;
   }
-  const data = await res.json();
-  return data;
-}
-
-export const createArray = async (arrayData: ISolarArray) => {
-
-  const res = await fetch('http://localhost:8083/api/v1/solar-arrays/create', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(arrayData),
-  });
-  if (!res.ok) {
-    return null;
-  }
-  const data = await res.json();
-  return data;
 };
 
-export const updateArray = async (arrayData: ISolarArray) => {
+export const createArray = async (arrayData: ISolarArray) => {
+  axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
+  const response = await axiosSolarArrayApi.post('/api/v1/solar-arrays/create', arrayData);
+  return response;
+};
 
-  const res = await fetch('http://localhost:8083/api/v1/solar-arrays/update', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(arrayData),
-  });
-  if (!res.ok) {
+
+export const updateArray = async (arrayData: ISolarArray) => {
+  axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
+  try {
+    const response = await axiosSolarArrayApi.post('/api/v1/solar-arrays/update', arrayData);
+    return response;
+  } catch (error) {
     return null;
   }
-  const data = await res.json();
-  return data;
 };
 
 export const solarArrayApi =  {

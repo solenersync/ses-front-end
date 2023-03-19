@@ -17,7 +17,8 @@ jobs:
     strategy:
       matrix:
         pact_provider: [
-            'user-store'
+            'user-store',
+            'solar-array-store'
           ]
     steps:
       - uses: actions/checkout@v3
@@ -29,13 +30,11 @@ jobs:
       - name: Test
         env:
           PACT_PROVIDER: ${{ matrix.pact_provider }}
-        run: npm run test:pact
+        run: make test
       - name: Publish pacts between ses-front-end and ${{ matrix.pact_provider }}
-        run: |
-          echo "PWD=$(pwd)" >> $GITHUB_ENV
-          GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-          echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
-          docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli publish ${PWD}/pacts --consumer-app-version ${GIT_COMMIT} --branch ${GIT_BRANCH}
+        run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
+        env:
+          PACT_PROVIDER: ${{ matrix.pact_provider }}
 
   # Runs on branches as well, so we know the status of our PRs
   can-i-deploy:
