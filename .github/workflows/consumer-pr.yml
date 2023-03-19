@@ -17,7 +17,8 @@ jobs:
     strategy:
       matrix:
         pact_provider: [
-            'user-store'
+            'user-store',
+            'solar-array-store'
           ]
     steps:
       - uses: actions/checkout@v3
