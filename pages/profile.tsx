@@ -1,20 +1,19 @@
 import { AppLayout } from 'components/Layouts/AppLayout';
 import { NextPageWithLayout } from 'types';
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import router from 'next/router';
 import { updateUser } from 'api/userApi';
-import { User } from 'next-auth';
 import Link from 'next/link';
 import { useUserData } from 'hooks/useUserData';
+import { IUpdateUser } from '../types/IUpdateUser';
 
 const Profile: NextPageWithLayout = () => {
-  const [updatedUser, setUpdatedUser] = useState<User | undefined>();
+  const [updatedUser, setUpdatedUser] = useState<IUpdateUser | undefined>();
   const user = useUserData();
 
   useEffect(() => {
     async function fetchUser() {
-      setUpdatedUser(user);
+      setUpdatedUser({email: user?.email, name: user?.name} as IUpdateUser);
     }
     fetchUser();
   }, [user]);
@@ -25,7 +24,7 @@ const Profile: NextPageWithLayout = () => {
       return;
     }
     const res = await updateUser(updatedUser);
-    if (res) {
+    if (res?.status == 200) {
       router.push('/dashboard');
     }
   };

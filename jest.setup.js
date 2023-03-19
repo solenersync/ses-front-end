@@ -4,4 +4,3 @@ import 'jest-canvas-mock';
 
 
 
-

@@ -1,6 +1,5 @@
-export interface CreateUser {
+export interface ICreateUser {
   email: string;
   password: string;
   name: string;
-  userId: string;
 }

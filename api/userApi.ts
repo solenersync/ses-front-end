@@ -1,50 +1,29 @@
-import { User } from 'next-auth';
+import { axiosUserApi } from 'axios.config';
+import { ICreateUser } from '../types/ICreateUser';
+import { IUpdateUser } from '../types/IUpdateUser';
 
-export const getUser = async (email: string) => {  
-  const res = await fetch(`http://localhost:8081/api/v1/users/user`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email: email }),
-  });
-  if (!res.ok) {
+export const getUser = async (email: string) => {
+  axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
+  try {
+    const response = await axiosUserApi.post('/api/v1/users/user', { email });
+    return response.data;
+  } catch (error) {
     return null;
   }
-  const data = await res.json();
-  return data;
-}
-
-export const createUser = async (userData: any) => {
-  let user = {
-    email: userData.email,
-    name: userData.name,
-    password: userData.password,
-  };
-  const res = await fetch('http://localhost:8081/api/v1/users/user/create', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  });
-  return res;
 };
 
-export const updateUser = async (user: User) => { 
-  const res = await fetch(`http://localhost:8081/api/v1/users/user/update`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  });
-  if (!res.ok) {
+export const createUser = async (userData: ICreateUser) => {
+  axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
+  const response = await axiosUserApi.post('/api/v1/users/user/create', userData);
+  return response;
+};
+
+export const updateUser = async (userData: IUpdateUser) => {
+  axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
+  try {
+    const response = await axiosUserApi.put('/api/v1/users/user/update', userData);
+    return response;
+  } catch (error) {
     return null;
   }
-  const data = await res.json();
-  return data;
-}
+};
