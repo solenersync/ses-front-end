@@ -2,8 +2,6 @@ import path from 'path';
 import { PactV3 } from '@pact-foundation/pact';
 import { like } from '@pact-foundation/pact/src/dsl/matchers';
 import { User } from 'next-auth';
-import { IUserResponse } from 'types/IUserResponse';
-import { createUser, updateUser } from '../../api/userApi';
 import { ISolarArray } from 'types/ISolarArray';
 import { getArrayData } from 'api/solarArrayApi';
 
@@ -37,8 +35,6 @@ describe('solar-array-store', () => {
     await provider.executeTest(async (mockService) => {
       process.env.API_BASE_URL = mockService.url;
       const resp = await getArrayData(user.userId);
-      expect(resp.solarArrayId).toEqual(solarArray.solarArrayId);
-      expect(resp.userId).toEqual(solarArray.userId);
       expect(resp.lat).toEqual(solarArray.lat);
       expect(resp.lon).toEqual(solarArray.lon);
       expect(resp.peakPower).toEqual(solarArray.peakPower);

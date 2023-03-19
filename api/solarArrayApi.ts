@@ -13,37 +13,20 @@ export const getArrayData = async (userId: string) => {
 };
 
 export const createArray = async (arrayData: ISolarArray) => {
-
-  const res = await fetch('http://localhost:8083/api/v1/solar-arrays/create', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(arrayData),
-  });
-  if (!res.ok) {
-    return null;
-  }
-  const data = await res.json();
-  return data;
+  axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
+  const response = await axiosSolarArrayApi.post('/api/v1/solar-arrays/create', arrayData);
+  return response;
 };
 
-export const updateArray = async (arrayData: ISolarArray) => {
 
-  const res = await fetch('http://localhost:8083/api/v1/solar-arrays/update', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(arrayData),
-  });
-  if (!res.ok) {
+export const updateArray = async (arrayData: ISolarArray) => {
+  axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
+  try {
+    const response = await axiosSolarArrayApi.post('/api/v1/solar-arrays/update', arrayData);
+    return response;
+  } catch (error) {
     return null;
   }
-  const data = await res.json();
-  return data;
 };
 
 export const solarArrayApi =  {
