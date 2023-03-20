@@ -1,8 +1,8 @@
-import { getSolarForecast } from 'api/solarForecastApi';
-import { useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
-import { getArrayData } from 'api/solarArrayApi';
-import { Irradiance } from '../../types/Irradiance';
+import { getSolarForecast } from "api/solarForecastApi";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
+import { getArrayData } from "api/solarArrayApi";
+import { ISolarForecastData } from "../../types/ISolarForecastData";
 import {
   Chart as ChartJs,
   CategoryScale,
@@ -13,8 +13,8 @@ import {
   Legend,
   LinearScale,
   LineElement,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
+} from "chart.js";
+import { Line } from "react-chartjs-2";
 
 type ChartProps = {
   userId: string;
@@ -32,7 +32,7 @@ type Labels = string[];
 
 const SolarForecastChart = ({ userId, month }: ChartProps) => {
   const { status, data: sessionData } = useSession();
-  const [, setForecastData] = useState<Irradiance[] | null>(null);
+  const [, setForecastData] = useState<ISolarForecastData[] | null>(null);
   const [chartData, setChartData] = useState({
     datasets: [] as Dataset[],
     labels: [] as Labels,
@@ -65,37 +65,37 @@ const SolarForecastChart = ({ userId, month }: ChartProps) => {
 
       setChartData({
         labels: [
-          '00:00',
-          '01:00',
-          '02:00',
-          '03:00',
-          '04:00',
-          '05:00',
-          '06:00',
-          '07:00',
-          '08:00',
-          '09:00',
-          '10:00',
-          '11:00',
-          '12:00',
-          '13:00',
-          '14:00',
-          '15:00',
-          '16:00',
-          '17:00',
-          '18:00',
-          '19:00',
-          '20:00',
-          '21:00',
-          '22:00',
-          '23:00',
+          "00:00",
+          "01:00",
+          "02:00",
+          "03:00",
+          "04:00",
+          "05:00",
+          "06:00",
+          "07:00",
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00",
+          "17:00",
+          "18:00",
+          "19:00",
+          "20:00",
+          "21:00",
+          "22:00",
+          "23:00",
         ],
         datasets: [
           {
-            label: 'Kwh',
+            label: "Kwh",
             data: forecastResult?.map((x: any) => x.peakGlobalOutput) || [],
-            borderColor: 'rgba(255, 99, 132, 1)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: "rgba(255, 99, 132, 1)",
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
           },
         ],
       });
@@ -105,11 +105,11 @@ const SolarForecastChart = ({ userId, month }: ChartProps) => {
       responsive: true,
       plugins: {
         legend: {
-          position: 'top',
+          position: "top",
         },
         title: {
           display: true,
-          text: 'Todays Solar Output Forecast',
+          text: "Todays Solar Output Forecast",
         },
       },
     });
@@ -117,11 +117,11 @@ const SolarForecastChart = ({ userId, month }: ChartProps) => {
 
   return (
     <>
-      <div className='space-y-6 pt-8 sm:space-y-5 sm:pt-10'>
+      <div className="space-y-6 pt-8 sm:space-y-5 sm:pt-10">
         <Line
           options={chartOptions}
           data={chartData}
-          data-testid='solar-forecast-chart'
+          data-testid="solar-forecast-chart"
         />
       </div>
     </>

@@ -1,5 +1,6 @@
 import { ISolarArray } from 'types/ISolarArray';
 import { axiosSolarArrayApi } from 'axios.config';
+import { ICreateSolarArray } from '../types/ICreateSolarArray';
 
 
 export const getArrayData = async (userId: string) => {
@@ -12,10 +13,14 @@ export const getArrayData = async (userId: string) => {
   }
 };
 
-export const createArray = async (arrayData: ISolarArray) => {
+export const createArray = async (arrayData: ICreateSolarArray) => {
   axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
-  const response = await axiosSolarArrayApi.post('/api/v1/solar-arrays/create', arrayData);
-  return response;
+  try {
+    const response = await axiosSolarArrayApi.post('/api/v1/solar-arrays/create', arrayData);
+    return response;
+  } catch (error) {
+    return null;
+  }
 };
 
 

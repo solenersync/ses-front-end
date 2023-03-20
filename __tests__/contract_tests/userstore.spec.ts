@@ -3,8 +3,9 @@ import { PactV3 } from '@pact-foundation/pact';
 import { like } from '@pact-foundation/pact/src/dsl/matchers';
 import { User } from 'next-auth';
 import { IUserResponse } from 'types/IUserResponse';
-import { getUser, createUser, updateUser } from '../../api/userApi';
+import { getUser, createUser, updateUser, authenticate } from '../../api/userApi';
 import { ICreateUser } from '../../types/ICreateUser';
+import { IBasicAuthUser } from '../../types/IBasicAuthUser';
 
 const provider = new PactV3({
   consumer: 'ses-front-end',
@@ -13,11 +14,12 @@ const provider = new PactV3({
   dir: path.resolve(process.cwd(), 'pacts'),
 });
 
-describe('userstore', () => {
+describe('userstore contract tests', () => {
 
   const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: '1', id:'' };
   const userResp: IUserResponse = { name: 'John Doe', email: 'jd@test.com',  userId: 1, registeredDate:'2023-03-16T10:40:30' }
   const userPayload: ICreateUser = { email: 'jd@test.com',  password:'secret26', name: 'John Doe' };
+  const basicAuthUser: IBasicAuthUser = { email: 'jd@test.com',  password:'secret26' };
 
   test('get user by email', async () => {
 
@@ -42,9 +44,10 @@ describe('userstore', () => {
     await provider.executeTest(async (mockService) => {
       process.env.API_BASE_URL = mockService.url;
       const resp = await getUser(user.email);
-      expect(resp.email).toEqual(userResp.email);
-      expect(resp.name).toEqual(userResp.name);
-      expect(resp.userId).toEqual(userResp.userId);
+      expect(resp.status).toEqual(200);
+      expect(resp.data.email).toEqual(userResp.email);
+      expect(resp.data.name).toEqual(userResp.name);
+      expect(resp.data.userId).toEqual(userResp.userId);
       });
     
   });
@@ -98,6 +101,33 @@ describe('userstore', () => {
       process.env.API_BASE_URL = mockService.url;
       const resp = await updateUser({email: userPayload.email, name: userPayload.name});
       expect(resp.status).toEqual(200);
+    });
+    
+  });
+
+  test('authenticate user', async () => {
+
+    provider.addInteraction({
+      states: [{description: 'should authenticate user and return a user object'}],
+      uponReceiving: 'a valid payload for update user',
+      withRequest: {
+        method: 'POST',
+        path: '/api/v1/users/user/authenticate',
+        body: like(basicAuthUser),
+      },
+      willRespondWith: {
+        body: like(userResp),
+        status: 200
+      },
+    });
+
+    await provider.executeTest(async (mockService) => {
+      process.env.API_BASE_URL = mockService.url;
+      const resp = await authenticate(basicAuthUser);
+      expect(resp.status).toEqual(200);
+      expect(resp.data.email).toEqual(userResp.email);
+      expect(resp.data.name).toEqual(userResp.name);
+      expect(resp.data.userId).toEqual(userResp.userId);
     });
     
   });

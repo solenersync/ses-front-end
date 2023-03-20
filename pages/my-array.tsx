@@ -54,7 +54,7 @@ const MyArray: NextPageWithLayout = () => {
     } else {
       res = await updateArray(mySolarArray);
     }
-    if (res) {
+    if (res?.status === 200) {
       router.push('/solar-array');
     }
   };

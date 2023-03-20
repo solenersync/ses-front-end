@@ -1,4 +1,4 @@
-export interface Irradiance {
+export interface ISolarForecastData {
   time: string;
   month: number;
   peakGlobalOutput: number;

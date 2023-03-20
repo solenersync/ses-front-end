@@ -1,6 +1,6 @@
 import CredentialsProvider from 'next-auth/providers/credentials'
 import NextAuth, { NextAuthOptions, User } from 'next-auth'
-import { authenticate } from '../../../api/authApi';
+import { authenticate } from '../../../api/userApi';
 
 const authOptions: NextAuthOptions = {
   session: {
@@ -16,9 +16,9 @@ const authOptions: NextAuthOptions = {
            email: string, 
            password: string,
         };
-        const user = await authenticate({email, password});
-        if (user) {
-          return user;
+        const resp = await authenticate({email, password});
+        if (resp.status === 200) {
+          return resp.data;
         } else {
           throw new Error(`Authentication error for user with email: ${email}`)
         }
