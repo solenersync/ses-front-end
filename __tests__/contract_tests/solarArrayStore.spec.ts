@@ -3,7 +3,8 @@ import { PactV3 } from '@pact-foundation/pact';
 import { like } from '@pact-foundation/pact/src/dsl/matchers';
 import { User } from 'next-auth';
 import { ISolarArray } from 'types/ISolarArray';
-import { getArrayData } from 'api/solarArrayApi';
+import { getArrayData, createArray, updateArray } from 'api/solarArrayApi';
+import { ICreateSolarArray } from 'types/ICreateSolarArray';
 
 const provider = new PactV3({
   consumer: 'ses-front-end',
@@ -12,10 +13,11 @@ const provider = new PactV3({
   dir: path.resolve(process.cwd(), 'pacts'),
 });
 
-describe('solar-array-store', () => {
+describe('solar-array-store contract tests', () => {
 
   const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: '1', id:'' };
   const solarArray: ISolarArray = { solarArrayId:1, userId:"1", lat: 52.207306, lon: -6.52026, peakPower: 8.2, loss: 0.145, angle: 35.0, aspect: 2.0, mounting: "FREE"};
+  const solarArrayPayload: ICreateSolarArray = { userId:"1", lat: 52.207306, lon: -6.52026, peakPower: 8.2, loss: 0.145, angle: 35.0, aspect: 2.0, mounting: "FREE"};
 
   test('get user solar array', async () => {
 
@@ -43,6 +45,70 @@ describe('solar-array-store', () => {
       expect(resp.aspect).toEqual(solarArray.aspect);
       expect(resp.mounting).toEqual(solarArray.mounting);
       });
+    
+  });
+  test('create solar array', async () => {
+
+    provider.addInteraction({
+      states: [{description: 'should create solar array and return array details'}],
+      uponReceiving: 'a valid payload for create solar array',
+      withRequest: {
+        method: 'POST',
+        path: '/api/v1/solar-arrays/create',
+        body: {
+          userId: solarArrayPayload.userId,
+          lat: solarArrayPayload.lat,
+          lon: solarArrayPayload.lon,
+          peakPower: solarArrayPayload.peakPower,
+          loss: solarArrayPayload.loss,
+          angle: solarArrayPayload.angle,
+          aspect: solarArrayPayload.aspect,
+          mounting: solarArrayPayload.mounting,
+        },
+      },
+      willRespondWith: {
+        status: 200,
+      },
+    });
+
+    await provider.executeTest(async (mockService) => {
+      process.env.API_BASE_URL = mockService.url;
+      const resp = await createArray(solarArrayPayload);
+      expect(resp.status).toEqual(200);
+      });
+    
+  });
+
+  test('update solar array', async () => {
+
+    provider.addInteraction({
+      states: [{description: 'should update user and return status 200'}],
+      uponReceiving: 'a valid payload for update user',
+      withRequest: {
+        method: 'POST',
+        path: '/api/v1/solar-arrays/update',
+        body: {
+          solarArrayId: solarArray.solarArrayId,
+          userId: solarArray.userId,
+          lat: solarArray.lat,
+          lon: solarArray.lon,
+          peakPower: solarArray.peakPower,
+          loss: solarArray.loss,
+          angle: solarArray.angle,
+          aspect: solarArray.aspect,
+          mounting: solarArray.mounting,
+        },
+      },
+      willRespondWith: {
+        status: 200
+      },
+    });
+
+    await provider.executeTest(async (mockService) => {
+      process.env.API_BASE_URL = mockService.url;
+      const resp = await updateArray(solarArray);
+      expect(resp.status).toEqual(200);
+    });
     
   });
 

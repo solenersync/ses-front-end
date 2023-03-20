@@ -1,18 +1,12 @@
-import { ISolarArray } from 'types/ISolarArray';
+import { axiosSolarForecastApi } from 'axios.config';
+import { ISolarForecastRequest } from '../types/ISolarForecastRequest';
 
-export const getSolarForecast = async (arrayData: ISolarArray) => {
-
-  const res = await fetch('http://localhost:8080/api/v1/pv/daily', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(arrayData),
-  });
-  if (!res.ok) {
+export const getSolarForecast = async (arrayData: ISolarForecastRequest) => {
+  axiosSolarForecastApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarForecastApi.defaults.baseURL;
+  try {
+    const response = await axiosSolarForecastApi.post('/api/v1/pv/daily', arrayData);
+    return response.data;
+  } catch (error) {
     return null;
   }
-  const data = await res.json();
-  return data;
 };

@@ -7,6 +7,7 @@ import MyArray from 'pages/my-array';
 import { User } from 'next-auth';
 import { ISolarArray } from 'types/ISolarArray';
 import '@testing-library/jest-dom';
+import { AxiosResponse } from 'axios';
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
@@ -50,6 +51,13 @@ describe('MyArray', () => {
     mounting: 'Free Standing',
     solarArrayId: '2',
   };
+  const axiosResponse: AxiosResponse = {
+    data: solarArray,
+    status: 200,
+    statusText: '',
+    headers: undefined,
+    config: undefined
+  };
 
   beforeEach(() => {
     mockUseSession.mockReturnValue({
@@ -57,7 +65,7 @@ describe('MyArray', () => {
       data: { user },
     });
     (useUserData as jest.Mock).mockReturnValue(user);
-    (createArray as jest.Mock).mockResolvedValue(solarArray);
+    (createArray as jest.Mock).mockResolvedValue(axiosResponse);
     (updateArray as jest.Mock).mockResolvedValue(solarArray);
   });
 

@@ -19,7 +19,7 @@ export const useUserData = () => {
     const { user } = sessionData;
     async function fetchData() {
       const userResp = await getUser(user.email);
-      setUserData(userResp);
+      setUserData(userResp.data);
     }
     fetchData();
   }, [status, sessionData]);
