@@ -113,7 +113,10 @@ describe('userstore contract tests', () => {
       withRequest: {
         method: 'POST',
         path: '/api/v1/users/user/authenticate',
-        body: like(basicAuthUser),
+        body: {
+          email: basicAuthUser.email,
+          password: basicAuthUser.password
+        }
       },
       willRespondWith: {
         body: like(userResp),

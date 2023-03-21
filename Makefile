@@ -14,8 +14,8 @@ GIT_COMMIT?=$(shell git rev-parse HEAD)
 GIT_BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
 ENVIRONMENT?=production
 
-# Only deploy from master (to production env) or test (to test env)
-ifeq ($(GIT_BRANCH),master)
+# Only deploy from main (to production env) or test (to test env)
+ifeq ($(GIT_BRANCH),main)
 	ENVIRONMENT=production
 	DEPLOY_TARGET=deploy
 else
