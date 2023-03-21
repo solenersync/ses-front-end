@@ -7,7 +7,7 @@ import { getSolarForecast } from 'api/solarForecastApi';
 
 const provider = new PactV3({
   consumer: 'ses-front-end',
-  provider: 'solar-array-store',
+  provider: 'pv-service',
   logLevel: 'error',
   dir: path.resolve(process.cwd(), 'pacts'),
 });
