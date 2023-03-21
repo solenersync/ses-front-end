@@ -2,12 +2,12 @@ import path from 'path';
 import { PactV3 } from '@pact-foundation/pact';
 import { ISolarForecastRequest } from '../../types/ISolarForecastRequest';
 import { ISolarForecastData } from 'types/ISolarForecastData';
-import { like } from '@pact-foundation/pact/src/dsl/matchers';
+import { eachLike, like } from '@pact-foundation/pact/src/dsl/matchers';
 import { getSolarForecast } from 'api/solarForecastApi';
 
 const provider = new PactV3({
   consumer: 'ses-front-end',
-  provider: 'solar-array-store',
+  provider: 'pv-service',
   logLevel: 'error',
   dir: path.resolve(process.cwd(), 'pacts'),
 });
@@ -37,20 +37,20 @@ describe('pv-service contract tests', () => {
       },
       willRespondWith: {
         status: 200,
-        body: like(forecast),
+        body: eachLike(forecast),
       },
     });
 
     await provider.executeTest(async (mockService) => {
       process.env.API_BASE_URL = mockService.url;
       const resp = await getSolarForecast(solarForecastRequest);
-      expect(resp.time).toEqual(forecast.time);
-      expect(resp.month).toEqual(forecast.month);
-      expect(resp.peakGlobalOutput).toEqual(forecast.peakGlobalOutput);
-      expect(resp["G(i)"]).toEqual(forecast["G(i)"]);
-      expect(resp["Gb(i)"]).toEqual(forecast["Gb(i)"]);
-      expect(resp["Gd(i)"]).toEqual(forecast["Gd(i)"]);
-      expect(resp["Gcs(i)"]).toEqual(forecast["Gcs(i)"]);
+      expect(resp[0].time).toEqual(forecast.time);
+      expect(resp[0].month).toEqual(forecast.month);
+      expect(resp[0].peakGlobalOutput).toEqual(forecast.peakGlobalOutput);
+      expect(resp[0]["G(i)"]).toEqual(forecast["G(i)"]);
+      expect(resp[0]["Gb(i)"]).toEqual(forecast["Gb(i)"]);
+      expect(resp[0]["Gd(i)"]).toEqual(forecast["Gd(i)"]);
+      expect(resp[0]["Gcs(i)"]).toEqual(forecast["Gcs(i)"]);
       });
   });
 
