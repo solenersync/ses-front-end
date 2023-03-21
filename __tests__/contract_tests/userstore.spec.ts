@@ -109,7 +109,7 @@ describe('userstore contract tests', () => {
 
     provider.addInteraction({
       states: [{description: 'should authenticate user and return a user object'}],
-      uponReceiving: 'a valid payload for update user',
+      uponReceiving: 'a valid email and passwrord',
       withRequest: {
         method: 'POST',
         path: '/api/v1/users/user/authenticate',
