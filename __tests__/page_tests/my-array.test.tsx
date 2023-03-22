@@ -26,7 +26,7 @@ describe('MyArray', () => {
   const user: User = {
     name: 'John Doe',
     email: 'jd@test.com',
-    userId: '1',
+    userId: 1,
     id: '',
   };
   const solarArray: ISolarArray = {
@@ -38,7 +38,7 @@ describe('MyArray', () => {
     angle: 35,
     aspect: 2,
     mounting: 'Free Standing',
-    userId: '1',
+    userId: 1,
   };
   const mockUseSession = originalUseSession as jest.Mock;
   const query = {
@@ -133,7 +133,7 @@ describe('MyArray', () => {
       angle: 45,
       aspect: 15,
       mounting: 'Free Standing',
-      userId: '1',
+      userId: 1,
     });
 
     expect(routerPushMock).toHaveBeenCalledWith('/solar-array');

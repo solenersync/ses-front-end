@@ -4,8 +4,8 @@ import { ISolarArray } from 'types/ISolarArray';
 jest.mock('api/solarArrayApi');
 
 describe('Solar Array Api', () => {
-  const mockUserId = '1'
-  const solarArray: ISolarArray = { solarArrayId: 1, lon: 1, lat: 1, peakPower: 1, loss: 1, angle: 1, aspect: 1, mounting: 'test', userId: '1'};
+  const mockUserId = 1
+  const solarArray: ISolarArray = { solarArrayId: 1, lon: 1, lat: 1, peakPower: 1, loss: 1, angle: 1, aspect: 1, mounting: 'test', userId: 1};
 
   beforeEach(() => {
     (getArrayData as jest.Mock).mockResolvedValue(solarArray);

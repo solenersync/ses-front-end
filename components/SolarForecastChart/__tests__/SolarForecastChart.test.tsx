@@ -25,7 +25,7 @@ class MockResizeObserver {
 global.ResizeObserver = MockResizeObserver as any;
 
 describe('SolarForecastChart', () => {
-  const mockUserId = '1';
+  const mockUserId = 1;
   const mockMonth = 1;
   const mockArrayData = { month: mockMonth };
   const mockForecastData = [
@@ -61,7 +61,7 @@ describe('SolarForecastChart', () => {
       render(<SolarForecastChart userId={mockUserId} month={mockMonth} />);
     });
     await screen.findAllByTestId('solar-forecast-chart');
-    expect(getArrayData).toHaveBeenCalledWith('1');
+    expect(getArrayData).toHaveBeenCalledWith(1);
     expect(getSolarForecast).not.toHaveBeenCalled();
   });
 

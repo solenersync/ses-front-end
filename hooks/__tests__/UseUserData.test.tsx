@@ -20,7 +20,7 @@ jest.mock('api/userApi');
 
 describe('UseUserData Hook', () => {
 
-  const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: '1', id:'' };
+  const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: 1, id:'' };
   const userRespBody: IUserResponse = { name: 'John Doe', email: 'jd@test.com',  userId: 1, registeredDate:'2023-03-16T10:40:30' }
 
   const axiosResponse: AxiosResponse = {

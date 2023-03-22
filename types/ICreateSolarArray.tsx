@@ -6,5 +6,5 @@ export interface ICreateSolarArray {
   angle: number;
   aspect: number;
   mounting: string;
-  userId: string;
+  userId: number;
 }

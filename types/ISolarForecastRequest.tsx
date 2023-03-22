@@ -6,6 +6,6 @@ export interface ISolarForecastRequest {
   angle: number;
   aspect: number;
   mounting: string;
-  userId: string;
+  userId: number;
   month: number;
 }

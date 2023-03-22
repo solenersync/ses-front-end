@@ -22,7 +22,7 @@ describe("Solar Forecast Api", () => {
     angle: 1,
     aspect: 1,
     mounting: "test",
-    userId: "1",
+    userId: 1,
     month: 1,
   };
 
