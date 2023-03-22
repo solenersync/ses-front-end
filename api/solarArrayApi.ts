@@ -3,7 +3,7 @@ import { axiosSolarArrayApi } from 'axios.config';
 import { ICreateSolarArray } from '../types/ICreateSolarArray';
 
 
-export const getArrayData = async (userId: string) => {
+export const getArrayData = async (userId: number) => {
   axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
   try {
     const response = await axiosSolarArrayApi.get(`/api/v1/solar-arrays/array/user/${userId}`);

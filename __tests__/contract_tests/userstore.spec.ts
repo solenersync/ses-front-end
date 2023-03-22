@@ -16,7 +16,7 @@ const provider = new PactV3({
 
 describe('userstore contract tests', () => {
 
-  const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: '1', id:'' };
+  const user: User = { name: 'John Doe', email: 'jd@test.com',  userId: 1, id:'' };
   const userResp: IUserResponse = { name: 'John Doe', email: 'jd@test.com',  userId: 1, registeredDate:'2023-03-16T10:40:30' }
   const userPayload: ICreateUser = { email: 'jd@test.com',  password:'secret26', name: 'John Doe' };
   const basicAuthUser: IBasicAuthUser = { email: 'jd@test.com',  password:'secret26' };

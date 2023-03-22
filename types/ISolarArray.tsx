@@ -7,5 +7,5 @@ export interface ISolarArray {
   angle: number;
   aspect: number;
   mounting: string;
-  userId: string;
+  userId: number;
 }

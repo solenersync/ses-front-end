@@ -17,19 +17,11 @@ const axiosSolarArrayApi = axios.create({
 });
 
 const axiosSolarForecastApi = axios.create({
-  baseURL: process.env.API_BASE_URL || 'http://localhost:8082',
+  baseURL: process.env.API_BASE_URL || 'http://localhost:8080',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
 });
 
-const authApi = axios.create({
-  baseURL: process.env.API_BASE_URL || 'http://localhost:8081',
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
-});
-
-export { axiosUserApi, axiosSolarArrayApi, axiosSolarForecastApi, authApi };
+export { axiosUserApi, axiosSolarArrayApi, axiosSolarForecastApi };
