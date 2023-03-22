@@ -24,7 +24,7 @@ describe('solar-array-store contract tests', () => {
 
     provider.addInteraction({
       states: [{description: 'a solar array exists'}],
-      uponReceiving: 'a request to get a solar array',
+      uponReceiving: 'a valid request to get a solar array',
       withRequest: {
         method: 'GET',
         path: '/api/v1/solar-arrays/array/user/1',
@@ -53,7 +53,7 @@ describe('solar-array-store contract tests', () => {
 
     provider.addInteraction({
       states: [{description: 'a solar array doesnt exist'}],
-      uponReceiving: 'a request to get a solar array',
+      uponReceiving: 'an invalid request to get a solar array',
       withRequest: {
         method: 'GET',
         path: '/api/v1/solar-arrays/array/user/1',

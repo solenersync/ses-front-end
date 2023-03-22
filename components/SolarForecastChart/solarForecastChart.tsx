@@ -58,7 +58,7 @@ const SolarForecastChart = ({ userId, month }: ChartProps) => {
       }
       arrayResult.month = month;
       const forecastResult = await getSolarForecast(arrayResult);
-      if (!forecastResult?.data) {
+      if (forecastResult?.status !== 200) {
         return;
       }
       setForecastData(forecastResult.data);

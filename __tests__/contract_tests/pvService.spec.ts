@@ -68,7 +68,7 @@ describe('pv-service contract tests', () => {
         body: like(invalidSolarForecastRequest),
       },
       willRespondWith: {
-        status: 404,
+        status: 400,
       },
     });
 

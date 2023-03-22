@@ -15,8 +15,12 @@ export const getUser = async (email: string) => {
 
 export const createUser = async (userData: ICreateUser) => {
   axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
-  const response = await axiosUserApi.post('/api/v1/users/user/create', userData);
-  return response;
+  try {
+    const response = await axiosUserApi.post('/api/v1/users/user/create', userData);
+    return response;
+  } catch (error) {   
+    return null;
+  }
 };
 
 export const updateUser = async (userData: IUpdateUser) => {
