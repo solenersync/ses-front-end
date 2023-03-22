@@ -34,7 +34,7 @@ const Home: NextPage = (props) => {
                     Solenersync
                   </h1>
                   <p className='mt-6 text-xl text-gray-500'>
-                    Synchronise your home energy with our solar irradiance
+                    Synchronise your home energy with our solar
                     forecasting service
                   </p>
                 </div>
@@ -100,9 +100,9 @@ const Home: NextPage = (props) => {
                       <span className='font-medium text-gray-900'>
                         Rated 5 stars
                       </span>{' '}
-                      by over{' '}
+                      by{' '}
                       <span className='font-medium text-rose-500'>
-                        500 beta users
+                        beta users
                       </span>
                     </div>
                   </div>

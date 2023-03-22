@@ -1,5 +1,5 @@
-import React from 'react';
-import { render, screen, act } from '@testing-library/react';
+import React, { useState } from 'react';
+import { render, screen, act, renderHook } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { useSession } from 'next-auth/react';
 import { getSolarForecast } from 'api/solarForecastApi';
@@ -29,9 +29,9 @@ describe('SolarForecastChart', () => {
   const mockMonth = 1;
   const mockArrayData = { month: mockMonth };
   const mockForecastData = [
-    { peakGlobalOutput: 10 },
-    { peakGlobalOutput: 20 },
-    { peakGlobalOutput: 30 },
+    { peakGlobalOutput: 8.2 },
+    { peakGlobalOutput: 9.2 },
+    { peakGlobalOutput: 10.2 },
   ];
 
   beforeEach(() => {
@@ -83,5 +83,33 @@ describe('SolarForecastChart', () => {
     await screen.findAllByTestId('solar-forecast-chart');
     expect(getArrayData).toHaveBeenCalledWith(mockUserId);
     expect(getSolarForecast).toHaveBeenCalledWith(mockArrayData);
+  });
+
+  test('updates the forecast data state', () => {
+    const { result } = renderHook(() => useState(null));
+    const [, setForecastData] = result.current;
+  
+    act(() => {
+      setForecastData([{ date: '01-01-2023', peakGlobalOutput: 8.2 }]);
+    });
+  
+    expect(result.current[0]).toEqual([{ date: '01-01-2023', peakGlobalOutput: 8.2 }]);
+  });
+
+  test('updates the chart data state', () => {
+    const { result } = renderHook(() => useState({ datasets: [], labels: [] }));
+    const [, setChartData] = result.current;
+  
+    act(() => {
+      setChartData({
+        labels: ['00:00', '01:00'],
+        datasets: [{ data: [8.2, 8.2] }]
+      });
+    });
+  
+    expect(result.current[0]).toEqual({
+      labels: ['00:00', '01:00'],
+      datasets: [{ data: [8.2, 8.2] }]
+    });
   });
 });

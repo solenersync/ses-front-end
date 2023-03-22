@@ -15,6 +15,9 @@ const provider = new PactV3({
 describe('pv-service contract tests', () => {
 
   const solarForecastRequest: ISolarForecastRequest = { userId:1, lat: 52.207306, lon: -6.52026, peakPower: 8.2, loss: 0.145, angle: 35.0, aspect: 2.0, mounting: "FREE", month: 1};
+  //lat log for atlantic ocean
+  const invalidSolarForecastRequest: ISolarForecastRequest = { userId:1, lat: 52.468979, lon: -19.730724, peakPower: 8.2, loss: 0.145, angle: 35.0, aspect: 2.0, mounting: "FREE", month: 1};
+
   const forecast: ISolarForecastData = {
       time: "2023-02-24T00:00:00",
       month: 1,
@@ -25,10 +28,10 @@ describe('pv-service contract tests', () => {
       "Gcs(i)": 1,
     };
 
-  test('get solar forecast', async () => {
+  test('a solar forecast is available', async () => {
 
     provider.addInteraction({
-      states: [{description: 'should return a solar forecast'}],
+      states: [{description: 'a solar forecast is available'}],
       uponReceiving: 'a request to get a solar forecast',
       withRequest: {
         method: 'POST',
@@ -44,13 +47,35 @@ describe('pv-service contract tests', () => {
     await provider.executeTest(async (mockService) => {
       process.env.API_BASE_URL = mockService.url;
       const resp = await getSolarForecast(solarForecastRequest);
-      expect(resp[0].time).toEqual(forecast.time);
-      expect(resp[0].month).toEqual(forecast.month);
-      expect(resp[0].peakGlobalOutput).toEqual(forecast.peakGlobalOutput);
-      expect(resp[0]["G(i)"]).toEqual(forecast["G(i)"]);
-      expect(resp[0]["Gb(i)"]).toEqual(forecast["Gb(i)"]);
-      expect(resp[0]["Gd(i)"]).toEqual(forecast["Gd(i)"]);
-      expect(resp[0]["Gcs(i)"]).toEqual(forecast["Gcs(i)"]);
+      expect(resp.data[0].time).toEqual(forecast.time);
+      expect(resp.data[0].month).toEqual(forecast.month);
+      expect(resp.data[0].peakGlobalOutput).toEqual(forecast.peakGlobalOutput);
+      expect(resp.data[0]["G(i)"]).toEqual(forecast["G(i)"]);
+      expect(resp.data[0]["Gb(i)"]).toEqual(forecast["Gb(i)"]);
+      expect(resp.data[0]["Gd(i)"]).toEqual(forecast["Gd(i)"]);
+      expect(resp.data[0]["Gcs(i)"]).toEqual(forecast["Gcs(i)"]);
+      });
+  });
+
+  test('a solar forecast is not available', async () => {
+
+    provider.addInteraction({
+      states: [{description: 'a solar forecast is not available'}],
+      uponReceiving: 'a request to get a solar forecast for an invalid location',
+      withRequest: {
+        method: 'POST',
+        path: '/api/v1/pv/daily',
+        body: like(invalidSolarForecastRequest),
+      },
+      willRespondWith: {
+        status: 400,
+      },
+    });
+
+    await provider.executeTest(async (mockService) => {
+      process.env.API_BASE_URL = mockService.url;
+      const resp = await getSolarForecast(invalidSolarForecastRequest);
+      expect(resp).toBeNull();
       });
   });
 

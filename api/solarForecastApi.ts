@@ -5,8 +5,9 @@ export const getSolarForecast = async (arrayData: ISolarForecastRequest) => {
   axiosSolarForecastApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarForecastApi.defaults.baseURL;
   try {
     const response = await axiosSolarForecastApi.post('/api/v1/pv/daily', arrayData);
-    return response.data;
+    return response;
   } catch (error) {
+    console.error('Error fetching solar forecast:', error);
     return null;
   }
 };

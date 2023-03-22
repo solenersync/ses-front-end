@@ -21,11 +21,11 @@ describe('userstore contract tests', () => {
   const userPayload: ICreateUser = { email: 'jd@test.com',  password:'secret26', name: 'John Doe' };
   const basicAuthUser: IBasicAuthUser = { email: 'jd@test.com',  password:'secret26' };
 
-  test('get user by email', async () => {
+  test('a user exists', async () => {
 
     provider.addInteraction({
-      states: [{description: 'should return user details'}],
-      uponReceiving: 'a valid payload for get user by email',
+      states: [{description: 'a user exists'}],
+      uponReceiving: 'a valid request to get user by email',
       withRequest: {
         method: 'POST',
         path: '/api/v1/users/user',
@@ -52,11 +52,34 @@ describe('userstore contract tests', () => {
     
   });
 
-  test('create user', async () => {
+  test('a user doesnt exist', async () => {
 
     provider.addInteraction({
-      states: [{description: 'should create user and return user details'}],
-      uponReceiving: 'a valid payload for create user',
+      states: [{description: 'a user doesnt exist'}],
+      uponReceiving: 'an invalid request to get user by email',
+      withRequest: {
+        method: 'POST',
+        path: '/api/v1/users/user',
+        body: {email: user.email},
+      },
+      willRespondWith: {
+        status: 404,
+      },
+    });
+
+    await provider.executeTest(async (mockService) => {
+      process.env.API_BASE_URL = mockService.url;
+      const resp = await getUser(user.email);
+      expect(resp).toBeNull();
+      });
+    
+  });
+
+  test('a user is created', async () => {
+
+    provider.addInteraction({
+      states: [{description: 'a user is created'}],
+      uponReceiving: 'a valid payload to create user',
       withRequest: {
         method: 'POST',
         path: '/api/v1/users/user/create',
@@ -79,11 +102,37 @@ describe('userstore contract tests', () => {
     
   });
 
-  test('update user', async () => {
+  test('a user fails to be created', async () => {
 
     provider.addInteraction({
-      states: [{description: 'should update user and return status 200'}],
-      uponReceiving: 'a valid payload for update user',
+      states: [{description: 'a user fails to be created'}],
+      uponReceiving: 'an invalid payload to create user',
+      withRequest: {
+        method: 'POST',
+        path: '/api/v1/users/user/create',
+        body: {
+          email: null,
+          name: userPayload.name,
+          password: userPayload.password,
+        },
+      },
+      willRespondWith: {
+        status: 500,
+      },
+    });
+
+    await provider.executeTest(async (mockService) => {
+      process.env.API_BASE_URL = mockService.url;
+      const resp = await createUser({email: null, password: userPayload.password, name:userPayload.name});
+      expect(resp).toBeNull();
+    });
+  });
+
+  test('a user is updated', async () => {
+
+    provider.addInteraction({
+      states: [{description: 'a user is updated'}],
+      uponReceiving: 'a valid payload to update user',
       withRequest: {
         method: 'PUT',
         path: '/api/v1/users/user/update',
@@ -105,11 +154,37 @@ describe('userstore contract tests', () => {
     
   });
 
-  test('authenticate user', async () => {
+  test('a user fails to be updated', async () => {
 
     provider.addInteraction({
-      states: [{description: 'should authenticate user and return a user object'}],
-      uponReceiving: 'a valid email and passwrord',
+      states: [{description: 'a user fails to be updated'}],
+      uponReceiving: 'an invalid payload to update user',
+      withRequest: {
+        method: 'PUT',
+        path: '/api/v1/users/user/update',
+        body: {
+          email: null,
+          name: userPayload.name,
+        },
+      },
+      willRespondWith: {
+        status: 500
+      },
+    });
+
+    await provider.executeTest(async (mockService) => {
+      process.env.API_BASE_URL = mockService.url;
+      const resp = await updateUser({email: null, name: userPayload.name});
+      expect(resp).toBeNull();
+    });
+    
+  });
+
+  test('user credentials match', async () => {
+
+    provider.addInteraction({
+      states: [{description: 'user credentials match'}],
+      uponReceiving: 'a valid email and password to authenticate',
       withRequest: {
         method: 'POST',
         path: '/api/v1/users/user/authenticate',
@@ -132,6 +207,30 @@ describe('userstore contract tests', () => {
       expect(resp.data.name).toEqual(userResp.name);
       expect(resp.data.userId).toEqual(userResp.userId);
     });
-    
+  });
+
+  test('user credentials dont match', async () => {
+
+    provider.addInteraction({
+      states: [{description: 'user credentials dont match'}],
+      uponReceiving: 'an invalid email and password to authenticate',
+      withRequest: {
+        method: 'POST',
+        path: '/api/v1/users/user/authenticate',
+        body: {
+          email: null,
+          password: basicAuthUser.password
+        }
+      },
+      willRespondWith: {
+        status: 500
+      },
+    });
+
+    await provider.executeTest(async (mockService) => {
+      process.env.API_BASE_URL = mockService.url;
+      const resp = await authenticate({email: null, password: basicAuthUser.password});
+      expect(resp).toBeNull();
+    });
   });
 });

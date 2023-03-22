@@ -58,10 +58,10 @@ const SolarForecastChart = ({ userId, month }: ChartProps) => {
       }
       arrayResult.month = month;
       const forecastResult = await getSolarForecast(arrayResult);
-      if (!forecastResult) {
+      if (forecastResult?.status !== 200) {
         return;
       }
-      setForecastData(forecastResult);
+      setForecastData(forecastResult.data);
 
       setChartData({
         labels: [
@@ -93,7 +93,7 @@ const SolarForecastChart = ({ userId, month }: ChartProps) => {
         datasets: [
           {
             label: "Kwh",
-            data: forecastResult?.map((x: any) => x.peakGlobalOutput) || [],
+            data: forecastResult.data?.map((x: any) => x.peakGlobalOutput) || [],
             borderColor: "rgba(255, 99, 132, 1)",
             backgroundColor: "rgba(255, 99, 132, 0.2)",
           },
