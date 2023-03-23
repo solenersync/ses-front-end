@@ -32,7 +32,7 @@ describe('userstore contract tests', () => {
         body: {email: user.email},
       },
       willRespondWith: {
-        status: 301,
+        status: 400,
         body: like({
           email: userResp.email,
           name: userResp.name,
