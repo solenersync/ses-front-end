@@ -24,5 +24,4 @@ npm run watch
 ```
 
 ## How to use
-
 Local server runs on: [`http://localhost:3000`](http://localhost:3000)
