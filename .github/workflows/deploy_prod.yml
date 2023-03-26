@@ -32,9 +32,6 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Install Python
-      run: sudo apt-get update && sudo apt-get install -y python3 python-is-python3
-
     - name: Build, tag, and push docker image to Amazon ECR
       env:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -43,6 +40,5 @@ jobs:
         NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
       run: |
         aws ecr describe-repositories --repository-names ${REPOSITORY} || aws ecr create-repository --repository-name ${REPOSITORY}
-        export PYTHON=/usr/bin/python3
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
         docker push -a $REGISTRY/$REPOSITORY

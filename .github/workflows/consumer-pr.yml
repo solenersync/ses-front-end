@@ -26,6 +26,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - name: Install Python
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3
+      - name: Set Python path
+        run: |
+          export PYTHON=/usr/bin/python3
       - name: Install
         run: npm i
       - name: Test
