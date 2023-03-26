@@ -36,7 +36,7 @@ describe('solar-array-store contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await getArrayData(user.userId);
       expect(resp.lat).toEqual(solarArray.lat);
       expect(resp.lon).toEqual(solarArray.lon);
@@ -64,7 +64,7 @@ describe('solar-array-store contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await getArrayData(user.userId);
       expect(resp).toBeNull();
       });
@@ -95,7 +95,7 @@ describe('solar-array-store contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await createArray(solarArrayPayload);
       expect(resp.status).toEqual(200);
       });
@@ -126,7 +126,7 @@ describe('solar-array-store contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await createArray(invalidSolarArrayPayload);
       expect(resp).toBeNull();
       });
@@ -159,7 +159,7 @@ describe('solar-array-store contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await updateArray(solarArray);
       expect(resp.status).toEqual(200);
     });
@@ -191,7 +191,7 @@ describe('solar-array-store contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await updateArray(invalidSolarArrayPayload);
       expect(resp).toBeNull();
     });

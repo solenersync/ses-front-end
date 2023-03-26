@@ -42,7 +42,7 @@ describe('userstore contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await getUser(user.email);
       expect(resp.status).toEqual(200);
       expect(resp.data.email).toEqual(userResp.email);
@@ -68,7 +68,7 @@ describe('userstore contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await getUser(user.email);
       expect(resp).toBeNull();
       });
@@ -95,7 +95,7 @@ describe('userstore contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await createUser({email: userPayload.email, password: userPayload.password, name:userPayload.name});
       expect(resp.status).toEqual(200);
       });
@@ -122,7 +122,7 @@ describe('userstore contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await createUser({email: null, password: userPayload.password, name:userPayload.name});
       expect(resp).toBeNull();
     });
@@ -147,7 +147,7 @@ describe('userstore contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await updateUser({email: userPayload.email, name: userPayload.name});
       expect(resp.status).toEqual(200);
     });
@@ -173,7 +173,7 @@ describe('userstore contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await updateUser({email: null, name: userPayload.name});
       expect(resp).toBeNull();
     });
@@ -200,7 +200,7 @@ describe('userstore contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await authenticate(basicAuthUser);
       expect(resp.status).toEqual(200);
       expect(resp.data.email).toEqual(userResp.email);
@@ -228,7 +228,7 @@ describe('userstore contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await authenticate({email: null, password: basicAuthUser.password});
       expect(resp).toBeNull();
     });

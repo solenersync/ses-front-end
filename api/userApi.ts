@@ -4,7 +4,7 @@ import { IUpdateUser } from '../types/IUpdateUser';
 import { IBasicAuthUser } from '../types/IBasicAuthUser';
 
 export const getUser = async (email: string) => {
-  axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
+  axiosUserApi.defaults.baseURL = process.env.API_URL ?? axiosUserApi.defaults.baseURL;
   try {
     const response = await axiosUserApi.post('/api/v1/users/user', { email });
     return response;
@@ -14,7 +14,7 @@ export const getUser = async (email: string) => {
 };
 
 export const createUser = async (userData: ICreateUser) => {
-  axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
+  axiosUserApi.defaults.baseURL = process.env.API_URL ?? axiosUserApi.defaults.baseURL;
   try {
     const response = await axiosUserApi.post('/api/v1/users/user/create', userData);
     return response;
@@ -24,7 +24,7 @@ export const createUser = async (userData: ICreateUser) => {
 };
 
 export const updateUser = async (userData: IUpdateUser) => {
-  axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
+  axiosUserApi.defaults.baseURL = process.env.API_URL ?? axiosUserApi.defaults.baseURL;
   try {
     const response = await axiosUserApi.put('/api/v1/users/user/update', userData);
     return response;
@@ -34,7 +34,7 @@ export const updateUser = async (userData: IUpdateUser) => {
 };
 
 export const authenticate = async (userData: IBasicAuthUser) => {
-  axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
+  axiosUserApi.defaults.baseURL = process.env.API_URL ?? axiosUserApi.defaults.baseURL;
   try {
     const response = await axiosUserApi.post('/api/v1/users/user/authenticate', userData);
     return response;

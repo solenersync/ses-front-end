@@ -4,7 +4,7 @@ import { ICreateSolarArray } from '../types/ICreateSolarArray';
 
 
 export const getArrayData = async (userId: number) => {
-  axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
+  axiosSolarArrayApi.defaults.baseURL = process.env.API_URL ?? axiosSolarArrayApi.defaults.baseURL;
   try {
     const response = await axiosSolarArrayApi.get(`/api/v1/solar-arrays/array/user/${userId}`);
     return response.data;
@@ -14,7 +14,7 @@ export const getArrayData = async (userId: number) => {
 };
 
 export const createArray = async (arrayData: ICreateSolarArray) => {
-  axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
+  axiosSolarArrayApi.defaults.baseURL = process.env.API_URL ?? axiosSolarArrayApi.defaults.baseURL;
   try {
     const response = await axiosSolarArrayApi.post('/api/v1/solar-arrays/create', arrayData);
     return response;
@@ -25,7 +25,7 @@ export const createArray = async (arrayData: ICreateSolarArray) => {
 
 
 export const updateArray = async (arrayData: ISolarArray) => {
-  axiosSolarArrayApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosSolarArrayApi.defaults.baseURL;
+  axiosSolarArrayApi.defaults.baseURL = process.env.API_URL ?? axiosSolarArrayApi.defaults.baseURL;
   try {
     const response = await axiosSolarArrayApi.post('/api/v1/solar-arrays/update', arrayData);
     return response;

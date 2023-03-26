@@ -45,7 +45,7 @@ describe('pv-service contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await getSolarForecast(solarForecastRequest);
       expect(resp.data[0].time).toEqual(forecast.time);
       expect(resp.data[0].month).toEqual(forecast.month);
@@ -73,7 +73,7 @@ describe('pv-service contract tests', () => {
     });
 
     await provider.executeTest(async (mockService) => {
-      process.env.API_BASE_URL = mockService.url;
+      process.env.API_URL = mockService.url;
       const resp = await getSolarForecast(invalidSolarForecastRequest);
       expect(resp).toBeNull();
       });

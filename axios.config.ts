@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosUserApi = axios.create({
-  baseURL: process.env.API_BASE_URL || 'http://localhost:8081',
+  baseURL: process.env.API_URL || 'http://localhost:8081',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -9,7 +9,7 @@ const axiosUserApi = axios.create({
 });
 
 const axiosSolarArrayApi = axios.create({
-  baseURL: process.env.API_BASE_URL || 'http://localhost:8083',
+  baseURL: process.env.API_URL || 'http://localhost:8083',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ const axiosSolarArrayApi = axios.create({
 });
 
 const axiosSolarForecastApi = axios.create({
-  baseURL: process.env.API_BASE_URL || 'http://localhost:8080',
+  baseURL: process.env.API_URL || 'http://localhost:8080',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
