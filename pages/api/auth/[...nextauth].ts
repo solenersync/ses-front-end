@@ -2,6 +2,8 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import NextAuth, { NextAuthOptions, User } from 'next-auth'
 import { authenticate } from '../../../api/userApi';
 
+console.log("NEXTAUTH_SECRET:", process.env.NEXTAUTH_SECRET);
+
 const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
