@@ -27,7 +27,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
-
+        
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
@@ -37,6 +37,7 @@ jobs:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         REPOSITORY: solenersync-ses-front-end
         IMAGE_TAG: ${{ steps.release-tag.outputs.release-tag }}
+        NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
       run: |
         aws ecr describe-repositories --repository-names ${REPOSITORY} || aws ecr create-repository --repository-name ${REPOSITORY}
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
