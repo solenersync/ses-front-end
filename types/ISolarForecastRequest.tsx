@@ -1,7 +1,7 @@
 export interface ISolarForecastRequest {
   lon: number;
   lat: number;
-  peakpower: number;
+  peakPower: number;
   loss: number;
   angle: number;
   aspect: number;
