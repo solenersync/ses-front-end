@@ -12,6 +12,7 @@ jobs:
       TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
       TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
       TEST_USER_NAME: ${{ secrets.TEST_USER_NAME }}
+      NEXTAUTH_SECRET: ${{ secrets.TEST_USER_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
