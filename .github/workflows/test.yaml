@@ -24,4 +24,4 @@ jobs:
       # - name: Jest Unit Tests
       #   run: npm test
       - name: Cypress Tests
-        run: npm run cypress:run
+        run: npm run test:integration:run
