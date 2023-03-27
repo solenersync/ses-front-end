@@ -17,8 +17,12 @@ export const createUser = async (userData: ICreateUser) => {
   axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
   try {
     const response = await axiosUserApi.post('/api/v1/users/user/create', userData);
+    console.log(response.status);
     return response;
   } catch (error) {   
+    if (error.response && error.response.status === 409) {
+      throw error;
+    }
     return null;
   }
 };
