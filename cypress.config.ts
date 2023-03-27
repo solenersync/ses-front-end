@@ -5,7 +5,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://www.solenersync.net',
   },
   env: {
     TEST_USER_EMAIL: process.env.TEST_USER_EMAIL,
