@@ -1,5 +1,4 @@
 import { LoginPage } from '../pages/loginPage';
-import { SolarArrayPage } from '../pages/solarArrayPage';
 import { IUser } from '../types/IUser';
 
 describe('solar array', () => {
