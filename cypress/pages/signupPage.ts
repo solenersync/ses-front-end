@@ -1,5 +1,4 @@
 import { IUser } from '../types/IUser';
-import { DashboardPage } from './dashboardPage';
 
 export class SignupPage {
   

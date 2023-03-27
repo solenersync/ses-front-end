@@ -7,7 +7,7 @@ describe('signup', () => {
   const testUserPassword = Cypress.env('TEST_USER_PASSWORD')
   const testUserName = Cypress.env('TEST_USER_NAME')
   const user: IUser = { email: testUserEmail, password: testUserPassword, name: testUserName };
-  var signupPage: SignupPage = new SignupPage();
+  const signupPage: SignupPage = new SignupPage();
 
   beforeEach(() => {
     SignupPage.open();

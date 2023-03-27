@@ -1,4 +1,3 @@
-import { LandingPage } from './landingPage';
 import { LoginPage } from './loginPage';
 import { SolarArrayPage } from './solarArrayPage';
 

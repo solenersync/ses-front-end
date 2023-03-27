@@ -8,7 +8,7 @@ describe('solar array', () => {
   const testUserPassword = Cypress.env('TEST_USER_PASSWORD')
   const testUserName = Cypress.env('TEST_USER_NAME')
   const user: IUser = { email: testUserEmail, password: testUserPassword, name: testUserName };
-  var loginPage: LoginPage = new LoginPage();
+  const loginPage: LoginPage = new LoginPage();
   let randomNum: number;
 
   beforeEach(() => {
