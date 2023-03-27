@@ -3,7 +3,10 @@ import { IUser } from '../types/IUser';
 
 describe('login', () => {
 
-  const user: IUser = { email: 'cypress@test.com', password: 'cypresspassword', name: 'cypress' };
+  const testUserEmail = Cypress.env('TEST_USER_EMAIL')
+  const testUserPassword = Cypress.env('TEST_USER_PASSWORD')
+  const testUserName = Cypress.env('TEST_USER_NAME')
+  const user: IUser = { email: testUserEmail, password: testUserPassword, name: testUserName };
   var loginPage: LoginPage = new LoginPage();
 
   beforeEach(() => {
