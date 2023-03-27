@@ -20,7 +20,7 @@
     "test:e2e:open" : "cypress open",
     "test:e2e:run" : "cypress run",
     "test:integration": "concurrently \"npm:production\" \"wait-on http://localhost:3000 && cypress open\"",
-    "test:integration:run": "concurrently \"npm:start\" \"wait-on http://localhost:3000 && cypress run\""
+    "test:integration:run": "concurrently \"npm:production\" \"wait-on http://localhost:3000 && cypress run\""
   },
   "dependencies": {
     "@headlessui/react": "^1.7.11",
