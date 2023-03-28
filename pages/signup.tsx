@@ -5,12 +5,14 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import { AxiosError } from 'axios';
 
 const Signup: NextPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (router.query.email) {
@@ -30,6 +32,17 @@ const Signup: NextPage = () => {
         if (res?.status == 200) {
           router.push('/dashboard');
         }
+      }
+    })
+    .catch((error: AxiosError) => {
+      if (error.response?.status === 409) {
+        setErrorMessage(
+          'User already exists. Please try again.'
+        );
+      } else {
+        setErrorMessage(
+          'Error signing up. Please try again.'
+        );
       }
     });
   };
@@ -142,6 +155,11 @@ const Signup: NextPage = () => {
                 >
                   Sign up
                 </button>
+              </div>
+              <div className='mt-2' data-testid='signup-error-message'>
+                {errorMessage && (
+                  <div className='text-center text-sm text-red-500'>{errorMessage}</div>
+                )}
               </div>
             </form>
 
