@@ -9,6 +9,7 @@ const Login: NextPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -19,6 +20,8 @@ const Login: NextPage = () => {
     });
     if (res?.status == 200) {
       router.push('/dashboard');
+    } else {
+      setErrorMessage('Invalid email or password. Please try again.');
     }
   };
 
@@ -106,6 +109,11 @@ const Login: NextPage = () => {
                 >
                   Sign in
                 </button>
+              </div>
+              <div className='mt-2' data-testid='login-error-message'>
+                {errorMessage && (
+                  <div className='text-center text-sm text-red-500'>{errorMessage}</div>
+                )}
               </div>
             </form>
 

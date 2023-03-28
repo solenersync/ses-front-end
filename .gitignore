@@ -13,6 +13,8 @@
 /.next/
 /out/
 .env
+*.mp4
+*.png
 
 # production
 /build

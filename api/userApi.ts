@@ -18,7 +18,10 @@ export const createUser = async (userData: ICreateUser) => {
   try {
     const response = await axiosUserApi.post('/api/v1/users/user/create', userData);
     return response;
-  } catch (error) {   
+  } catch (error) {  
+    if (error.response && error.response.status === 409) {
+      throw error;
+    } 
     return null;
   }
 };
