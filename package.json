@@ -12,16 +12,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "tests": "next build && next start && cypress run",
+    "tests": "next start & cypress run",
     "lint": "next lint",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:watch": "jest --watch",
     "test:e2e:open": "cypress open",
-    "test:e2e": "dotenv -e .env cypress run",
     "test:e2e:run": "cypress run",
-    "test:integration": "next build && next start & wait-on http://localhost:3000 && cypress run",
-    "test:integration:run": "concurrently \"npm:production\" \"wait-on http://localhost:3000 && cypress run\""
+    "test:integration:run": "next build && next start & cypress run"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.11",
