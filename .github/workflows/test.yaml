@@ -24,7 +24,7 @@ jobs:
       # - name: Jest Unit Tests
       #   run: npm test
       - name: Start server
-        run: npm start &
+        run: next build && next start &
 
       - name: Wait for server
         uses: jakepartusch/wait-for-netlify-action@v1
