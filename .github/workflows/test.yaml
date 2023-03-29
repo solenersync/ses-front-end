@@ -23,5 +23,16 @@ jobs:
           npm ci
       # - name: Jest Unit Tests
       #   run: npm test
-      - name: Cypress Tests
-        run: npm run cypress:run
+      - name: Start server
+        run: npm start &
+        working-directory: /
+
+      - name: Wait for server
+        uses: jakepartusch/wait-for-netlify-action@v1
+        with:
+          site_name: "localhost"
+          site_port: 3000
+          timeout_seconds: 60
+
+      - name: Run Cypress tests
+        run: npx cypress run
