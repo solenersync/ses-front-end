@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, getByTestId } from '@testing-library/react';
 import SolarForecast from 'pages/solar-forecast';
 import { useUserData } from 'hooks/useUserData';
 import '@testing-library/jest-dom';
@@ -26,22 +26,30 @@ describe('SolarForecast page', () => {
     jest.resetAllMocks();
   });
 
-  test('should render the forecast selector', () => {
-    render(<SolarForecast />);
-    expect(screen.getByTestId('forecast-select')).toBeInTheDocument();
-    expect(screen.getByText('Select forecast:')).toBeInTheDocument();
-  });
-
   test('should render the SolarForecastChart component when userId and month are available', () => {
     render(<SolarForecast />);
     expect(screen.getByTestId('solar-forecast-chart')).toBeInTheDocument();
   });
 
-  test('should update the forecast selection', () => {
-    render(<SolarForecast />);
-    fireEvent.change(screen.getByTestId('forecast-select'), {
-      target: { value: '2' },
+  it('should update the number of rendered graphs when SelectMenu is changed', async () => {
+    const { getByTestId, getAllByTestId } = render(<SolarForecast />);
+    const selectMenu = getByTestId('select-menu');
+  
+    fireEvent.change(selectMenu, { target: { value: '1' } });
+  
+    await waitFor(() => {
+      const renderedGraphs = getAllByTestId('solar-forecast-chart');
+      expect(renderedGraphs.length).toBe(1);
     });
-    expect(screen.getByTestId('forecast-select')).toHaveValue('2');
+  });
+  
+
+  it('should update the displayCloudCover state when the toggle is clicked', async () => {
+    const { getByTestId } = render(<SolarForecast />);
+    const toggle = getByTestId('toggle');
+
+    expect(toggle.getAttribute('data-checked')).toBe('false');
+    fireEvent.click(toggle);
+    expect(toggle.getAttribute('data-checked')).toBe('true');
   });
 });

@@ -5,6 +5,7 @@ import { IBasicAuthUser } from '../types/IBasicAuthUser';
 
 export const getUser = async (email: string) => {
   axiosUserApi.defaults.baseURL = process.env.API_BASE_URL ?? axiosUserApi.defaults.baseURL;
+
   try {
     const response = await axiosUserApi.post('/api/v1/users/user', { email });
     return response;

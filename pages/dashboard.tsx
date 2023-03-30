@@ -12,10 +12,16 @@ const Dashboard: NextPageWithLayout = () => {
     setMonth(new Date().getMonth() + 1);
   }, []);
 
+  const getDate = () => {
+    const date = new Date();
+    date.setDate(date.getDate());
+    return date.toISOString().substring(0, 16);
+  };
+
   return (
     <>
       {user && month ? (
-        <SolarForecastChart userId={user.userId} month={month}></SolarForecastChart>
+        <SolarForecastChart userId={user.userId} month={month} date={getDate()} displayCloudCover={false}></SolarForecastChart>
       ) : null}
     </>
   );
