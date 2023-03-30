@@ -8,4 +8,5 @@ export interface ISolarForecastRequest {
   mounting: string;
   userId: number;
   month: number;
+  date: string
 }

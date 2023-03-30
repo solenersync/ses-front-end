@@ -88,7 +88,30 @@ const SolarForecastChart = ({
       }
       setForecastData(forecastResult.data);
       setTotalPowerOutput(forecastResult.data[forecastResult.data.length -1].totalPowerOutput.toFixed(2))
-
+      
+      const cloudCoverDatasets = displayCloudCover
+      ? [
+          {
+            label: 'Low Cloud Cover',
+            data: forecastResult.data?.map((x: any) => x.lowCloudCover) || [],
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          },
+          {
+            label: 'Mid Cloud Cover',
+            data: forecastResult.data?.map((x: any) => x.midCloudCover) || [],
+            borderColor: 'rgba(255, 206, 86, 1)',
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+          },
+          {
+            label: 'High Cloud Cover',
+            data: forecastResult.data?.map((x: any) => x.highCloudCover) || [],
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          },
+        ]
+      : [];
+      
 
       setChartData({
         labels: [
@@ -162,6 +185,61 @@ const SolarForecastChart = ({
             borderColor: 'rgba(54, 162, 235, 1)',
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
           },
+        ],
+      });
+
+      setCloudCoverData({
+        labels: [
+          '00:00',
+          '01:00',
+          '02:00',
+          '03:00',
+          '04:00',
+          '05:00',
+          '06:00',
+          '07:00',
+          '08:00',
+          '09:00',
+          '10:00',
+          '11:00',
+          '12:00',
+          '13:00',
+          '14:00',
+          '15:00',
+          '16:00',
+          '17:00',
+          '18:00',
+          '19:00',
+          '20:00',
+          '21:00',
+          '22:00',
+          '23:00',
+        ],
+        datasets: [
+          {
+            label: 'Cloud Cover',
+            data: forecastResult.data?.map((x: any) => x.maxCloudCover) || [],
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          },
+          // {
+          //   label: 'Low Cloud Cover',
+          //   data: forecastResult.data?.map((x: any) => x.lowCloud) || [],
+          //   borderColor: 'rgba(128, 0, 128, 1)',
+          //   backgroundColor: 'rgba(128, 0, 128, 0.2)',
+          // },
+          // {
+          //   label: 'Mid Cloud Cover',
+          //   data: forecastResult.data?.map((x: any) => x.midCloud) || [],
+          //   borderColor: 'rgba(255, 206, 86, 1)',
+          //   backgroundColor: 'rgba(255, 206, 86, 0.2)',
+          // },
+          // {
+          //   label: 'High Cloud Cover',
+          //   data: forecastResult.data?.map((x: any) => x.highCloud) || [],
+          //   borderColor: 'rgba(75, 192, 192, 1)',
+          //   backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          // },
         ],
       });
     }

@@ -45,7 +45,7 @@ export function AppLayout({ children, pageTitle }: AppLayoutProps) {
 
   return (
     <>
-      <div>
+      <div className="flex flex-col min-h-screen">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as='div'
@@ -202,7 +202,7 @@ export function AppLayout({ children, pageTitle }: AppLayoutProps) {
               <Bars3Icon className='h-6 w-6' aria-hidden='true' />
             </button>
           </div>
-          <main className='flex-1'>
+          <main className='flex-1 w-full'>
             <div className='py-6 '>
               {/* <img
                     className='h-20 w-auto'
@@ -219,9 +219,9 @@ export function AppLayout({ children, pageTitle }: AppLayoutProps) {
               </div>
             </div>
           </main>
+          <Footer />
         </div>
       </div>
-      <Footer />
     </>
   );
 }
