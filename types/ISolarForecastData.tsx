@@ -6,5 +6,11 @@ export interface ISolarForecastData {
   'Gb(i)': number;
   'Gd(i)': number;
   'Gcs(i)': number;
+  lowCloud: number;
+  midCloud: number,
+  highCloud: number,
+  maxCloudCover: number,
+  date: string;
+  totalPowerOutput: number,
 
 }
