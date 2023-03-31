@@ -227,7 +227,7 @@ exports[`Home should render the home page 1`] = `
               <img
                 alt="dashboard"
                 class="w-full rounded-md shadow-xl ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto lg:max-w-none"
-                src="splash2.png"
+                src="splash.png"
               />
             </div>
           </div>
