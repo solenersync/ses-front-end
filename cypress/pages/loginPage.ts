@@ -17,11 +17,13 @@ export class LoginPage {
   }
 
   enterEmail(user: IUser): LoginPage { 
+    console.log(`inputting email: ${user.email}`)
     this.getEmailInput().type(user.email);
     return new LoginPage();
   } 
 
   enterPassword(user: IUser): LoginPage { 
+    console.log(`inputting password: ${user.password}`)
     this.getPasswordInput().type(user.password)
     return new LoginPage();
   } 
