@@ -10,7 +10,7 @@ const axiosUserApi = axios.create({
 });
 
 const axiosSolarArrayApi = axios.create({
-  // baseURL: 'https://www.solenersync.net' || 'http://localhost:8083',
+  // baseURL: process.env.API_BASE_URL || 'http://localhost:8083',
   baseURL: 'https://www.solenersync.net',
   headers: {
     Accept: 'application/json',
@@ -19,7 +19,7 @@ const axiosSolarArrayApi = axios.create({
 });
 
 const axiosSolarForecastApi = axios.create({
-  // baseURL: 'https://www.solenersync.net' || 'http://localhost:8080',
+  // baseURL: process.env.API_BASE_URL || 'http://localhost:8080',
   baseURL: 'https://www.solenersync.net',
   headers: {
     Accept: 'application/json',

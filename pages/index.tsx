@@ -1,9 +1,10 @@
 import { StarIcon } from '@heroicons/react/20/solid';
 import Footer from 'components/Footer/footer';
+import { useUserData } from 'hooks/useUserData';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Home: NextPage = (props) => {
   const router = useRouter();
@@ -34,8 +35,8 @@ const Home: NextPage = (props) => {
                     Solenersync
                   </h1>
                   <p className='mt-6 text-xl text-gray-500'>
-                    Synchronise your home energy with our solar
-                    forecasting service
+                    Synchronise your home energy with our solar forecasting
+                    service
                   </p>
                 </div>
                 <form
@@ -151,7 +152,7 @@ const Home: NextPage = (props) => {
               <div className='relative -mr-40 pl-6 sm:mx-auto sm:max-w-3xl sm:px-0 lg:h-full lg:max-w-none lg:pl-12'>
                 <img
                   className='w-full rounded-md shadow-xl ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto lg:max-w-none'
-                  src='dashboard.png'
+                  src='splash.png'
                   alt='dashboard'
                 />
               </div>
