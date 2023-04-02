@@ -30,6 +30,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
+      - name: Set up Kubernetes configuration
+        run: echo "${{ secrets.KUBECONFIG }}" > $KUBECONFIG
+
       - name: Display EKS cluster name
         run: |
           cluster_name=$(kubectl config view --minify --output 'jsonpath={..cluster.name}')
