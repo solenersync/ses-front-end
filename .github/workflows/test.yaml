@@ -47,7 +47,6 @@ jobs:
           SLACK_MESSAGE: 'A new version of ${{ github.event.client_payload.container_name }} is available. Production tests have *${{ job.status }}* for version ${{ github.event.client_payload.version_number }}'
           SLACK_USERNAME: notifier
           SLACK_ICON_EMOJI: ":github:"
-          SLACK_WEBHOOK: failure
 
 
 
