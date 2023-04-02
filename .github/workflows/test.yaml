@@ -1,13 +1,8 @@
 name: End to End
 
 on:
-  workflow_run:
-    workflows:
-      - "Deploy to production"
-    branches:
-      - "main"
-    types:
-      - completed
+  pull_request:
+    branches: ["main"]
 
 jobs:
   test:
@@ -36,7 +31,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
-          
+
       - name: Display EKS cluster name
         run: |
           cluster_name=$(kubectl config view --minify --output 'jsonpath={..cluster.name}')
