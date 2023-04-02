@@ -36,11 +36,6 @@ jobs:
       - name: Set up Kubernetes configuration
         run: echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $KUBECONFIG
 
-      - name: Display EKS cluster name
-        run: |
-          cluster_name=$(kubectl config view --minify --output 'jsonpath={..cluster.name}')
-          echo "EKS cluster name: $cluster_name"
-
       - name: Check for new pod
         id: check-pod
         run: |
