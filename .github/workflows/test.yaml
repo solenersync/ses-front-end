@@ -38,15 +38,21 @@ jobs:
         id: cypress_tests
         continue-on-error: true
 
-      - name: Slack notification
-        if: always()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_RELEASES}}
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_MESSAGE: 'A new version of ${{ github.event.client_payload.container_name }} is available. Production tests have *${{ job.status }}* for version ${{ github.event.client_payload.version_number }}'
-          SLACK_USERNAME: notifier
-          SLACK_ICON_EMOJI: ":github:"
+      - name: Slack notification on success
+        if: ${{ success() }}
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ steps.cypress_tests.outcome }}
+          text: 'A new version of ${{ github.event.client_payload.container_name }} is available. \nProduction tests have succeeded for version ${{ github.event.client_payload.version_number }}'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Slack notification on failure
+        if: ${{ failure() }}
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ steps.cypress_tests.outcome }}
+          text: 'A new version of ${{ github.event.client_payload.container_name }} is available. \nProduction tests have failed for version ${{ github.event.client_payload.version_number }}'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
 
 
 
