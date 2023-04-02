@@ -25,6 +25,8 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+      - name: Wait for 60 seconds
+        run: sleep 60
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -35,9 +37,8 @@ jobs:
           npm ci
       - name: Cypress Tests
         run: |
-            npm run cypress:run
-            echo "TEST_RESULT=$?" >> $GITHUB_ENV
-            echo "test_result::$?" >> $GITHUB_ENV
+          npm run cypress:run
+          echo "::set-output name=test_result::$?"
         id: cypress_tests
         continue-on-error: true
 
@@ -46,13 +47,9 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_RELEASES}}
-          SLACK_COLOR: | 
+          SLACK_COLOR: |
             ${{ steps.cypress_tests.outputs.test_result == '0' && 'good' || 'danger' }}
           SLACK_MESSAGE: |
             'A new version of ${{ github.event.client_payload.container_name }} is available. \nProduction testing was *${{ steps.cypress_tests.outputs.test_result == '0' && 'successful' || 'a failure' }}* for version ${{ github.event.client_payload.version_number }}'
           SLACK_USERNAME: notifier
           SLACK_ICON_EMOJI: ":github:"
-
-
-
-
