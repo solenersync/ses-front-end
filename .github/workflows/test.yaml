@@ -1,11 +1,8 @@
 name: End to End
 
 on:
-  pull_request:
-    branches: ["main"]
-
-env:
-  KUBECONFIG: /tmp/kubeconfig.yaml
+  repository_dispatch:
+    types: [pod_updated]
 
 jobs:
   test:
@@ -26,33 +23,5 @@ jobs:
         run: |
           npm ci
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-
-      - name: Set up Kubernetes configuration
-        run: echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $KUBECONFIG
-
-      - name: Check for new pod
-        id: check-pod
-        run: |
-          start_time=$SECONDS
-          while (( SECONDS - start_time <= 300 )); do
-            current_version=$(kubectl get pods --selector=app=ses-front-end -o jsonpath='{.items[0].metadata.labels.version}')
-            previous_version=${{ steps.check-pod.outputs.version }}
-            if [ "$current_version" != "$previous_version" ]; then
-              echo "New pod version detected: $current_version"
-              echo "::set-output name=version::$current_version"
-              break
-            else
-              echo "Pod version has not changed: $current_version"
-            fi
-            sleep 30
-          done
-
       - name: Cypress Tests
-        if: steps.check-pod.outputs.version != ''
         run: npm run cypress:run
