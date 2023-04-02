@@ -34,25 +34,21 @@ jobs:
         run: |
           npm ci
       - name: Cypress Tests
-        run: npm run cypress:run
+        run: |
+            npm run cypress:run
+            echo "TEST_RESULT=$?" >> $GITHUB_ENV
         id: cypress_tests
         continue-on-error: true
 
-      - name: Slack notification on success
-        if: ${{ success() }}
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ steps.cypress_tests.outcome }}
-          text: 'A new version of ${{ github.event.client_payload.container_name }} is available. \nProduction tests have succeeded for version ${{ github.event.client_payload.version_number }}'
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-
-      - name: Slack notification on failure
-        if: ${{ failure() }}
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ steps.cypress_tests.outcome }}
-          text: 'A new version of ${{ github.event.client_payload.container_name }} is available. \nProduction tests have failed for version ${{ github.event.client_payload.version_number }}'
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Slack notification
+        if: always()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_RELEASES}}
+          SLACK_COLOR: ${{ env.TEST_RESULT == '0' && 'good' || 'danger' }}
+          SLACK_MESSAGE: 'A new version of ${{ github.event.client_payload.container_name }} is available. \nProduction testing was *${{ env.TEST_RESULT == '0' && 'successful' || 'a failure' }}* for version ${{ github.event.client_payload.version_number }}'
+          SLACK_USERNAME: notifier
+          SLACK_ICON_EMOJI: ":github:"
 
 
 
