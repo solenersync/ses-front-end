@@ -15,6 +15,7 @@ import {
   LineElement,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { Spinner } from 'react-bootstrap';
 
 type ChartProps = {
   userId: number;
@@ -51,6 +52,7 @@ const SolarForecastChart = ({
   const [chartOptions, setChartOptions] = useState({});
   const [cloudCoverOptions, setCloudCoverOptions] = useState({});
   const [totalPowerOutput, setTotalPowerOutput] = useState('    .    ');
+  const [isLoading, setIsLoading] = useState(false);
 
   const chartDate = new Date(date);
   const options: Intl.DateTimeFormatOptions = {
@@ -75,8 +77,11 @@ const SolarForecastChart = ({
     );
 
     async function fetchData() {
+      setIsLoading(true);
+
       const arrayResult = await getArrayData(userId);
       if (!arrayResult) {
+        setIsLoading(false);
         return;
       }
       arrayResult.month = month;
@@ -84,34 +89,39 @@ const SolarForecastChart = ({
 
       const forecastResult = await getSolarForecast(arrayResult);
       if (forecastResult?.status !== 200) {
+        setIsLoading(false);
         return;
       }
       setForecastData(forecastResult.data);
-      setTotalPowerOutput(forecastResult.data[forecastResult.data.length -1].totalPowerOutput.toFixed(2))
-      
+      setTotalPowerOutput(
+        forecastResult.data[
+          forecastResult.data.length - 1
+        ].totalPowerOutput.toFixed(2)
+      );
+
       const cloudCoverDatasets = displayCloudCover
-      ? [
-          {
-            label: 'Low Cloud Cover',
-            data: forecastResult.data?.map((x: any) => x.lowCloudCover) || [],
-            borderColor: 'rgba(54, 162, 235, 1)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          },
-          {
-            label: 'Mid Cloud Cover',
-            data: forecastResult.data?.map((x: any) => x.midCloudCover) || [],
-            borderColor: 'rgba(255, 206, 86, 1)',
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-          },
-          {
-            label: 'High Cloud Cover',
-            data: forecastResult.data?.map((x: any) => x.highCloudCover) || [],
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          },
-        ]
-      : [];
-      
+        ? [
+            {
+              label: 'Low Cloud Cover',
+              data: forecastResult.data?.map((x: any) => x.lowCloudCover) || [],
+              borderColor: 'rgba(54, 162, 235, 1)',
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            },
+            {
+              label: 'Mid Cloud Cover',
+              data: forecastResult.data?.map((x: any) => x.midCloudCover) || [],
+              borderColor: 'rgba(255, 206, 86, 1)',
+              backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            },
+            {
+              label: 'High Cloud Cover',
+              data:
+                forecastResult.data?.map((x: any) => x.highCloudCover) || [],
+              borderColor: 'rgba(75, 192, 192, 1)',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            },
+          ]
+        : [];
 
       setChartData({
         labels: [
@@ -242,6 +252,7 @@ const SolarForecastChart = ({
           // },
         ],
       });
+      setIsLoading(false);
     }
     fetchData();
   }, [status, sessionData]);
@@ -275,15 +286,23 @@ const SolarForecastChart = ({
 
   return (
     <>
-      <div className='space-y-6 pt-8 sm:space-y-5 sm:pt-10'>
-        <Line
-          options={chartOptions}
-          data={chartData}
-          data-testid='solar-forecast-chart'
-        />
-      </div>
+      {isLoading ? (
+        <div className='fixed-inset-0 flex item-center justify-center'>
+          <Spinner animation='border' role='status'>
+            <span className='visually-hidden'>Loading...</span>
+          </Spinner>
+        </div>
+      ) : (
+        <div className='space-y-6 pt-8 sm:space-y-5 sm:pt-10'>
+          <Line
+            options={chartOptions}
+            data={chartData}
+            data-testid='solar-forecast-chart'
+          />
+        </div>
+      )}
       <div className='sm:pt-16'>
-        {displayCloudCover && (
+        {displayCloudCover && !isLoading && (
           <Line
             options={cloudCoverOptions}
             data={cloudCoverData}
