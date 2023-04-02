@@ -39,10 +39,11 @@ jobs:
         run: |
           npm run cypress:run
           echo "test_result=$?" >> $GITHUB_ENV
+          echo "TEST_RESULT=$(cat $GITHUB_ENV | grep -oP 'test_result=\K.*')" >> $GITHUB_ENV
         id: cypress_tests
         continue-on-error: true
-        outputs:
-          test_result: ${{ steps.cypress_tests.outputs.test_result }}
+        env:
+          TEST_RESULT: ${{ env.TEST_RESULT }}
 
       - name: Slack notification
         if: always()
@@ -50,8 +51,8 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_RELEASES}}
           SLACK_COLOR: | 
-            ${{ steps.cypress_tests.outputs.test_result == '0' && 'good' || 'danger' }}
+            ${{ env.TEST_RESULT == '0' && 'good' || 'danger' }}
           SLACK_MESSAGE: |
-            'A new version of ${{ github.event.client_payload.container_name }} is available. \nProduction testing was *${{ steps.cypress_tests.outputs.test_result == '0' && 'successful' || 'a failure' }}* for version ${{ github.event.client_payload.version_number }}'
+            'A new version of ${{ github.event.client_payload.container_name }} is available. Production testing was *${{ env.TEST_RESULT == '0' && 'successful' || 'a failure' }}* for version ${{ github.event.client_payload.version_number }}'
           SLACK_USERNAME: notifier
           SLACK_ICON_EMOJI: ":github:"
