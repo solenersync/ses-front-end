@@ -1,12 +1,12 @@
-name: CI Tests
+name: End to End
 
 on:
-  pull_request:
-    branches: ["main"]
+  repository_dispatch:
+    types: [pod_updated]
 
 jobs:
   test:
-    name: Integration
+    name: Production tests
     runs-on: ubuntu-latest
 
     steps:
@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: 16
           cache: "npm"
+
       - name: Install
         run: |
           npm ci
-      # - name: Jest Unit Tests
-      #   run: npm test
+
       - name: Cypress Tests
         run: npm run cypress:run
