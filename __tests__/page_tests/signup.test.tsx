@@ -109,7 +109,7 @@ describe('Signup page', () => {
     render(<Signup />);
 
     fireEvent.change(screen.getByTestId('password'), {
-      target: { value: 'short' },
+      target: { value: 'secret' },
     });
 
     const error = screen.getByText(
@@ -122,7 +122,7 @@ describe('Signup page', () => {
     render(<Signup />);
 
     fireEvent.change(screen.getByTestId('password'), {
-      target: { value: 'password123' },
+      target: { value: 'secret26' },
     });
     const error = screen.queryByText(
       'Password must be a minimum of 8 characters.'
