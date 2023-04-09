@@ -101,7 +101,7 @@ const Signup: NextPage = () => {
                   htmlFor='name'
                   className='block text-sm font-medium text-gray-700'
                 >
-                  Name
+                  Full Name
                 </label>
                 <div className='mt-1'>
                   <input

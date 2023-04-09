@@ -57,7 +57,7 @@ exports[`Signup page renders the signup page 1`] = `
               class="block text-sm font-medium text-gray-700"
               for="name"
             >
-              Name
+              Full Name
             </label>
             <div
               class="mt-1"
