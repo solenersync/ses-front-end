@@ -22,29 +22,26 @@ const Signup: NextPage = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    createUser({ email, password, name }).then(async (res) => {
-      if (res.status === 200) {
-        const res = await signIn('credentials', {
-          email: email,
-          password: password,
-          redirect: false,
-        });
-        if (res?.status == 200) {
-          router.push('/dashboard');
+    createUser({ email, password, name })
+      .then(async (res) => {
+        if (res.status === 200) {
+          const res = await signIn('credentials', {
+            email: email,
+            password: password,
+            redirect: false,
+          });
+          if (res?.status == 200) {
+            router.push('/dashboard');
+          }
         }
-      }
-    })
-    .catch((error: AxiosError) => {
-      if (error.response?.status === 409) {
-        setErrorMessage(
-          'User already exists. Please try again.'
-        );
-      } else {
-        setErrorMessage(
-          'Error signing up. Please try again.'
-        );
-      }
-    });
+      })
+      .catch((error: AxiosError) => {
+        if (error.response?.status === 409) {
+          setErrorMessage('User already exists. Please try again.');
+        } else {
+          setErrorMessage('Error signing up. Please try again.');
+        }
+      });
   };
 
   return (
@@ -101,7 +98,7 @@ const Signup: NextPage = () => {
                   htmlFor='name'
                   className='block text-sm font-medium text-gray-700'
                 >
-                  Full Name
+                  Name
                 </label>
                 <div className='mt-1'>
                   <input
@@ -137,6 +134,11 @@ const Signup: NextPage = () => {
                     required
                     className='block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm'
                   />
+                  {Number(password.length) < 8 ? (
+                    <p className='text-sm text-red-500'>
+                      Password must be a minimum of 8 characters.
+                    </p>
+                  ) : null}
                 </div>
               </div>
 
@@ -162,7 +164,9 @@ const Signup: NextPage = () => {
               </div>
               <div className='mt-2' data-testid='signup-error-message'>
                 {errorMessage && (
-                  <div className='text-center text-sm text-red-500'>{errorMessage}</div>
+                  <div className='text-center text-sm text-red-500'>
+                    {errorMessage}
+                  </div>
                 )}
               </div>
             </form>
