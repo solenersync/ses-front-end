@@ -83,4 +83,25 @@ describe('Signup page', () => {
     expect(screen.getByTestId('email')).toHaveValue('jd@test.com');
     expect(screen.getByTestId('email')).toBeDisabled();
   });
+
+  test('should display an error message when the password is less than 8 chars', () => {
+    render(<Signup />);
+
+    fireEvent.change(screen.getByTestId('password'), { 
+    target: { value: 'short' } 
+    });
+
+    const error = screen.getByText('Password must be a minimum of 8 characters.');
+    expect(error).toBeInTheDocument();
+  });
+
+  test('should not display an error message the password meets requirements', () => {
+    render(<Signup />);
+
+    fireEvent.change(screen.getByTestId('password'), { 
+    target: { value: 'password123' } 
+    });
+    const error = screen.queryByText('Password must be a minimum of 8 characters.');
+    expect(error).not.toBeInTheDocument();
+  });
 });
