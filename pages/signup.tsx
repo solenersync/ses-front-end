@@ -81,6 +81,7 @@ const Signup: NextPage = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     id='email'
+                    data-testid='email'
                     name='email'
                     type='email'
                     autoComplete='email'
@@ -107,6 +108,7 @@ const Signup: NextPage = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     id='name'
+                    data-testid='name'
                     name='name'
                     type='name'
                     autoComplete='current-name'
@@ -127,6 +129,7 @@ const Signup: NextPage = () => {
                   <input
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    data-testid='password'
                     id='password'
                     name='password'
                     type='password'
@@ -150,6 +153,7 @@ const Signup: NextPage = () => {
 
               <div>
                 <button
+                  data-testid='signup-button'
                   type='submit'
                   className='flex w-full justify-center rounded-md border border-transparent bg-rose-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2'
                 >
