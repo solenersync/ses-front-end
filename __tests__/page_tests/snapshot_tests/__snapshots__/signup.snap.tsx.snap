@@ -57,7 +57,7 @@ exports[`Signup page renders the signup page 1`] = `
               class="block text-sm font-medium text-gray-700"
               for="name"
             >
-              Full Name
+              Name
             </label>
             <div
               class="mt-1"
@@ -94,6 +94,11 @@ exports[`Signup page renders the signup page 1`] = `
                 type="password"
                 value=""
               />
+              <p
+                class="text-sm text-red-500"
+              >
+                Password must be a minimum of 8 characters.
+              </p>
             </div>
           </div>
           <div
