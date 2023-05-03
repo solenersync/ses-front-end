@@ -104,30 +104,16 @@ const MyArray: NextPageWithLayout = () => {
                   >
                     Latitude
                   </label>
-                  <div className='relative'>
-                    <input
-                      type='number'
-                      name='latitude'
-                      id='latitude'
-                      data-testid='latitude'
-                      value={latUpdate}
-                      onChange={(e) => setLatUpdate(e.target.value)}
-                      autoComplete='latitude'
-                      className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm'
-                      min='-90'
-                      max='90'
-                      step='any'
-                      required
-                    />
-                    <span className='absolute right-0 bottom-full mb-2 text-xs text-gray-500'>
-                      Must be a land-based coordinate
-                    </span>
-                    {Number(latUpdate) < -90 || Number(latUpdate) > 90 ? (
-                      <p className='text-sm text-red-500'>
-                        Latitude must be a value between -90 and 90.
-                      </p>
-                    ) : null}
-                  </div>
+                  <input
+                    type='number'
+                    name='latitude'
+                    id='latitude'
+                    data-testid='latitude'
+                    value={latUpdate}
+                    onChange={(e) => setLatUpdate(e.target.value)}
+                    autoComplete='latitude'
+                    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm'
+                  />
                 </div>
 
                 <div className='col-span-6 sm:col-span-6 lg:col-span-2'>
@@ -137,30 +123,16 @@ const MyArray: NextPageWithLayout = () => {
                   >
                     Longitude
                   </label>
-                  <div className='relative'>
-                    <input
-                      type='number'
-                      name='longitude'
-                      id='longitude'
-                      data-testid='longitude'
-                      value={lonUpdate}
-                      onChange={(e) => setLonUpdate(e.target.value)}
-                      autoComplete='longitude'
-                      className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm'
-                      min='-180'
-                      max='180'
-                      step='any'
-                      required
-                    />
-                    <span className='absolute right-0 bottom-full mb-2 text-xs text-gray-500'>
-                      Must be a land-based coordinate
-                    </span>
-                    {Number(lonUpdate) < -180 || Number(lonUpdate) > 180 ? (
-                      <p className='text-sm text-red-500'>
-                        Longitude must be a value between -180 and 180.
-                      </p>
-                    ) : null}
-                  </div>
+                  <input
+                    type='number'
+                    name='longitude'
+                    id='longitude'
+                    data-testid='longitude'
+                    value={lonUpdate}
+                    onChange={(e) => setLonUpdate(e.target.value)}
+                    autoComplete='longitude'
+                    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm'
+                  />
                 </div>
 
                 <div className='col-span-6 sm:col-span-3 lg:col-span-2'>
@@ -198,16 +170,7 @@ const MyArray: NextPageWithLayout = () => {
                     onChange={(e) => setLossUpdate(e.target.value)}
                     autoComplete='address-level2'
                     className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm'
-                    min='0'
-                    max='100'
-                    step='any'
-                    required
                   />
-                  {Number(lossUpdate) < 0 || Number(lossUpdate) > 100 ? (
-                    <p className='text-sm text-red-500'>
-                      Loss must be a value between 0 and 100 %.
-                    </p>
-                  ) : null}
                 </div>
 
                 <div className='col-span-6 sm:col-span-3 lg:col-span-2'>
@@ -226,16 +189,7 @@ const MyArray: NextPageWithLayout = () => {
                     onChange={(e) => setAngleUpdate(e.target.value)}
                     autoComplete='address-level1'
                     className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm'
-                    min='0'
-                    max='360'
-                    step='any'
-                    required
                   />
-                  {Number(angleUpdate) < 0 || Number(angleUpdate) > 360 ? (
-                    <p className='text-sm text-red-500'>
-                      Angle must be a value between 0 and 360 degress.
-                    </p>
-                  ) : null}
                 </div>
 
                 <div className='col-span-6 sm:col-span-3 lg:col-span-2'>
@@ -254,16 +208,7 @@ const MyArray: NextPageWithLayout = () => {
                     value={aspectUpdate}
                     onChange={(e) => setAspectUpdate(e.target.value)}
                     className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm'
-                    min='0'
-                    max='90'
-                    step='any'
-                    required
                   />
-                  {Number(aspectUpdate) < 0 || Number(aspectUpdate) > 90 ? (
-                    <p className='text-sm text-red-500'>
-                      Angle must be a value between 0 and 90 degress.
-                    </p>
-                  ) : null}
                 </div>
               </div>
             </div>
